@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{A chess playing robot arm}
+\author{ZSB}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+
+In this assignment you will be implementing inverse kinematics in a VPython simulation in order to make a robot arm play chess. There are two parts to this assigment:
+\begin{itemize}
+    \item High path planning
+    \item Inverse kinematics
+\end{itemize}
+The high path planning is a series of instructions the robot arm will need to follow in order to move a piece. The inverse kinematics part will tell the robot exactly what angles the individual arm joints need to have so it will be at a desired location. You can determine yourself in what order you want to complete these modules as they work independently. However, we suggest starting with high path planning. This is the easier component so it will allow you to familiarise yourself with python again.
+
+\section*{VPython simulator}
+\subsection*{Robot arm}
+\subsection*{Chess board}
+
+\section*{Altenative scoring}
+2 - Implementation high path/inverse kinematics/chess algorithm\\
+3 - High path\\
+5 - Inverse kinematics
+\section*{High path - 4 points}
+In order to play chess, the robot arm needs to be able to move a chess piece from one location to another. To achieve this the robot arm will need to follow a series of instructions:
+\begin{enumerate}
+\item Open gripper
+\item Move to safe height over piece
+\item Move to low height over piece
+\item Move to piece height
+\item Close gripper
+\item Move to safe height over piece
+\item Move to safe height over new position
+\item Move to low height over new position
+\item Move to piece height
+\item Open gripper
+\item Move to safe height
+\end{enumerate}
+Where safe height is an arbitrary height above a board location where it is impossible to for the robot arm to interact with the pieces. Low height is right above the piece and piece height is the height where the robot arm is able to actually grab the piece. These instructions can be implemented in the \textbf{high\_path(piece\_location, new\_location)} function.
+
+\section*{Inverse kinematics - 6 points}
+Solve the inverse kinematics problem for the robot arm: "Given a point on the board and a height, what are the joint angles needed for the robot arm to reach this point?". Keep in mind that there is no right answer for this. Inverse kinematics generally does not have one solution as there are multiple ways to reach the same position. This means that you can implement movement that you think is best as long as it works within the simulator. Inverse kinematics can be implemented in the \textbf{move\_arm(arm, position)}
+
+\section*{Extra credit (for badasses)}
+\begin{itemize}
+    \item Low path
+    \item Rotate/Move board
+    \item Inverse kinematics optimization (minimize movement)
+    \item 
+\end{itemize}
+\end{document}
