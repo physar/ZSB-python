@@ -27,7 +27,7 @@ upper_height = 0.095
 
 # Dimensions lower arm
 lower_length = 0.2535
-lower_height = 0.080
+lower_height = 0.08
 
 # Dimensions wrist
 wrist_height = 0.09
@@ -46,7 +46,8 @@ def leave(evt): # called on "Exit under program control" button event
 
 def setRiserHeight(evt): # called on slider events (output in mm)
     value = s0.GetValue() / 1000.0
-    s0_label.SetLabel('Set Riser Height: %d mm' % (value * 1000 / 2.0))
+    print(s0.GetMin())
+    s0_label.SetLabel('Set Riser Height: %d mm' % (value * 1000 + s0.GetMax()))
     riser.pos = (wpedestal/2.0, value, 0)
 
 def setShoulderAngle(evt): # called on slider events (output in degrees)
@@ -64,6 +65,12 @@ def setWristAngle(evt): # called on slider events] (output in degrees)
     s3_label.SetLabel('Set Wrist rotation: %.2f degrees' % degrees(value))
     wrist_joint.axis = (cos(value),0,sin(value))
 
+def setGripperWidth(evt): # called on slider events] (output in degrees)
+    value = s4.GetValue() / 1000.0
+    s4_label.SetLabel('Set Gripper opening: %d mm' % (value * 1000))
+    gripper_pos.pos = (0, gripper_pos.pos.y, 0.5*gripper_pos.width+value/2)
+    gripper_neg.pos = (0, gripper_pos.pos.y, -0.5*gripper_pos.width-value/2)
+
 L = 600
 # Create a window. Note that w.win is the wxPython "Frame" (the window).
 # window.dwidth and window.dheight are the extra width and height of the window
@@ -77,7 +84,7 @@ w = window(width=2*(L+window.dwidth), height=L+window.dheight+window.menuheight,
 
 # Place a 3D display widget in the left half of the window.
 d = 20
-disp = display(window=w, x=d, y=d, width=L-2*d, height=L-2*d, forward=-vector(0,0.25,0.5), center=vector(0,0.5,0))
+disp = display(window=w, x=d, y=d, width=L-2*d, height=L-2*d, forward=-vector(1,0.25,1), center=vector(0,0.5,0))
 
 # Place buttons, radio buttons, a scrolling text object, and a slider
 # in the right half of the window. Positions and sizes are given in
@@ -87,27 +94,28 @@ p = w.panel # Refers to the full region of the window in which to place widgets
 wx.StaticText(p, pos=(d,4), size=(L-2*d,d), label='3D representation.',
               style=wx.ALIGN_CENTRE | wx.ST_NO_AUTORESIZE)
 
-toggle_grip = wx.Button(p, label='Toggle Grip', pos=(1.5*L+10,15))
-toggle_grip.Bind(wx.EVT_BUTTON, rotateShoulderNeg)
+max_height = 0.5*(hpedestal)*1000.0
+min_height = (-0.5*(hpedestal)+pedestal_offset+upper_height+lower_height+wrist_height)*1000.0
 
-max_height = 0.5*(hpedestal-pedestal_offset)*1000.0
-min_height = -0.5*(pedestal_offset+upper_height+lower_height+wrist_height)*1000.0
-
-s0 = wx.Slider(p, pos=(1.0*L,0.2*L), size=(0.9*L,20), minValue=min_height, maxValue=max_height)
+s0 = wx.Slider(p, pos=(1.0*L,0.1*L), size=(0.9*L,20), minValue=min_height, maxValue=max_height)
 s0.Bind(wx.EVT_SCROLL, setRiserHeight)
-s0_label = wx.StaticText(p, pos=(1.0*L,0.15*L), label='Set Riser height: %d mm' % (0.9 * max_height / 2.0))
+s0_label = wx.StaticText(p, pos=(1.0*L,0.05*L), label='Set Riser height: %d mm' % (max_height*2))
 
-s1 = wx.Slider(p, pos=(1.0*L,0.4*L), size=(0.9*L,20), minValue=radians(-90)*1000.0, maxValue=radians(90)*1000.0)
+s1 = wx.Slider(p, pos=(1.0*L,0.2*L), size=(0.9*L,20), minValue=radians(-90)*1000.0, maxValue=radians(90)*1000.0)
 s1.Bind(wx.EVT_SCROLL, setShoulderAngle)
-s1_label = wx.StaticText(p, pos=(1.0*L,0.35*L), label='Set Shoulder rotation: 0 degrees')
+s1_label = wx.StaticText(p, pos=(1.0*L,0.15*L), label='Set Shoulder rotation: 0 degrees')
 
-s2 = wx.Slider(p, pos=(1.0*L,0.65*L), size=(0.9*L,20), minValue=radians(-180)*1000.0, maxValue=radians(110)*1000.0)
+s2 = wx.Slider(p, pos=(1.0*L,0.3*L), size=(0.9*L,20), minValue=radians(-180)*1000.0, maxValue=radians(110)*1000.0)
 s2.Bind(wx.EVT_SCROLL, setElbowAngle)
-s2_label = wx.StaticText(p, pos=(1.0*L,0.60*L), label='Set Elbow rotation: 0 degrees')
+s2_label = wx.StaticText(p, pos=(1.0*L,0.25*L), label='Set Elbow rotation: 0 degrees')
 
-s3 = wx.Slider(p, pos=(1.0*L,0.9*L), size=(0.9*L,20), minValue=0.5*-pi*1000.0, maxValue=0.5*pi*1000.0, style=wx.SL_HORIZONTAL)
+s3 = wx.Slider(p, pos=(1.0*L,0.4*L), size=(0.9*L,20), minValue=radians(-110)*1000.0, maxValue=radians(110)*1000.0, style=wx.SL_HORIZONTAL)
 s3.Bind(wx.EVT_SCROLL, setWristAngle)
-s3_label = wx.StaticText(p, pos=(1.0*L,0.85*L), label='Set Wrist rotation: 0 degrees')
+s3_label = wx.StaticText(p, pos=(1.0*L,0.35*L), label='Set Wrist rotation: 0 degrees')
+
+s4 = wx.Slider(p, pos=(1.0*L,0.5*L), size=(0.9*L,20), minValue=0, maxValue=50, style=wx.SL_HORIZONTAL)
+s4.Bind(wx.EVT_SCROLL, setGripperWidth)
+s4_label = wx.StaticText(p, pos=(1.0*L,0.45*L), label='Set Gripper opening: 50 mm')
 
 # Create a menu of options (Rotate right, Rotate right, Make red, Make cyan).
 # Currently, menus do not work on the Macintosh.
@@ -128,7 +136,7 @@ frame0.pos = (-wpedestal/2.0, 0.5*hpedestal,0)
 
 # The shoulder joint location is now on world position (x,z) = (0,0)
 riser = frame(frame=frame0)
-riser.pos = (wpedestal/2.0,0.9*frame0.pos.y, 0)
+riser.pos = (wpedestal/2.0,frame0.pos.y, 0)
 
 shoulder_joint = frame(frame=riser)
 shoulder_joint.pos = (0,-pedestal_offset, 0)
@@ -150,35 +158,45 @@ pedestal = box(frame = frame0,
                width = wpedestal,
                color = (0.4, 0.4, 0.4))
 riser_part = cylinder(frame = riser,
-               pos = (0, -pedestal_offset/2.0, 0),
+               pos = (0, -pedestal_offset, 0),
                axis = (0, pedestal_offset, 0),
                radius = wpedestal/2.0,
                color = color.red)
 
 upper_arm = box(frame = shoulder_joint,
-               pos = (upper_length/2.0,0,0),
+               pos = (upper_length/2.0,-upper_height/2,0),
                height = upper_height,
-               length = upper_length*1.2,
+               length = upper_length*1.25,
                width = 0.08,
                color = color.green)
 lower_arm = box(frame = elbow_joint,
-               pos = (lower_length/2.0,0,0),
+               pos = (lower_length/2.0,-lower_height/2,0),
                height = lower_height,
-               length = lower_length*1.2,
+               length = lower_length*1.25,
                width = 0.08,
                color = color.green)
-pointer_wrist = box(frame = wrist_joint,
-               pos = (0,-0.3/2.0,0),
-               height = 0.1,
-               length = 0.05,
-               width = 0.05,
-               color = color.blue)
+
 wrist = box(frame = wrist_joint,
-               pos = (0,0,0),
-               height = wrist_height,
+               pos = (0,-wrist_height/8,0),
+               height = wrist_height/4,
                length = 0.08,
                width = 0.08,
                color = color.green)
+
+gripper_pos = box(frame = wrist_joint,
+               pos = (0,-wrist_height/2,0.025),
+               height = wrist_height,
+               length = 0.03,
+               width = 0.005,
+               color = color.blue)
+
+gripper_neg = box(frame = wrist_joint,
+               pos = (0,-wrist_height/2,-0.025),
+               height = wrist_height,
+               length = 0.03,
+               width = 0.005,
+               color = color.blue)
+gripper_open = 1
 
 floor = box(frame=frameworld,
                pos = (0,0,0),
@@ -191,7 +209,7 @@ floor.pos = (floor.length/2 - wpedestal, 0, 0)
 # CHESSBOARD
 
 # Dimensions of the board
-chessboard_size = 0.25
+chessboard_size = 0.3
 field_size = (chessboard_size / 8.0)
 chessboard_dist = chessboard_size/2 - field_size
 
@@ -266,11 +284,11 @@ for x in range(8):
             )
 #***************************************************************************
 # INIT CONTROLS
-s0.SetValue(0.9*frame0.pos.y*1000.0)
+s0.SetValue(frame0.pos.y*1000.0)
 s1.SetValue(0) # update the slider
 s2.SetValue(0) # update the slider
 s3.SetValue(0) # update the slider
-
+s4.SetValue(50) # update the slider
 #**************************************************************************
 # CREATE CONTROLS
 while(True):
