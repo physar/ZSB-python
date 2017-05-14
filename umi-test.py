@@ -32,6 +32,9 @@ lower_height = 0.08
 # Dimensions wrist
 wrist_height = 0.09
 
+# Height of the arm from the very top of the riser, to the tip of the gripper.
+total_arm_height = pedestal_offset+upper_height+lower_height+wrist_height
+
 #**********************************************
 # Functions that are called on various events
 
@@ -46,7 +49,6 @@ def leave(evt): # called on "Exit under program control" button event
 
 def setRiserHeight(evt): # called on slider events (output in mm)
     value = s0.GetValue() / 1000.0
-    print(s0.GetMin())
     s0_label.SetLabel('Set Riser Height: %d mm' % (value * 1000 + s0.GetMax()))
     riser.pos = (wpedestal/2.0, value, 0)
 
@@ -95,7 +97,7 @@ wx.StaticText(p, pos=(d,4), size=(L-2*d,d), label='3D representation.',
               style=wx.ALIGN_CENTRE | wx.ST_NO_AUTORESIZE)
 
 max_height = 0.5*(hpedestal)*1000.0
-min_height = (-0.5*(hpedestal)+pedestal_offset+upper_height+lower_height+wrist_height)*1000.0
+min_height = (-0.5*(hpedestal)+total_arm_height)*1000.0
 
 s0 = wx.Slider(p, pos=(1.0*L,0.1*L), size=(0.9*L,20), minValue=min_height, maxValue=max_height)
 s0.Bind(wx.EVT_SCROLL, setRiserHeight)
@@ -131,6 +133,7 @@ m.Append(menu, 'Options')
 #***********************************************
 # ROBOT JOINTS
 frameworld = frame()
+
 frame0 = frame(frame=frameworld)
 frame0.pos = (-wpedestal/2.0, 0.5*hpedestal,0)
 
@@ -282,6 +285,42 @@ for x in range(8):
                    pos = (field_size*x - field_size/2.0, 0, (chessboard_dist - field_size*y) + field_size/2),
                    color = board_color_dark)
             )
+
+def get_gripper_bottom_position():
+    return frame0.frame_to_world(
+        riser.frame_to_world(
+            shoulder_joint.frame_to_world(
+                elbow_joint.frame_to_world(
+                    wrist_joint.pos + vector(0,-wrist_height, 0)
+                )
+            )
+        )
+    )
+
+def apply_inverse_kinematics(x, y, z):
+    # Real arm runs from -0.541 to 0.541 instead of 0 to 1.082
+    riser_position = y + ( s0.GetMin() / 1000.0 )
+    # Use the position on of the gripper to choose left/right handedness
+    if z < 0:
+        left_handed = True
+    else:
+        left_handed = False
+    arm_1 = upper_length
+    arm_2 = lower_length
+    #print(x, z, x*x, z*z)
+    c2 = float(x*x + z*z - 2.0*arm_1*arm_2) / float(2.0*arm_1*arm_2)
+    # Rounding errors, which make c2 either 1 or slightly higher than 1. if the arm is fully stretched
+    if c2 >= 1 and c2 < 1.000000000001:
+        c2 = 0.99999999999999
+    # Choose angle based on whether the arms bends left or right
+    if left_handed:
+        s2 = - math.sqrt(1 - c2*c2)
+    else:
+        s2 = math.sqrt(1 - c2*c2)
+    elbow_angle = degrees(math.atan2(s2, c2))
+    shoulder_angle = degrees(math.atan2(z,x) - math.atan2(arm_2*s2,arm_1 + arm_2*c2))
+    wrist_angle = - elbow_angle / 2 - shoulder_angle
+    return riser_position, shoulder_angle, elbow_angle, wrist_angle, left_handed
 #***************************************************************************
 # INIT CONTROLS
 s0.SetValue(frame0.pos.y*1000.0)
@@ -293,15 +332,8 @@ s4.SetValue(50) # update the slider
 # CREATE CONTROLS
 while(True):
     rate(100)
-    disp.center=frame0.frame_to_world(
-        riser.frame_to_world(
-            shoulder_joint.frame_to_world(
-                elbow_joint.frame_to_world(
-                    wrist_joint.pos - vector(0,wrist.height/2.0, 0)
-                )
-            )
-        )
-    )
+    disp.center=get_gripper_bottom_position()
+    print(riser.pos.y, disp.center, apply_inverse_kinematics(disp.center.x, disp.center.y, disp.center.z))
 #End Program
 
 0
