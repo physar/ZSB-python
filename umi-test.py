@@ -9,48 +9,25 @@ from visual.graph import *
 from visual.controls import *
 import wx
 
+# Custom made imports
+from umi_parameters import UMI_parameters
+from umi_chessboard import UMI_chessboard
+from umi_student_functions import *
 scene.title = "UMI RTX"
 scene.height = scene.width = 600
 
 #**********************************************
 # ROBOT PARAMETERS
 
-# Specifications of UMI
-# Zed
-hpedestal = 1.082
-pedestal_offset = 0.0675
-wpedestal = 0.1 # Undefined
-
-# Dimensions upper arm
-upper_length = 0.2535
-upper_height = 0.095
-
-# Dimensions lower arm
-lower_length = 0.2535
-lower_height = 0.08
-
-# Dimensions wrist
-wrist_height = 0.09
-
-# Height of the arm from the very top of the riser, to the tip of the gripper.
-total_arm_height = pedestal_offset+upper_height+lower_height+wrist_height
+# Specifications of UMI ARE IMPORTED THROUGH umi_student_functions.
 
 #**********************************************
 # Functions that are called on various events
 
-def rotateShoulderPos(evt): # called on "Rotate left" button event
-    shoulder_joint.rotate(axis = (0, 1, 0), angle = pi/180)
-
-def rotateShoulderNeg(evt): # called on "Rotate right" button event
-    shoulder_joint.rotate(axis = (0, 1, 0), angle = -pi/180)
-
-def leave(evt): # called on "Exit under program control" button event
-    exit()
-
 def setRiserHeight(evt): # called on slider events (output in mm)
-    value = s0.GetValue() / 1000.0
-    s0_label.SetLabel('Set Riser Height: %d mm' % (value * 1000 + s0.GetMax()))
-    riser.pos = (wpedestal/2.0, value, 0)
+    value = UMI.correct_height(s0.GetValue() / 1000.0)
+    s0_label.SetLabel('Set Riser Height: %d mm' % (s0.GetValue()))
+    riser.pos.y = value
 
 def setShoulderAngle(evt): # called on slider events (output in degrees)
     value = s1.GetValue() / 1000.0
@@ -80,9 +57,9 @@ L = 600
 # there is an additional height taken up, of amount window.menuheight.
 # The default style is wx.DEFAULT_FRAME_STYLE; the style specified here
 # does not enable resizing, minimizing, or full-sreening of the window.
-w = window(width=2*(L+window.dwidth), height=L+window.dheight+window.menuheight,
-           menus=True, title='UMI RTX',
-           style=wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX)
+w = window(width=2*(L+window.dwidth), height=L+window.dheight,
+           menus=False, title='UMI RTX',
+           style= wx.CAPTION | wx.CLOSE_BOX)
 
 # Place a 3D display widget in the left half of the window.
 d = 20
@@ -96,12 +73,12 @@ p = w.panel # Refers to the full region of the window in which to place widgets
 wx.StaticText(p, pos=(d,4), size=(L-2*d,d), label='3D representation.',
               style=wx.ALIGN_CENTRE | wx.ST_NO_AUTORESIZE)
 
-max_height = 0.5*(hpedestal)*1000.0
-min_height = (-0.5*(hpedestal)+total_arm_height)*1000.0
+#max_height = 0.5*(UMI.hpedestal)*1000.0
+#min_height = (-0.5*(UMI.hpedestal)+UMI.total_arm_height)*1000.0
 
-s0 = wx.Slider(p, pos=(1.0*L,0.1*L), size=(0.9*L,20), minValue=min_height, maxValue=max_height)
+s0 = wx.Slider(p, pos=(1.0*L,0.1*L), size=(0.9*L,20), minValue=UMI.total_arm_height*1000.0, maxValue=UMI.hpedestal*1000.0)
 s0.Bind(wx.EVT_SCROLL, setRiserHeight)
-s0_label = wx.StaticText(p, pos=(1.0*L,0.05*L), label='Set Riser height: %d mm' % (max_height*2))
+s0_label = wx.StaticText(p, pos=(1.0*L,0.05*L), label='Set Riser height: %d mm' % (UMI.hpedestal*1000.0))
 
 s1 = wx.Slider(p, pos=(1.0*L,0.2*L), size=(0.9*L,20), minValue=radians(-90)*1000.0, maxValue=radians(90)*1000.0)
 s1.Bind(wx.EVT_SCROLL, setShoulderAngle)
@@ -119,83 +96,72 @@ s4 = wx.Slider(p, pos=(1.0*L,0.5*L), size=(0.9*L,20), minValue=0, maxValue=50, s
 s4.Bind(wx.EVT_SCROLL, setGripperWidth)
 s4_label = wx.StaticText(p, pos=(1.0*L,0.45*L), label='Set Gripper opening: 50 mm')
 
-# Create a menu of options (Rotate right, Rotate right, Make red, Make cyan).
-# Currently, menus do not work on the Macintosh.
-m = w.menubar # Refers to the menubar, which can have several menus
-
-menu = wx.Menu()
-item = menu.Append(-1, 'Toggle Grip', 'Shoulder negative rotate')
-w.win.Bind(wx.EVT_MENU, rotateShoulderNeg, item)
-
-# Add this menu to an Options menu next to the default File menu in the menubar
-m.Append(menu, 'Options')
-
 #***********************************************
 # ROBOT JOINTS
 frameworld = frame()
 
 frame0 = frame(frame=frameworld)
-frame0.pos = (-wpedestal/2.0, 0.5*hpedestal,0)
+frame0.pos = (-UMI.wpedestal/2.0, 0.5*UMI.hpedestal,0)
 
 # The shoulder joint location is now on world position (x,z) = (0,0)
 riser = frame(frame=frame0)
-riser.pos = (wpedestal/2.0,frame0.pos.y, 0)
+riser.pos = (UMI.wpedestal/2.0,frame0.pos.y, 0)
 
 shoulder_joint = frame(frame=riser)
-shoulder_joint.pos = (0,-pedestal_offset, 0)
+shoulder_joint.pos = (0,-UMI.pedestal_offset, 0)
 #shoulder_joint.rotate(axis = (0, 1, 0), angle = pi/4)
 
 elbow_joint = frame(frame=shoulder_joint)
-elbow_joint.pos = (upper_length,-upper_height, 0)
+elbow_joint.pos = (UMI.upper_length,-UMI.upper_height, 0)
 #elbow_joint.rotate(axis = (0, 1, 0), angle = pi/4)
 
 wrist_joint = frame(frame=elbow_joint)
-wrist_joint.pos = (lower_length,-lower_height, 0)
+wrist_joint.pos = (UMI.lower_length,-UMI.lower_height, 0)
 #wrist_joint.rotate(axis = (0, 1, 0), angle = pi/4)
 #************************************************
 # ROBOT ARM
 pedestal = box(frame = frame0,
                pos = (0,0,0),
-               height = hpedestal,
-               length = wpedestal,
-               width = wpedestal,
+               height = UMI.hpedestal,
+               length = UMI.wpedestal,
+               width = UMI.wpedestal,
                color = (0.4, 0.4, 0.4))
 riser_part = cylinder(frame = riser,
-               pos = (0, -pedestal_offset, 0),
-               axis = (0, pedestal_offset, 0),
-               radius = wpedestal/2.0,
+               pos = (0, -UMI.pedestal_offset, 0),
+               axis = (0, UMI.pedestal_offset, 0),
+               radius = UMI.wpedestal/2.0,
                color = color.red)
 
 upper_arm = box(frame = shoulder_joint,
-               pos = (upper_length/2.0,-upper_height/2,0),
-               height = upper_height,
-               length = upper_length*1.25,
+               pos = (UMI.upper_length/2.0,-UMI.upper_height/2,0),
+               height = UMI.upper_height,
+               length = UMI.upper_length*1.25,
                width = 0.08,
                color = color.green)
 lower_arm = box(frame = elbow_joint,
-               pos = (lower_length/2.0,-lower_height/2,0),
-               height = lower_height,
-               length = lower_length*1.25,
+               pos = (UMI.lower_length/2.0,-UMI.lower_height/2,0),
+               height = UMI.lower_height,
+               length = UMI.lower_length*1.25,
                width = 0.08,
                color = color.green)
 
 wrist = box(frame = wrist_joint,
-               pos = (0,-wrist_height/8,0),
-               height = wrist_height/4,
+               pos = (0,-UMI.wrist_height/8,0),
+               height = UMI.wrist_height/4,
                length = 0.08,
                width = 0.08,
                color = color.green)
 
 gripper_pos = box(frame = wrist_joint,
-               pos = (0,-wrist_height/2,0.025),
-               height = wrist_height,
+               pos = (0,-UMI.wrist_height/2,0.025),
+               height = UMI.wrist_height,
                length = 0.03,
                width = 0.005,
                color = color.blue)
 
 gripper_neg = box(frame = wrist_joint,
-               pos = (0,-wrist_height/2,-0.025),
-               height = wrist_height,
+               pos = (0,-UMI.wrist_height/2,-0.025),
+               height = UMI.wrist_height,
                length = 0.03,
                width = 0.005,
                color = color.blue)
@@ -204,126 +170,31 @@ gripper_open = 1
 floor = box(frame=frameworld,
                pos = (0,0,0),
                height = 0.001,
-               length = wpedestal + 0.6,
+               length = UMI.wpedestal + 0.6,
                width = 0.6*2,
                color = (0.5, 0.5, 0.5))
-floor.pos = (floor.length/2 - wpedestal, 0, 0)
+floor.pos = (floor.length/2 - UMI.wpedestal, 0, 0)
 #**************************************************************************
 # CHESSBOARD
-
-# Dimensions of the board
-chessboard_size = 0.3
-field_size = (chessboard_size / 8.0)
-chessboard_dist = chessboard_size/2 - field_size
-
-# Edges of the locations
-wallthck = field_size / 15.0
-wallhght = field_size / 15.0
-
-# Position of the center of the board
-mplhght = 0.02
-mplcent = chessboard_size
-
-# Colors of the board
-board_color_light = (1.0, 1.0, 1.0)
-board_color_dark = (1.0, 0.5, 1.0)
-beam_color = (0.9, 0.9, 0.9)
-
-framemp = frame(frame=frameworld)
-framemp.pos =(mplcent, mplhght,0)
-# Rotate the board
-framemp.rotate(axis = (0, 1, 0), angle = 0)
-
-mchessboard = box(frame = framemp,
-               height = mplhght,
-               length = chessboard_size,
-               width = chessboard_size,
-               pos = (chessboard_dist, -0.5*mplhght, 0),
-               color = board_color_light)
-
-# Draw the beams to create 64 squares
-width_beams = []
-vert_beams = []
-for field in range(8):
-    beam_offset = field * (chessboard_size / 8.0)
-    width_beams.append(box(frame = framemp,
-               height = wallhght,
-               length = wallthck,
-               width = mchessboard.width,
-               pos = (chessboard_dist-mchessboard.length/2+beam_offset+(0.5*wallthck), 0.5*wallhght, 0),
-               color = beam_color)
-    )
-    vert_beams.append(box(frame = framemp,
-               height = wallhght,
-               length = mchessboard.length,
-               width = wallthck,
-               pos = (chessboard_dist, 0.5*wallhght, beam_offset+(0.5*wallthck)-mchessboard.width/2),
-               color = beam_color)
-    )
-width_beams.append(box(frame = framemp,
-               height = wallhght,
-               length = wallthck,
-               width = mchessboard.width,
-               pos = (chessboard_dist-mchessboard.length/2+chessboard_size-(0.5*wallthck), 0.5*wallhght, 0),
-               color = beam_color)
-)
-vert_beams.append(box(frame = framemp,
-               height = wallhght,
-               length = mchessboard.length,
-               width = wallthck,
-               pos = (chessboard_dist, 0.5*wallhght, chessboard_size-(0.5*wallthck)-mchessboard.width/2),
-               color = beam_color)
-)
-fields = []
-for x in range(8):
-    for y in range(8):
-        if (x + y) % 2 == 0:
-            fields.append( box(frame = framemp,
-                   height = 0.001,
-                   length = field_size,
-                   width = field_size,
-                   pos = (field_size*x - field_size/2.0, 0, (chessboard_dist - field_size*y) + field_size/2),
-                   color = board_color_dark)
-            )
+# frame, board_size=0.3, position_x_z = (0.15, -0.15), angle_degrees=0)
+# <<<<<<<<<<-------------------------------------------------------------------- CHANGE BOARD POSITION/ANGLE HERE
+CHESSBOARD = UMI_chessboard(frameworld, 0.3, (0.15, -0.15), 0)
 
 def get_gripper_bottom_position():
     return frame0.frame_to_world(
         riser.frame_to_world(
             shoulder_joint.frame_to_world(
                 elbow_joint.frame_to_world(
-                    wrist_joint.pos + vector(0,-wrist_height, 0)
+                    wrist_joint.pos + vector(0,-UMI.wrist_height, 0)
                 )
             )
         )
     )
 
-def apply_inverse_kinematics(x, y, z):
-    # Real arm runs from -0.541 to 0.541 instead of 0 to 1.082
-    riser_position = y + ( s0.GetMin() / 1000.0 )
-    # Use the position on of the gripper to choose left/right handedness
-    if z < 0:
-        left_handed = True
-    else:
-        left_handed = False
-    arm_1 = upper_length
-    arm_2 = lower_length
-    #print(x, z, x*x, z*z)
-    c2 = float(x*x + z*z - 2.0*arm_1*arm_2) / float(2.0*arm_1*arm_2)
-    # Rounding errors, which make c2 either 1 or slightly higher than 1. if the arm is fully stretched
-    if c2 >= 1 and c2 < 1.000000000001:
-        c2 = 0.99999999999999
-    # Choose angle based on whether the arms bends left or right
-    if left_handed:
-        s2 = - math.sqrt(1 - c2*c2)
-    else:
-        s2 = math.sqrt(1 - c2*c2)
-    elbow_angle = degrees(math.atan2(s2, c2))
-    shoulder_angle = degrees(math.atan2(z,x) - math.atan2(arm_2*s2,arm_1 + arm_2*c2))
-    wrist_angle = - elbow_angle - shoulder_angle
-    return riser_position, shoulder_angle, elbow_angle, wrist_angle, left_handed
+
 #***************************************************************************
 # INIT CONTROLS
-s0.SetValue(frame0.pos.y*1000.0)
+s0.SetValue(s0.GetMax())
 s1.SetValue(0) # update the slider
 s2.SetValue(0) # update the slider
 s3.SetValue(0) # update the slider
@@ -333,7 +204,6 @@ s4.SetValue(50) # update the slider
 while(True):
     rate(100)
     disp.center=get_gripper_bottom_position()
-    print(riser.pos.y, disp.center, apply_inverse_kinematics(disp.center.x, disp.center.y, disp.center.z))
 #End Program
 
 0
