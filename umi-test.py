@@ -319,7 +319,7 @@ def apply_inverse_kinematics(x, y, z):
         s2 = math.sqrt(1 - c2*c2)
     elbow_angle = degrees(math.atan2(s2, c2))
     shoulder_angle = degrees(math.atan2(z,x) - math.atan2(arm_2*s2,arm_1 + arm_2*c2))
-    wrist_angle = - elbow_angle / 2 - shoulder_angle
+    wrist_angle = - elbow_angle - shoulder_angle
     return riser_position, shoulder_angle, elbow_angle, wrist_angle, left_handed
 #***************************************************************************
 # INIT CONTROLS
