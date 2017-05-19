@@ -9,6 +9,15 @@ from visual import *
 UMI = UMI_parameters()
 
 def apply_inverse_kinematics(x, y, z):
+    ''' Computes the angles, given some real world coordinates
+        :param float x: cartesian x-coordinate
+        :param float y: cartesian y-coordinate
+        :param float z: cartesian z-coordinate
+        
+        :return: Returns the a tuple containing the position and angles of the robot-arm joints.
+    '''
+    # Implementation is based on the Robotics readers made by Leo.
+    
     # Real arm runs from -0.541 to 0.541 instead of 0 to 1.082
     riser_position = y + (-0.541 + UMI.total_arm_height)
     # Use the position on of the gripper to choose left/right handedness
@@ -18,8 +27,9 @@ def apply_inverse_kinematics(x, y, z):
         left_handed = False
     arm_1 = UMI.upper_length
     arm_2 = UMI.lower_length
-    #print(x, z, x*x, z*z)
+
     c2 = float(x*x + z*z - 2.0*arm_1*arm_2) / float(2.0*arm_1*arm_2)
+    
     # Rounding errors, which make c2 either 1 or slightly higher than 1. if the arm is fully stretched
     if c2 >= 1 and c2 < 1.000000000001:
         c2 = 0.99999999999999
@@ -28,12 +38,14 @@ def apply_inverse_kinematics(x, y, z):
         s2 = - math.sqrt(1 - c2*c2)
     else:
         s2 = math.sqrt(1 - c2*c2)
+        
+    # Compute the resulting angles for each joint.
     elbow_angle = degrees(math.atan2(s2, c2))
     shoulder_angle = degrees(math.atan2(z,x) - math.atan2(arm_2*s2,arm_1 + arm_2*c2))
     wrist_angle = - elbow_angle - shoulder_angle
-    return riser_position, shoulder_angle, elbow_angle, wrist_angle, left_handed
+    return (riser_position, shoulder_angle, elbow_angle, wrist_angle, left_handed)
 
-def board_position_to_cartesian(chessboard, position, real_world):
+def board_position_to_cartesian(chessboard, position):
     ''' Convert a position between [a1-h8] to its cartesian coordinates in frameworld coordinates.
     
         You are not allowed to use the functions such as: frame_to_world.
@@ -69,22 +81,12 @@ def board_position_to_cartesian(chessboard, position, real_world):
     
     # Output the results.
     result = (rotated_cartesian_row+board_position[0], board_position[1], rotated_cartesian_col+board_position[2])
+    
     return result
     
-    #TODO: Remove markers.
-    box(frame = real_world,
-               pos = board_position,
-               height = 0.3,
-               length = 0.005,
-               width = 0.005,
-               color = color.red)
-    
-    box(frame = real_world,
-               pos = result,
-               height = 0.3,
-               length = 0.005,
-               width = 0.005,
-               color = color.blue)
-    
-    
+def high_path(chessboard, from_pos, to_pos, storage_list):
+    pass
+
+def move_to_garbage(chessboard, from_pos, storage_list):
+    pass
     

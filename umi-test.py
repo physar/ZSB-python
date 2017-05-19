@@ -178,7 +178,7 @@ floor.pos = (floor.length/2 - UMI.wpedestal, 0, 0)
 # CHESSBOARD
 # frame, board_size=0.3, position_x_z = (0.15, -0.15), angle_degrees=0)
 # <<<<<<<<<<-------------------------------------------------------------------- CHANGE BOARD POSITION/ANGLE HERE
-CHESSBOARD = UMI_chessboard(frameworld, 0.3, (0.15, -0.15), 135)
+CHESSBOARD = UMI_chessboard(frameworld, 0.3, (0.15, -0.15), 0)
 
 def get_gripper_bottom_position():
     return frame0.frame_to_world(
@@ -201,9 +201,9 @@ s3.SetValue(0) # update the slider
 s4.SetValue(50) # update the slider
 #**************************************************************************
 # CREATE CONTROLS
-board_position_to_cartesian(CHESSBOARD, 'a1', frameworld)
-board_position_to_cartesian(CHESSBOARD, 'c5', frameworld)
-board_position_to_cartesian(CHESSBOARD, 'h8', frameworld)
+board_position_to_cartesian(CHESSBOARD, 'a1')
+board_position_to_cartesian(CHESSBOARD, 'c5')
+board_position_to_cartesian(CHESSBOARD, 'h8')
 while(True):
     rate(100)
     disp.center=get_gripper_bottom_position()

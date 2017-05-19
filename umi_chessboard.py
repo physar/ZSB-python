@@ -32,36 +32,65 @@ class UMI_chessboard:
         self.set_pos_angle(position_x_z, angle_degrees)
     
     def get_board_height(self):
+        ''' Gives the height of the board.
+            :return: Returns the height of the board in meters.
+        '''
         return self.mplhght
     
     def set_angle_radians(self, radians):
+        ''' Sets the angle of the board, based of the corner next to h8
+            :param radians: The angle of the board in radians.
+        '''
         ## Rotate the board
         self.framemp.axis = (cos(radians),0,sin(radians))
+        # Used to read the radians of the board.
         self.board_angle = radians
     
     def set_angle_degrees(self, degrees):
-        ## Rotate the board
+        ''' Sets the angle of the board, based of the corner next to h8
+            :param degrees: The angle of the board in degrees.
+        '''
         self.set_angle_radians(radians(degrees))
     
     def get_angle_radians(self):
+        ''' Gives the angle of the board in radians.
+            :return: Returns the angle of the board in radians.
+        '''
         return self.board_angle
     
     def get_angle_degrees(self):
+        ''' Gives the angle of the board in degrees.
+            :return: Returns the angle of the board in degrees.
+        '''
         ## Rotate the board
         return degrees(self.get_angle_radians())
     
     def set_position(self, x, z):
+        ''' Sets the horizontal position of the board, based of the corner next to h8
+            :param x: The forward distance away from the robot arm
+            :param z: The left/right distance away from the robot arm
+        '''
         self.framemp.pos.x = x
         self.framemp.pos.z = z
     
     def get_position(self):
+        ''' Returns a copy of the position (so students don't accidentally edit it)
+            :param x: The forward distance away from the robot arm
+            :return: Tuple containing the x, y and z coordinate.
+        '''
         return (self.framemp.pos.x, self.framemp.pos.y, self.framemp.pos.z)
     
     def set_pos_angle(self, position_x_z, angle_degrees):
+        ''' Sets the horizontal position of the board, and afterwards the angle based of the corner next to h8
+            :param position_x_z: Tuple in the form (x, z)
+            :param angle_degrees: The angle in degrees
+        '''
         self.set_position(position_x_z[0], position_x_z[1])
         self.set_angle_degrees(angle_degrees)
     
     def generate_board(self):
+        ''' Generates the visual display of the chessboard.
+        '''
         self.mchessboard = box(frame = self.framemp,
                        height = self.mplhght,
                        length = self.chessboard_size,
