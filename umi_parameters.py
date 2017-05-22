@@ -1,3 +1,5 @@
+#!python2
+
 from __future__ import division, print_function
 
 class UMI_parameters:
@@ -22,7 +24,16 @@ class UMI_parameters:
         # Height of the arm from the very top of the riser, to the tip of the gripper.
         self.total_arm_height = self.pedestal_offset + self.upper_height \
                                 + self.lower_height + self.wrist_height
-    
+
+        # Joint-ranges in meters (where applicable e.g. Riser, Gripper) and in degrees for the rest.
+        self.joint_ranges = {
+            "Riser"     : [self.total_arm_height, self.hpedestal],
+            "Shoulder"  : [-90, 90],
+            "Elbow"     : [-180, 110],
+            "Wrist"     : [-110, 110],
+            "Gripper"   : [0, 0.05]
+        }
+
     def correct_height(self, y):
         '''
             Function that corrects the y value of the umi-rtx, because the real arm runs from

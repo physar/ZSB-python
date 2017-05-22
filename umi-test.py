@@ -1,18 +1,16 @@
-# Based on Bruce Sherwood's Double Pendulum
-# Modified to look somewhat more like a robot arm
-# By Andrew Lee
-# Math 198 Fall 2009
+#!python2
 
 from __future__ import division, print_function
 from visual import *
 from visual.graph import *
 from visual.controls import *
 import wx
-
+from copy import deepcopy
 # Custom made imports
 from umi_parameters import UMI_parameters
 from umi_chessboard import UMI_chessboard
 from umi_student_functions import *
+import numpy as np
 scene.title = "UMI RTX"
 scene.height = scene.width = 600
 
@@ -25,30 +23,50 @@ scene.height = scene.width = 600
 # Functions that are called on various events
 
 def setRiserHeight(evt): # called on slider events (output in mm)
-    value = UMI.correct_height(s0.GetValue() / 1000.0)
-    s0_label.SetLabel('Set Riser Height: %d mm' % (s0.GetValue()))
-    riser.pos.y = value
+    value = s0.GetValue() / 1000.0
+    moveRiser(value)
+
+def moveRiser(value):
+    s0_label.SetLabel('Set Riser Height: %d mm' % (value * 1000.0))
+    riser.pos.y = UMI.correct_height(value)
+    UMI_angles[0] = value
 
 def setShoulderAngle(evt): # called on slider events (output in degrees)
     value = s1.GetValue() / 1000.0
+    moveShoulder(value)
+
+def moveShoulder(value):
     s1_label.SetLabel('Set Shoulder rotation: %.2f degrees' % degrees(value))
     shoulder_joint.axis = (cos(value),0,sin(value))
+    UMI_angles[1] = value
 
 def setElbowAngle(evt): # called on slider events (output in degrees)
     value = s2.GetValue() / 1000.0
+    moveElbow(value)
+
+def moveElbow(value):
     s2_label.SetLabel('Set Elbow rotation: %.2f degrees' % degrees(value))
     elbow_joint.axis = (cos(value),0,sin(value))
+    UMI_angles[2] = value
 
 def setWristAngle(evt): # called on slider events] (output in degrees)
     value = s3.GetValue() / 1000.0
+    moveWrist(value)
+
+def moveWrist(value):
     s3_label.SetLabel('Set Wrist rotation: %.2f degrees' % degrees(value))
     wrist_joint.axis = (cos(value),0,sin(value))
+    UMI_angles[3] = value
 
 def setGripperWidth(evt): # called on slider events] (output in degrees)
     value = s4.GetValue() / 1000.0
+    moveGripper(value)
+
+def moveGripper(value):
     s4_label.SetLabel('Set Gripper opening: %d mm' % (value * 1000))
     gripper_pos.pos = (0, gripper_pos.pos.y, 0.5*gripper_pos.width+value/2)
     gripper_neg.pos = (0, gripper_pos.pos.y, -0.5*gripper_pos.width-value/2)
+    UMI_angles[4] = value
 
 L = 600
 # Create a window. Note that w.win is the wxPython "Frame" (the window).
@@ -76,23 +94,23 @@ wx.StaticText(p, pos=(d,4), size=(L-2*d,d), label='3D representation.',
 #max_height = 0.5*(UMI.hpedestal)*1000.0
 #min_height = (-0.5*(UMI.hpedestal)+UMI.total_arm_height)*1000.0
 
-s0 = wx.Slider(p, pos=(1.0*L,0.1*L), size=(0.9*L,20), minValue=UMI.total_arm_height*1000.0, maxValue=UMI.hpedestal*1000.0)
+s0 = wx.Slider(p, pos=(1.0*L,0.1*L), size=(0.9*L,20), minValue=UMI.joint_ranges["Riser"][0]*1000.0, maxValue=UMI.joint_ranges["Riser"][1]*1000.0)
 s0.Bind(wx.EVT_SCROLL, setRiserHeight)
-s0_label = wx.StaticText(p, pos=(1.0*L,0.05*L), label='Set Riser height: %d mm' % (UMI.hpedestal*1000.0))
+s0_label = wx.StaticText(p, pos=(1.0*L,0.05*L), label='Set Riser height: %d mm' % (UMI.joint_ranges["Riser"][1]*1000.0))
 
-s1 = wx.Slider(p, pos=(1.0*L,0.2*L), size=(0.9*L,20), minValue=radians(-90)*1000.0, maxValue=radians(90)*1000.0)
+s1 = wx.Slider(p, pos=(1.0*L,0.2*L), size=(0.9*L,20), minValue=radians(UMI.joint_ranges["Shoulder"][0])*1000.0, maxValue=radians(UMI.joint_ranges["Shoulder"][1])*1000.0)
 s1.Bind(wx.EVT_SCROLL, setShoulderAngle)
 s1_label = wx.StaticText(p, pos=(1.0*L,0.15*L), label='Set Shoulder rotation: 0 degrees')
 
-s2 = wx.Slider(p, pos=(1.0*L,0.3*L), size=(0.9*L,20), minValue=radians(-180)*1000.0, maxValue=radians(110)*1000.0)
+s2 = wx.Slider(p, pos=(1.0*L,0.3*L), size=(0.9*L,20), minValue=radians(UMI.joint_ranges["Elbow"][0])*1000.0, maxValue=radians(UMI.joint_ranges["Elbow"][1])*1000.0)
 s2.Bind(wx.EVT_SCROLL, setElbowAngle)
 s2_label = wx.StaticText(p, pos=(1.0*L,0.25*L), label='Set Elbow rotation: 0 degrees')
 
-s3 = wx.Slider(p, pos=(1.0*L,0.4*L), size=(0.9*L,20), minValue=radians(-110)*1000.0, maxValue=radians(110)*1000.0, style=wx.SL_HORIZONTAL)
+s3 = wx.Slider(p, pos=(1.0*L,0.4*L), size=(0.9*L,20), minValue=radians(UMI.joint_ranges["Wrist"][0])*1000.0, maxValue=radians(UMI.joint_ranges["Wrist"][1])*1000.0, style=wx.SL_HORIZONTAL)
 s3.Bind(wx.EVT_SCROLL, setWristAngle)
 s3_label = wx.StaticText(p, pos=(1.0*L,0.35*L), label='Set Wrist rotation: 0 degrees')
 
-s4 = wx.Slider(p, pos=(1.0*L,0.5*L), size=(0.9*L,20), minValue=0, maxValue=50, style=wx.SL_HORIZONTAL)
+s4 = wx.Slider(p, pos=(1.0*L,0.5*L), size=(0.9*L,20), minValue=UMI.joint_ranges["Gripper"][0]*1000.0, maxValue=UMI.joint_ranges["Gripper"][1]*1000.0, style=wx.SL_HORIZONTAL)
 s4.Bind(wx.EVT_SCROLL, setGripperWidth)
 s4_label = wx.StaticText(p, pos=(1.0*L,0.45*L), label='Set Gripper opening: 50 mm')
 
@@ -180,6 +198,18 @@ floor.pos = (floor.length/2 - UMI.wpedestal, 0, 0)
 # <<<<<<<<<<-------------------------------------------------------------------- CHANGE BOARD POSITION/ANGLE HERE
 CHESSBOARD = UMI_chessboard(frameworld, 0.3, (0.15, -0.15), 0)
 
+#***************************************************************************
+# INIT CONTROLS
+s0.SetValue(s0.GetMax())
+s1.SetValue(0) # update the slider
+s2.SetValue(0) # update the slider
+s3.SetValue(0) # update the slider
+s4.SetValue(50) # update the slider
+
+# Storage only used to make the movements of the arm appear smoothed.
+UMI_angles = [UMI.joint_ranges["Riser"][1], 0, 0, 0, 0.05]
+#**************************************************************************
+# CONTROLLER Functions
 def get_gripper_bottom_position():
     return frame0.frame_to_world(
         riser.frame_to_world(
@@ -191,22 +221,51 @@ def get_gripper_bottom_position():
         )
     )
 
+def execute_sequence(sequence_list):
+    # First move up so you do not knock over anything.
+    safe_angles = deepcopy(UMI_angles)
+    safe_angles[0] = CHESSBOARD.get_board_height() + 0.2 + UMI.total_arm_height
+    # Set to a safe location and get in default position
+    loop_angles = deepcopy(UMI_angles)
+    # Then continue with the original plans.
+    total_list = [safe_angles] + sequence_list
+    for new_angles in total_list:
+        # Degrees to Radians.
+        new_angles = [new_angles[0]] + [radians(x) for x in new_angles[1:-1]] + [new_angles[-1]]
+        # Correct the height
+        move_arm_from_to(loop_angles, new_angles)
+        loop_angles = deepcopy(UMI_angles)
+        sleep(0.5)
 
-#***************************************************************************
-# INIT CONTROLS
-s0.SetValue(s0.GetMax())
-s1.SetValue(0) # update the slider
-s2.SetValue(0) # update the slider
-s3.SetValue(0) # update the slider
-s4.SetValue(50) # update the slider
+def move_arm_from_to(from_angles, to_angles):
+    # Compute the differences for all joints
+    old_a = np.array(from_angles)
+    new_a = np.array(to_angles)
+    delta_a = ( new_a - old_a )
+    # Move through these differences in 100 steps
+    for i in np.arange(0.0, 1.01, 0.01):
+        rate(100)
+        moveRiser(old_a[0] + delta_a[0]*i)
+        moveShoulder(old_a[1] + delta_a[1]*i)
+        moveElbow(old_a[2] + delta_a[2]*i)
+        moveWrist(old_a[3] + delta_a[3]*i)
+        moveGripper(old_a[4] + delta_a[4]*i)
+        disp.center=get_gripper_bottom_position()
+
+
 #**************************************************************************
 # CREATE CONTROLS
 board_position_to_cartesian(CHESSBOARD, 'a1')
 board_position_to_cartesian(CHESSBOARD, 'c5')
 board_position_to_cartesian(CHESSBOARD, 'h8')
+XX = True
+sequence_list = high_path(CHESSBOARD, 'b2', 'd5')
 while(True):
     rate(100)
     disp.center=get_gripper_bottom_position()
+    if XX:
+        execute_sequence(sequence_list)
+        XX = False
+    #break
 #End Program
-
 0
