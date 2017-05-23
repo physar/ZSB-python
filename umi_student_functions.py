@@ -160,9 +160,9 @@ def move_to_garbage(chessboard, from_pos):
     # Move to new position on SAFE height
     sequence_list.append(apply_inverse_kinematics(to_x, to_y + safe_height, to_z, UMI.joint_ranges["Gripper"][0]))
     # Hover above the first field on LOW height:
-    sequence_list.append(apply_inverse_kinematics(to_x, to_y + low_height + piece_height, to_z, UMI.joint_ranges["Gripper"][0]))
+    sequence_list.append(apply_inverse_kinematics(to_x, to_y + low_height + half_piece_height, to_z, UMI.joint_ranges["Gripper"][0]))
     # Hover above the first field on half of the piece height:
-    sequence_list.append(apply_inverse_kinematics(to_x, to_y + low_height + piece_height, to_z, chessboard.field_size))
+    sequence_list.append(apply_inverse_kinematics(to_x, to_y + low_height + half_piece_height, to_z, chessboard.field_size))
     # Give instruction to GUI
     sequence_list.append(["GUI", "DROP", drop_location])
     # Move to new position on SAFE height

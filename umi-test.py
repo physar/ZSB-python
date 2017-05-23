@@ -278,16 +278,19 @@ def animate_arm(from_angles, to_angles):
         disp.center=get_gripper_bottom_position()
 
 def move(chessboard, from_pos, to_pos):
-    if from_pos in chessboard.pieces:
-        from_piece = chessboard.remove_piece(from_pos)
+    sequence_list = []
+    if to_pos in chessboard.pieces:
+        sequence_list += move_to_garbage(chessboard, to_pos)
+    sequence_list += high_path(chessboard, from_pos, to_pos)
+    return sequence_list
 #**************************************************************************
 # CREATE CONTROLS
 board_position_to_cartesian(CHESSBOARD, 'a1')
 board_position_to_cartesian(CHESSBOARD, 'c5')
 board_position_to_cartesian(CHESSBOARD, 'h8')
 XX = True
-sequence_list = high_path(CHESSBOARD, 'b2', 'd5')
-#sequence_list = high_path(CHESSBOARD, 'g5', 'c3')
+sequence_list = move(CHESSBOARD, 'b2', 'g5')
+
 while(True):
     rate(100)
     disp.center=get_gripper_bottom_position()
