@@ -282,6 +282,7 @@ def move(chessboard, from_pos, to_pos):
     if to_pos in chessboard.pieces:
         sequence_list += move_to_garbage(chessboard, to_pos)
     sequence_list += high_path(chessboard, from_pos, to_pos)
+    write_parameters_to_file(sequence_list, "positions.txt")
     return sequence_list
 #**************************************************************************
 # CREATE CONTROLS
