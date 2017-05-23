@@ -44,6 +44,14 @@ class UMI_chessboard:
         # Set the angle and position of the board, where the rotational axis is H8
         self.set_pos_angle(position_x_z, angle_degrees)
 
+
+    def remove_piece(self, position):
+        if position in self.pieces:
+            piece_data = self.pieces[position]
+            self.pieces[position] = None
+            return piece_data
+        else:
+            return None
     def get_board_height(self):
         ''' Gives the height of the board.
             :return: Returns the height of the board in meters.
@@ -173,4 +181,4 @@ class UMI_chessboard:
                     radius = self.field_size*0.35,
                     pos = (self.field_size*(x+1) - self.field_size/2.0, 0, (self.field_size*z) + self.field_size/2),
                     color = color_c)
-                self.pieces[to_notation((x, z))] = [piece, "Pawn", "color_n"]
+                self.pieces[to_notation((7-x, 7-z))] = [piece, "Pawn", "color_n"]

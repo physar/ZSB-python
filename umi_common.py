@@ -38,5 +38,8 @@ def read_parameters_from_file(input_file):
         headers = next(csv_reader)
         parameter_lines = []
         for line in csv_reader:
-            parameter_lines.append([float(x) for x in line])
+            if len(line) > 3:
+                parameter_lines.append([float(x) for x in line])
+            elif line[0] == "GUI":
+                parameter_lines.append(line)
     return (headers, parameter_lines)

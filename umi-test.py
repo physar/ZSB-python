@@ -225,19 +225,44 @@ def execute_sequence(sequence_list):
     # First move up so you do not knock over anything.
     safe_angles = deepcopy(UMI_angles)
     safe_angles[0] = CHESSBOARD.get_board_height() + 0.2 + UMI.total_arm_height
-    # Set to a safe location and get in default position
+    # Set to a safe location before execution
     loop_angles = deepcopy(UMI_angles)
     # Then continue with the original plans.
     total_list = [safe_angles] + sequence_list
+    chess_piece = None
     for new_angles in total_list:
-        # Degrees to Radians.
-        new_angles = [new_angles[0]] + [radians(x) for x in new_angles[1:-1]] + [new_angles[-1]]
-        # Correct the height
-        move_arm_from_to(loop_angles, new_angles)
-        loop_angles = deepcopy(UMI_angles)
-        sleep(0.5)
+        if len(new_angles) == 3 and new_angles[0] == "GUI":
+            [_, command, piece_position] = new_angles
+            if command == "TAKE" and chess_piece == None:
+                chess_piece = CHESSBOARD.remove_piece(piece_position)
+                if chess_piece != None:
+                    print(chess_piece[0])
+                    chess_piece[0].frame=wrist_joint
+                    chess_piece[0].pos=(0,-UMI.wrist_height-CHESSBOARD.pieces_height[chess_piece[1]]/2, 0)
+            if command == "DROP" and chess_piece != None:
+                print(chess_piece)
+                (temp_x, temp_z) = to_coordinate(piece_position)
+                if temp_x > 7 or temp_x < 0 or temp_z > 7 or temp_z < 0:
+                    # Garbage field
+                    chess_piece[0].visible = False
+                    del chess_piece[0]
+                    chess_piece = None
+                else:
+                    f_size = CHESSBOARD.field_size
+                    chess_piece[0].frame=CHESSBOARD.framemp
+                    #chess_piece[0].pos=(f_size*(temp_x+1) - f_size/2.0, 0, (f_size*temp_z) + f_size/2),
+                    chess_piece[0].pos=(f_size*(7-temp_x) + f_size/2.0,0, f_size*(7-temp_z) + f_size/2.0)
+                    CHESSBOARD.pieces[piece_position] = chess_piece
+                    chess_piece = None
+        else:
+            # Degrees to Radians.
+            new_angles = [new_angles[0]] + [radians(x) for x in new_angles[1:-1]] + [new_angles[-1]]
+            # Correct the height
+            animate_arm(loop_angles, new_angles)
+            loop_angles = deepcopy(UMI_angles)
+            sleep(0.5)
 
-def move_arm_from_to(from_angles, to_angles):
+def animate_arm(from_angles, to_angles):
     # Compute the differences for all joints
     old_a = np.array(from_angles)
     new_a = np.array(to_angles)
@@ -252,7 +277,9 @@ def move_arm_from_to(from_angles, to_angles):
         moveGripper(old_a[4] + delta_a[4]*i)
         disp.center=get_gripper_bottom_position()
 
-
+def move(chessboard, from_pos, to_pos):
+    if from_pos in chessboard.pieces:
+        from_piece = chessboard.remove_piece(from_pos)
 #**************************************************************************
 # CREATE CONTROLS
 board_position_to_cartesian(CHESSBOARD, 'a1')
@@ -260,6 +287,7 @@ board_position_to_cartesian(CHESSBOARD, 'c5')
 board_position_to_cartesian(CHESSBOARD, 'h8')
 XX = True
 sequence_list = high_path(CHESSBOARD, 'b2', 'd5')
+#sequence_list = high_path(CHESSBOARD, 'g5', 'c3')
 while(True):
     rate(100)
     disp.center=get_gripper_bottom_position()
