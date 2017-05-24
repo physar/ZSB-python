@@ -28,8 +28,10 @@ def setRiserHeight(evt): # called on slider events (output in mm)
 
 def moveRiser(value):
     s0_label.SetLabel('Set Riser Height: %d mm' % (value * 1000.0))
+    s0.SetValue(value * 1000.0)
     riser.pos.y = UMI.correct_height(value)
     UMI_angles[0] = value
+
 
 def setShoulderAngle(evt): # called on slider events (output in degrees)
     value = s1.GetValue() / 1000.0
@@ -39,6 +41,7 @@ def moveShoulder(value):
     s1_label.SetLabel('Set Shoulder rotation: %.2f degrees' % degrees(value))
     shoulder_joint.axis = (cos(value),0,sin(value))
     UMI_angles[1] = value
+    s1.SetValue(value*1000.0)
 
 def setElbowAngle(evt): # called on slider events (output in degrees)
     value = s2.GetValue() / 1000.0
@@ -48,6 +51,7 @@ def moveElbow(value):
     s2_label.SetLabel('Set Elbow rotation: %.2f degrees' % degrees(value))
     elbow_joint.axis = (cos(value),0,sin(value))
     UMI_angles[2] = value
+    s2.SetValue(value*1000.0)
 
 def setWristAngle(evt): # called on slider events] (output in degrees)
     value = s3.GetValue() / 1000.0
@@ -57,6 +61,7 @@ def moveWrist(value):
     s3_label.SetLabel('Set Wrist rotation: %.2f degrees' % degrees(value))
     wrist_joint.axis = (cos(value),0,sin(value))
     UMI_angles[3] = value
+    s3.SetValue(value*1000.0)
 
 def setGripperWidth(evt): # called on slider events] (output in degrees)
     value = s4.GetValue() / 1000.0
@@ -67,6 +72,7 @@ def moveGripper(value):
     gripper_pos.pos = (0, gripper_pos.pos.y, 0.5*gripper_pos.width+value/2)
     gripper_neg.pos = (0, gripper_pos.pos.y, -0.5*gripper_pos.width-value/2)
     UMI_angles[4] = value
+    s4.SetValue(value*1000.0)
 
 L = 600
 # Create a window. Note that w.win is the wxPython "Frame" (the window).
