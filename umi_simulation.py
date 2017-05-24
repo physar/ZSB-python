@@ -27,6 +27,10 @@ def setRiserHeight(evt): # called on slider events (output in mm)
     moveRiser(value)
 
 def moveRiser(value):
+    '''
+    Sets the height of the riser, values are entered in meters
+    :param value: Value in meters, while the display is in mm.
+    '''
     s0_label.SetLabel('Set Riser Height: %d mm' % (value * 1000.0))
     s0.SetValue(value * 1000.0)
     riser.pos.y = UMI.correct_height(value)
@@ -38,6 +42,10 @@ def setShoulderAngle(evt): # called on slider events (output in degrees)
     moveShoulder(value)
 
 def moveShoulder(value):
+    '''
+    Sets the angle of the shoulder joint, values are entered in radians
+    :param value: Angle in radians.
+    '''
     s1_label.SetLabel('Set Shoulder rotation: %.2f degrees' % degrees(value))
     shoulder_joint.axis = (cos(value),0,sin(value))
     UMI_angles[1] = value
@@ -48,6 +56,10 @@ def setElbowAngle(evt): # called on slider events (output in degrees)
     moveElbow(value)
 
 def moveElbow(value):
+    '''
+    Sets the angle of the elbow joint, values are entered in radians
+    :param value: Angle in radians.
+    '''
     s2_label.SetLabel('Set Elbow rotation: %.2f degrees' % degrees(value))
     elbow_joint.axis = (cos(value),0,sin(value))
     UMI_angles[2] = value
@@ -58,6 +70,10 @@ def setWristAngle(evt): # called on slider events] (output in degrees)
     moveWrist(value)
 
 def moveWrist(value):
+    '''
+    Sets the angle of the wrist joint, values are entered in radians
+    :param value: Angle in radians.
+    '''
     s3_label.SetLabel('Set Wrist rotation: %.2f degrees' % degrees(value))
     wrist_joint.axis = (cos(value),0,sin(value))
     UMI_angles[3] = value
@@ -68,6 +84,10 @@ def setGripperWidth(evt): # called on slider events] (output in degrees)
     moveGripper(value)
 
 def moveGripper(value):
+    '''
+    Sets the distance between the grippers, values are entered in meters
+    :param value: Distance between grippers in meters.
+    '''
     s4_label.SetLabel('Set Gripper opening: %d mm' % (value * 1000))
     gripper_pos.pos = (0, gripper_pos.pos.y, 0.5*gripper_pos.width+value/2)
     gripper_neg.pos = (0, gripper_pos.pos.y, -0.5*gripper_pos.width-value/2)
@@ -217,6 +237,10 @@ UMI_angles = [UMI.joint_ranges["Riser"][1], 0, 0, 0, 0.05]
 #**************************************************************************
 # CONTROLLER Functions
 def get_gripper_bottom_position():
+    '''
+    Gives the position of the tip of the gripper in the real world coordinate system.
+    :return: Tuple in the format (x,y,z)
+    '''
     return frame0.frame_to_world(
         riser.frame_to_world(
             shoulder_joint.frame_to_world(
@@ -228,6 +252,10 @@ def get_gripper_bottom_position():
     )
 
 def execute_sequence(sequence_list):
+    '''
+    Runs the commands as provided in a list
+    :param sequence_list: List where each row contains either a GUI command or a joints-setting for the arm.
+    '''
     # First move up so you do not knock over anything.
     safe_angles = deepcopy(UMI_angles)
     safe_angles[0] = CHESSBOARD.get_board_height() + 0.2 + UMI.total_arm_height
@@ -242,7 +270,6 @@ def execute_sequence(sequence_list):
             if command == "TAKE" and chess_piece == None:
                 chess_piece = CHESSBOARD.remove_piece(piece_position)
                 if chess_piece != None:
-                    print(chess_piece[0])
                     chess_piece[0].frame=wrist_joint
                     if chess_piece[1] == "Rook":
                         piece_offset = 0
@@ -250,7 +277,6 @@ def execute_sequence(sequence_list):
                         piece_offset = CHESSBOARD.pieces_height[chess_piece[1]]/2
                     chess_piece[0].pos=(0,-UMI.wrist_height-piece_offset, 0)
             if command == "DROP" and chess_piece != None:
-                print(chess_piece)
                 (temp_x, temp_z) = to_coordinate(piece_position)
                 if temp_x > 7 or temp_x < 0 or temp_z > 7 or temp_z < 0:
                     # Garbage field
@@ -277,6 +303,11 @@ def execute_sequence(sequence_list):
             sleep(0.5)
 
 def animate_arm(from_angles, to_angles):
+    '''
+    Given two different joint combinations, animate the movement for the arm between those two.
+    :param from_angles: Original joint positions.
+    :param to_angles: New joint positions.
+    '''
     # Compute the differences for all joints
     old_a = np.array(from_angles)
     new_a = np.array(to_angles)
@@ -292,18 +323,24 @@ def animate_arm(from_angles, to_angles):
         disp.center=get_gripper_bottom_position()
 
 def move(chessboard, from_pos, to_pos):
+    '''
+    Given two positions on the board [a1-h8] compute the required actions
+    :param chessboard: The chessboard object
+    :param from_pos: [a1-h8]
+    :param to_pos: [a1-h8]
+    :return: List of actions for the simulator to run.
+    '''
     sequence_list = []
+    # Check if you are removing a piece from play by performing the action.
     if to_pos in chessboard.pieces:
         sequence_list += move_to_garbage(chessboard, to_pos)
     sequence_list += high_path(chessboard, from_pos, to_pos)
+    # Write the output files.
     write_parameters_to_file(sequence_list, "joints_simulator.txt")
     write_parameters_to_umi_robot(sequence_list)
     return sequence_list
 #**************************************************************************
 # CREATE CONTROLS
-board_position_to_cartesian(CHESSBOARD, 'a1')
-board_position_to_cartesian(CHESSBOARD, 'c5')
-board_position_to_cartesian(CHESSBOARD, 'h8')
 XX = True
 sequence_list = move(CHESSBOARD, 'a4', 'a1')
 

@@ -46,12 +46,17 @@ class UMI_chessboard:
 
 
     def remove_piece(self, position):
+        '''
+        Removes a piece from a stored location on the board, and return the object
+        :param position: [a1-h8]
+        :return: A VPython object (box/cylinder/pyramid)
+        '''
         if position in self.pieces:
-            piece_data = self.pieces[position]
-            self.pieces[position] = None
+            piece_data = self.pieces.pop(position, None)
             return piece_data
         else:
             return None
+
     def get_board_height(self):
         ''' Gives the height of the board.
             :return: Returns the height of the board in meters.
@@ -166,6 +171,9 @@ class UMI_chessboard:
                     )
 
     def add_pieces(self):
+        '''
+        Adds and registers the pieces on the chessboard.
+        '''
         self.pieces = dict()
         for z in range(8):
             for x in [0,1,6,7]:
