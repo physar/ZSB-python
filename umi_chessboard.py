@@ -168,17 +168,35 @@ class UMI_chessboard:
     def add_pieces(self):
         self.pieces = dict()
         for z in range(8):
-            for x in [1,6]:
+            for x in [0,1,6,7]:
                 if x == 1 or x == 0:
                     color_c = self.black_pieces_color
                     color_n = "Black"
                 else:
                     color_c = self.white_pieces_color
                     color_n = "White"
-
-                piece = cylinder(frame = self.framemp,
-                    axis = (0, self.pieces_height["Pawn"], 0),
-                    radius = self.field_size*0.35,
-                    pos = (self.field_size*(x+1) - self.field_size/2.0, 0, (self.field_size*z) + self.field_size/2),
-                    color = color_c)
-                self.pieces[to_notation((7-x, 7-z))] = [piece, "Pawn", "color_n"]
+                if x == 1 or x == 6:
+                    piece_name = "Pawn"
+                    piece = cylinder(frame = self.framemp,
+                        axis = (0, self.pieces_height[piece_name], 0),
+                        radius = self.field_size*0.35,
+                        pos = (self.field_size*(x+1) - self.field_size/2.0, 0, (self.field_size*z) + self.field_size/2),
+                        color = color_c)
+                elif x in [0,7] and z in [0,7]:
+                    piece_name = "Rook"
+                    piece = box(frame = self.framemp,
+                           height = self.pieces_height[piece_name],
+                           length = self.field_size*0.7,
+                           width = self.field_size*0.7,
+                           pos = (self.field_size*(x+1) - self.field_size/2.0, self.pieces_height[piece_name]/2, (self.field_size*z) + self.field_size/2),
+                           color = color_c)
+                elif x in [0,7] and z == 4:
+                    piece_name = "King"
+                    piece = pyramid(frame = self.framemp,
+                           axis = (0,1,0),
+                           height = self.field_size*0.7,
+                           length = self.pieces_height[piece_name],
+                           width = self.field_size*0.7,
+                           pos = (self.field_size*(x+1) - self.field_size/2.0, 0, (self.field_size*z) + self.field_size/2),
+                           color = color_c)
+                self.pieces[to_notation((7-x, 7-z))] = [piece, piece_name, color_n]

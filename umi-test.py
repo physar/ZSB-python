@@ -11,8 +11,8 @@ from umi_parameters import UMI_parameters
 from umi_chessboard import UMI_chessboard
 from umi_student_functions import *
 import numpy as np
-scene.title = "UMI RTX"
-scene.height = scene.width = 600
+#scene.title = "UMI RTX"
+#scene.height = scene.width = 600
 
 #**********************************************
 # ROBOT PARAMETERS
@@ -88,7 +88,7 @@ w = window(width=2*(L+window.dwidth), height=L+window.dheight,
 # Place a 3D display widget in the left half of the window.
 d = 20
 disp = display(window=w, x=d, y=d, width=L-2*d, height=L-2*d, forward=-vector(1,0.25,1), center=vector(0,0.5,0))
-
+disp.background=(0.859, 0.949, 0.957)
 # Place buttons, radio buttons, a scrolling text object, and a slider
 # in the right half of the window. Positions and sizes are given in
 # terms of pixels, and pos(0,0) is the upper left corner of the window.
@@ -244,7 +244,11 @@ def execute_sequence(sequence_list):
                 if chess_piece != None:
                     print(chess_piece[0])
                     chess_piece[0].frame=wrist_joint
-                    chess_piece[0].pos=(0,-UMI.wrist_height-CHESSBOARD.pieces_height[chess_piece[1]]/2, 0)
+                    if chess_piece[1] == "Rook":
+                        piece_offset = 0
+                    else:
+                        piece_offset = CHESSBOARD.pieces_height[chess_piece[1]]/2
+                    chess_piece[0].pos=(0,-UMI.wrist_height-piece_offset, 0)
             if command == "DROP" and chess_piece != None:
                 print(chess_piece)
                 (temp_x, temp_z) = to_coordinate(piece_position)
@@ -257,7 +261,11 @@ def execute_sequence(sequence_list):
                     f_size = CHESSBOARD.field_size
                     chess_piece[0].frame=CHESSBOARD.framemp
                     #chess_piece[0].pos=(f_size*(temp_x+1) - f_size/2.0, 0, (f_size*temp_z) + f_size/2),
-                    chess_piece[0].pos=(f_size*(7-temp_x) + f_size/2.0,0, f_size*(7-temp_z) + f_size/2.0)
+                    if chess_piece[1] == "Rook":
+                        piece_offset = CHESSBOARD.pieces_height[chess_piece[1]]/2
+                    else:
+                        piece_offset = 0
+                    chess_piece[0].pos=(f_size*(7-temp_x) + f_size/2.0, 0, f_size*(7-temp_z) + f_size/2.0)
                     CHESSBOARD.pieces[piece_position] = chess_piece
                     chess_piece = None
         else:
@@ -288,7 +296,8 @@ def move(chessboard, from_pos, to_pos):
     if to_pos in chessboard.pieces:
         sequence_list += move_to_garbage(chessboard, to_pos)
     sequence_list += high_path(chessboard, from_pos, to_pos)
-    write_parameters_to_file(sequence_list, "positions.txt")
+    write_parameters_to_file(sequence_list, "joints_simulator.txt")
+    write_parameters_to_umi_robot(sequence_list)
     return sequence_list
 #**************************************************************************
 # CREATE CONTROLS
@@ -296,7 +305,7 @@ board_position_to_cartesian(CHESSBOARD, 'a1')
 board_position_to_cartesian(CHESSBOARD, 'c5')
 board_position_to_cartesian(CHESSBOARD, 'h8')
 XX = True
-sequence_list = move(CHESSBOARD, 'b2', 'g5')
+sequence_list = move(CHESSBOARD, 'a4', 'a1')
 
 while(True):
     rate(100)
