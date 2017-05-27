@@ -77,7 +77,6 @@ class ChessBoard:
         x = 0
         y = 0
         for char in input_str:
-            print(char)
             if char == '\r':
                 continue
             if char == '.':
@@ -147,6 +146,15 @@ class ChessBoard:
 
         return new_board
 
+    def is_king_dead(self, side):
+        seen_king = False
+        for x in range(8):
+            for y in range(8):
+                piece = self.get_boardpiece((x,y))
+                if piece != None and piece.side == side and \
+                        piece.material == Material.King:
+                    seen_king = True
+        return not seen_king
     
     ### BEGIN OF CODE TO IMPLEMENT BY STUDENT ###
     def legal_moves(self):
@@ -313,13 +321,13 @@ class ChessComputer:
     # This function uses minimax to calculate the next move. Given the current
     # chessboard and max depth, this function should return a tuple of the
     # the score and the move that should be executed
-    # NOTE: use ChessComputer.evaluate_board(chessboard) to calculate the score
+    # NOTE: use ChessComputer.evaluate_board() to calculate the score
     # of a specific board configuration after the max depth is reached
     @staticmethod
     def minimax(chessboard, depth):
         ### BEGIN OF CODE TO IMPLEMENT BY STUDENT
         if depth == 0:
-            return ChessComputer.evaluate_board(chessboard), "----"
+            return ChessComputer.evaluate_board(chessboard, depth), "end"
 
         moves = chessboard.legal_moves()
 
@@ -329,7 +337,7 @@ class ChessComputer:
             score, _ = ChessComputer.minimax(new_board, depth - 1)
             scores[move] = score
         if len(moves) == 0:
-            return ChessComputer.evaluate_board(chessboard) + depth*10, "----"
+            return ChessComputer.evaluate_board(chessboard, depth), "end"
         
         if chessboard.turn == Side.White:
             best_board = max(scores, key=scores.get)
@@ -343,7 +351,7 @@ class ChessComputer:
     # chessboard and max depth, this function should return a tuple of the
     # the score and the move that should be executed.
     # It has alpha and beta as extra pruning parameters
-    # NOTE: use ChessComputer.evaluate_board(chessboard) to calculate the score
+    # NOTE: use ChessComputer.evaluate_board() to calculate the score
     # of a specific board configuration after the max depth is reached
     @staticmethod
     def alphabeta(chessboard, depth, alpha, beta):
@@ -351,12 +359,12 @@ class ChessComputer:
         inf = 99999999
         min_inf = -inf
         if depth == 0:
-            return ChessComputer.evaluate_board(chessboard), "----"
+            return ChessComputer.evaluate_board(chessboard, depth), "end"
 
         moves = chessboard.legal_moves()
 
         if len(moves) == 0:
-            return ChessComputer.evaluate_board(chessboard) + depth*10, "----"
+            return ChessComputer.evaluate_board(chessboard, depth), "end"
 
         move_for_v = ""
         if chessboard.turn == Side.White:
@@ -387,7 +395,7 @@ class ChessComputer:
     # material left on the board. Returns a score number, in which positive
     # means white is better off, while negative means black is better of
     @staticmethod
-    def evaluate_board(chessboard):
+    def evaluate_board(chessboard, depth_left):
         ### BEGIN OF CODE TO IMPLEMENT BY STUDENT
         board_values = {}
         board_values[Material.Pawn] = 100
@@ -411,6 +419,12 @@ class ChessComputer:
                 
                 score += multiplier * board_values[piece.material]
 
+        # Add depth score
+        if score > 0:
+            score += 10*depth_left
+        else:
+            score -= 10*depth_left
+
         return score
         ### END OF CODE TO IMPLEMENT BY STUDENT
         
@@ -419,24 +433,17 @@ class ChessComputer:
 class ChessGame:
     def __init__(self, turn):
      
-        board = "...K...k\n" + \
-                "........\n" + \
-                "........\n" + \
-                "........\n" + \
-                ".....R..\n" + \
-                "........\n" + \
-                "........\n" + \
-                "........\n"
 
         self.depth = 7
         self.chessboard = ChessBoard(turn)
-        self.chessboard.load_from_input(board)
 
+        filename = "board.chb"
+        print("Reading from " + filename + "...")
+        self.load_from_file(filename)
 
     def load_from_file(self, filename):
-
         with open(filename) as f:
-            content = f.readlines()
+            content = f.read()
 
         self.chessboard.load_from_input(content)
 
@@ -445,30 +452,46 @@ class ChessGame:
             print(self.chessboard)
 
             # Print the current score
-            current_score = ChessComputer.evaluate_board(self.chessboard)
-            print("Current score: " + str(current_score))
+            score = ChessComputer.evaluate_board(self.chessboard,self.depth)
+            print("Current score: " + str(score))
             
             # Calculate the best possible move
             new_score, best_move = self.make_computer_move()
             
             print("Best move: " + best_move)
             print("Score to achieve: " + str(new_score))
+            print("")
             self.make_human_move()
 
 
     def make_computer_move(self):
+        print("Calculating best move...")
         return ChessComputer.computer_move(self.chessboard,
                 self.depth, alphabeta=True)
         
 
     def make_human_move(self):
+        # Endlessly request input until the right input is specified
         while True:
-            move = input("Indicate your move: ")
-            if self.chessboard.is_legal_move(move):
+            move = input("Indicate your move (or q to stop): ")
+            if move == "q":
+                print("Exiting program...")
+                sys.exit(0)
+            elif self.chessboard.is_legal_move(move):
                 break
             print("Incorrect move!")
 
         self.chessboard = self.chessboard.make_move(move)
+
+        # Exit the game if one of the kings is dead
+        if self.chessboard.is_king_dead(Side.Black):
+            print(self.chessboard)
+            print("White wins!")
+            sys.exit(0)
+        elif self.chessboard.is_king_dead(Side.White):
+            print(self.chessboard)
+            print("Black wins!")
+            sys.exit(0)
 
 chess_game = ChessGame(Side.White)
 chess_game.main()
