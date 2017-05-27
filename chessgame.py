@@ -1,49 +1,107 @@
 from __future__ import print_function
 from copy import deepcopy
+import sys
 
+## Helper functions
 
+# Translate a position in chess notation to x,y-coordinates
+# Example: c3 corresponds to (2,5)
 def to_coordinate(notation):
     x = ord(notation[0]) - ord('a')
     y = 8 - int(notation[1])
     return (x, y)
 
+# Translate a position in x,y-coordinates to chess notation
+# Example: (2,5) corresponds to c3
 def to_notation(coordinates):
     (x,y) = coordinates
     letter = chr(ord('a') + x)
     number = 8 - y
     return letter + str(number)
 
+# Translates two x,y-coordinates into a chess move notation
+# Example: (1,4) and (2,3) will become b4c5
 def to_move(from_coord, to_coord):
     return to_notation(from_coord) + to_notation(to_coord)
 
+## Defining board states
+
+# These Static classes are used as enums for:
+# - Material.Rook
+# - Material.King
+# - Material.Pawn
+# - Side.White
+# - Side.Black
 class Material:
     Rook, King, Pawn = ['r','k','p']
-
 class Side:
     White, Black = range(0,2)
 
+# A chesspiece on the board is specified by the side it belongs to and the type
+# of the chesspiece
 class Piece:
     def __init__(self, side, material):
         self.side = side
         self.material = material
 
 
+# A chess configuration is specified by whose turn it is and a 2d array
+# with all the pieces on the board
 class ChessBoard:
     
-    def __init__(self, turn, board_str):
+    def __init__(self, turn):
+        # This variable is either equal to Side.White or Side.Black
         self.turn = turn
         self.board_matrix = None
-        if board_str != "":
-            self.load_from_input(board_str)
 
 
+    ## Getter and setter methods 
     def set_board_matrix(self,board_matrix):
         self.board_matrix = board_matrix
 
+    # Note: assumes the position is valid
+    def get_boardpiece(self,position):
+        (x,y) = position
+        if(x > 7 or x < 0 or y > 7 or y < 0):
+            return None
+        return self.board_matrix[y][x]
+
+    # Note: assumes the position is valid
+    def set_boardpiece(self,position,piece):
+        (x,y) = position
+        self.board_matrix[y][x] = piece
+    
+    # Read in the board_matrix using an input string
+    def load_from_input(self,input_str):
+        self.board_matrix = [[None for _ in range(8)] for _ in range(8)]
+        x = 0
+        y = 0
+        for char in input_str:
+            print(char)
+            if char == '\r':
+                continue
+            if char == '.':
+                x += 1
+                continue
+            if char == '\n':
+                x = 0
+                y += 1
+                continue 
+            
+            if char.isupper():
+                side = Side.White
+            else:
+                side = Side.Black
+            material = char.lower()
+
+            piece = Piece(side, material)
+            self.set_boardpiece((x,y),piece)
+            x += 1
+
+    # Print the current board state
     def __str__(self):
         return_str = ""
 
-        #return_str += "     01234567\n"
         return_str += "   abcdefgh\n\n"
         y = 8
         for board_row in self.board_matrix:
@@ -59,37 +117,40 @@ class ChessBoard:
             return_str += '\n'
             y -= 1
         
-        return_str +="It is " + ("White" if self.turn == Side.White else "Black" ) + "'s turn\n"
+        turn_name = ("White" if self.turn == Side.White else "Black") 
+        return_str += "It is " + turn_name + "'s turn\n"
+
         return return_str
 
+    # Given a move string in chess notation, return a new ChessBoard object
+    # with the new board situation
+    # Note: this method assumes the move suggested is a valid, legal move
     def make_move(self, move_str):
+        
         (start_x, start_y) = to_coordinate(move_str[0:2])
         (end_x, end_y) = to_coordinate(move_str[2:4])
-
-        #print("x: " + str(start_x) + " y: " + str(start_y))
-        #print("x: " + str(end_x) + " y: " + str(end_y))
-
-        #new_board = deepcopy(self)
 
         if self.turn == Side.White:
             turn = Side.Black
         else:
             turn = Side.White
             
+        # Duplicate the current board_matrix and apply the move
         new_matrix = [row[:] for row in self.board_matrix]
-        new_board = ChessBoard(turn,"")
-        new_board.set_board_matrix(new_matrix)
-
-        piece = new_board.board_matrix[start_y][start_x] 
-        new_board.board_matrix[end_y][end_x] = piece
-        new_board.board_matrix[start_y][start_x] = None
-
+        piece = new_matrix[start_y][start_x] 
+        new_matrix[end_y][end_x] = piece
+        new_matrix[start_y][start_x] = None
         
+        # Create a new chessboard object
+        new_board = ChessBoard(turn)
+        new_board.set_board_matrix(new_matrix)
 
         return new_board
 
+    
+    ### BEGIN OF CODE TO IMPLEMENT BY STUDENT ###
     def legal_moves(self):
-
+        
         moves = []
         for x in range(8):
             for y in range(8):
@@ -107,49 +168,17 @@ class ChessBoard:
         
         return moves
 
-
-    def load_from_input(self,input_str):
-        self.board_matrix = [[None for _ in range(8)] for _ in range(8)]
-        x = 0
-        y = 0
-        for char in input_str:
-            print(char)
-            if char == '\r':
-                continue
-            
-            if char == '.':
-                x += 1
-                continue
-
-            if char == '\n':
-                x = 0
-                y += 1
-                continue 
-            
-            if char.isupper():
-                side = Side.White
-            else:
-                side = Side.Black
-            material = char.lower()
-
-            piece = Piece(side, material)
-            self.set_boardpiece((x,y),piece)
-            x += 1
-            
-            
-            
-                    
     def is_legal_move(self,move):
         return move in self.legal_moves()
-
 
     def legal_king_moves(self, king_x, king_y):
 
         positions = []
         possible = [
                 (king_x, king_y - 1), (king_x, king_y + 1), \
-                (king_x - 1, king_y - 1), (king_x - 1, king_y), (king_x -1, king_y + 1), \
-                (king_x + 1, king_y - 1), (king_x + 1, king_y), (king_x +1, king_y + 1)]
+                (king_x - 1, king_y - 1), (king_x - 1, king_y), \
+                (king_x -1, king_y + 1), (king_x + 1, king_y - 1), \
+                (king_x + 1, king_y), (king_x +1, king_y + 1)]
 
         for pos in possible:
             (x,y) = pos
@@ -191,18 +220,6 @@ class ChessBoard:
             positions.append(cross_pos2)
 
         return positions
-
-
-    def get_boardpiece(self,position):
-        (x,y) = position
-        if(x > 7 or x < 0 or y > 7 or y < 0):
-            return None
-        return self.board_matrix[y][x]
-
-    def set_boardpiece(self,position,piece):
-        (x,y) = position
-        
-        self.board_matrix[y][x] = piece
 
     def legal_rook_moves(self,rook_x,rook_y):
         
@@ -272,12 +289,35 @@ class ChessBoard:
                 break
 
         return positions
-        #return list(map(to_notation,positions))
+    ### END OF CODE TO IMPLEMENT BY STUDENT
 
-
+# This static class is responsible for providing functions that can calculate
+# the optimal move using minimax
 class ChessComputer:
+
+    # This method uses either alphabeta or minimax to calculate the best move
+    # possible. The input needed is a chessboard configuration and the max
+    # depth of the search algorithm. It returns a tuple of (score, chessboard)
+    # with score the maximum score attainable and chessboardmove that is needed
+    #to achieve this score.
+    @staticmethod
+    def computer_move(chessboard, depth, alphabeta=False):
+        if alphabeta:
+            inf = 99999999
+            min_inf = -inf
+            return ChessComputer.alphabeta(chessboard, depth, min_inf, inf)
+        else:
+            return ChessComputer.minimax(chessboard, depth)
+
+
+    # This function uses minimax to calculate the next move. Given the current
+    # chessboard and max depth, this function should return a tuple of the
+    # the score and the move that should be executed
+    # NOTE: use ChessComputer.evaluate_board(chessboard) to calculate the score
+    # of a specific board configuration after the max depth is reached
     @staticmethod
     def minimax(chessboard, depth):
+        ### BEGIN OF CODE TO IMPLEMENT BY STUDENT
         if depth == 0:
             return ChessComputer.evaluate_board(chessboard), "----"
 
@@ -297,10 +337,19 @@ class ChessComputer:
         else:
             best_board = min(scores, key=scores.get)
             return (scores[best_board], best_board)
-            
+        ### END OF CODE TO IMPLEMENT BY STUDENT
 
+    # This function uses alphabeta to calculate the next move. Given the
+    # chessboard and max depth, this function should return a tuple of the
+    # the score and the move that should be executed.
+    # It has alpha and beta as extra pruning parameters
+    # NOTE: use ChessComputer.evaluate_board(chessboard) to calculate the score
+    # of a specific board configuration after the max depth is reached
     @staticmethod
     def alphabeta(chessboard, depth, alpha, beta):
+        ### BEGIN OF CODE TO IMPLEMENT BY STUDENT
+        inf = 99999999
+        min_inf = -inf
         if depth == 0:
             return ChessComputer.evaluate_board(chessboard), "----"
 
@@ -311,12 +360,12 @@ class ChessComputer:
 
         move_for_v = ""
         if chessboard.turn == Side.White:
-            v = -999999
+            v = min_inf
         else:
-            v = 999999
+            v = inf
         for move in moves:
             new_board = chessboard.make_move(move)
-            score, _ = ChessComputer.alphabeta(new_board, depth - 1, alpha, beta)
+            score, _ = ChessComputer.alphabeta(new_board, depth-1, alpha, beta)
             if chessboard.turn == Side.White:
                 if score > v:
                     v = score
@@ -332,10 +381,14 @@ class ChessComputer:
                 break
         
         return v, move_for_v
-
-
+        ### END OF CODE TO IMPLEMENT BY STUDENT
+    
+    # Calculates the score of a given board configuration based on the 
+    # material left on the board. Returns a score number, in which positive
+    # means white is better off, while negative means black is better of
     @staticmethod
     def evaluate_board(chessboard):
+        ### BEGIN OF CODE TO IMPLEMENT BY STUDENT
         board_values = {}
         board_values[Material.Pawn] = 100
         board_values[Material.King] = 1000
@@ -359,20 +412,13 @@ class ChessComputer:
                 score += multiplier * board_values[piece.material]
 
         return score
+        ### END OF CODE TO IMPLEMENT BY STUDENT
         
-
+# This class is responsible for starting the chess game, playing and user 
+# feedback
 class ChessGame:
     def __init__(self, turn):
      
-        board = "r..k...r\n" + \
-                "pppppppp\n" + \
-                "........\n" + \
-                "........\n" + \
-                "........\n" + \
-                "........\n" + \
-                "PPPPPPPP\n" + \
-                "R..K...R\n"
-
         board = "...K...k\n" + \
                 "........\n" + \
                 "........\n" + \
@@ -382,22 +428,37 @@ class ChessGame:
                 "........\n" + \
                 "........\n"
 
-        self.chessboard = ChessBoard(turn,board)
+        self.depth = 7
+        self.chessboard = ChessBoard(turn)
+        self.chessboard.load_from_input(board)
 
+
+    def load_from_file(self, filename):
+
+        with open(filename) as f:
+            content = f.readlines()
+
+        self.chessboard.load_from_input(content)
 
     def main(self):
         while True:
             print(self.chessboard)
 
-            print("current score: " + str(ChessComputer.evaluate_board(self.chessboard)))
-            score, board = self.make_computer_move()
-            print("best score: " + str(score))
-            print(board)
+            # Print the current score
+            current_score = ChessComputer.evaluate_board(self.chessboard)
+            print("Current score: " + str(current_score))
+            
+            # Calculate the best possible move
+            new_score, best_move = self.make_computer_move()
+            
+            print("Best move: " + best_move)
+            print("Score to achieve: " + str(new_score))
             self.make_human_move()
 
 
     def make_computer_move(self):
-        return ChessComputer.alphabeta(self.chessboard, 7,-999999,999999)
+        return ChessComputer.computer_move(self.chessboard,
+                self.depth, alphabeta=True)
         
 
     def make_human_move(self):
@@ -409,20 +470,6 @@ class ChessGame:
 
         self.chessboard = self.chessboard.make_move(move)
 
-
-    def set_board_position(self, board_array):
-        pass
-
-
-
-
 chess_game = ChessGame(Side.White)
 chess_game.main()
 
-
-"""
-    print(chess_board)
-    moves = chess_board.legal_moves()
-    for move in moves:
-        print(chess_board.make_move(move))
-"""
