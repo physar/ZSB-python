@@ -77,6 +77,12 @@ class ChessBoard:
         x = 0
         y = 0
         for char in input_str:
+            if y == 8:
+                if char == 'W':
+                    self.turn = Side.White
+                elif char == 'B':
+                    self.turn = Side.Black
+                return
             if char == '\r':
                 continue
             if char == '.':
@@ -160,6 +166,9 @@ class ChessBoard:
     def legal_moves(self):
         
         moves = []
+
+        seen_king = False
+
         for x in range(8):
             for y in range(8):
                 piece = self.get_boardpiece((x,y))
@@ -170,10 +179,13 @@ class ChessBoard:
                     if piece.material == Material.Pawn:
                         pos = self.legal_pawn_moves(x,y)
                     if piece.material == Material.King:
+                        seen_king = True
                         pos = self.legal_king_moves(x,y)
 
                     moves += map(lambda l: to_move((x,y),l), pos)
         
+        if not seen_king:
+            return []
         return moves
 
     def is_legal_move(self,move):
@@ -399,11 +411,14 @@ class ChessComputer:
         ### BEGIN OF CODE TO IMPLEMENT BY STUDENT
         board_values = {}
         board_values[Material.Pawn] = 100
-        board_values[Material.King] = 1000
-        board_values[Material.Rook] = 500
+        board_values[Material.King] = 2000
+        board_values[Material.Rook] = 400
 
         
         score = 0
+
+        seen_black_king = False
+        seen_white_king = False
         
         for x in range(8):
             for y in range(8):
@@ -414,10 +429,18 @@ class ChessComputer:
 
                 if piece.side == Side.White:
                     multiplier = 1
+                    if piece.material == Material.King:
+                        seen_white_king = True
                 else:
                     multiplier = -1
+                    if piece.material == Material.King:
+                        seen_black_king = True
                 
                 score += multiplier * board_values[piece.material]
+        if not seen_black_king:
+            score = board_values[Material.King]
+        elif not seen_white_king:
+            score = -board_values[Material.King]
 
         # Add depth score
         if score > 0:
@@ -433,11 +456,15 @@ class ChessComputer:
 class ChessGame:
     def __init__(self, turn):
      
-
-        self.depth = 7
+        self.depth = 6
         self.chessboard = ChessBoard(turn)
 
-        filename = "board.chb"
+        # If a file was specified as commandline argument, use that filename
+        if len(sys.argv) > 1:
+            filename = sys.argv[1]
+        else:
+            filename = "board.chb"
+
         print("Reading from " + filename + "...")
         self.load_from_file(filename)
 
