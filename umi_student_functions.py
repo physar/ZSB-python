@@ -88,6 +88,13 @@ def board_position_to_cartesian(chessboard, position):
     return result
 
 def high_path(chessboard, from_pos, to_pos):
+    '''
+    Computes the high path that the arm can take to move a piece from one place on the board to another.
+    :param chessboard: Chessboard object
+    :param from_pos: [a1-h8]
+    :param to_pos: [a1-h8]
+    :return: Returns a list of instructions for the GUI.
+    '''
     sequence_list = []
     # We assume that 20 centimeter above the board is safe.
     safe_height = 0.2
@@ -130,6 +137,12 @@ def high_path(chessboard, from_pos, to_pos):
     return sequence_list
 
 def move_to_garbage(chessboard, from_pos):
+    '''
+        Computes the high path that the arm can take to move a piece from one place on the board to the garbage location.
+        :param chessboard: Chessboard object
+        :param from_pos: [a1-h8]
+        :return: Returns a list of instructions for the GUI.
+    '''
     sequence_list = []
     # We assume that 20 centimeter above the board is safe.
     safe_height = 0.2
