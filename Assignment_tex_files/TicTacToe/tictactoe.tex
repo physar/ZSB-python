@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage{fullpage}
+\usepackage[utf8]{inputenc}
+\title{Tic-Tac-Toe Instructions}
+\author{Computersystemen}
+\date{March 2017}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+\maketitle
+
+\section{Task 0: Tic-Tac-Toe}
+In this assignment, you are to create a game-interface similar to Bratko's implementation for the game tic-tac-toe in Prolog. You are allowed to use 1 day to complete this assignment. To help you with this task, you can find two files from \citet{bratko2001prolog} on the blackboard that you can use as an example, namely:
+\begin{enumerate}
+    \item \textbf{minimax.pl}: minimax implementation.
+    \item \textbf{alphabeta.pl}: $\alpha$-$\beta$ implementation.
+\end{enumerate}
+
+To complete these implementations to our Tic-Tac-Toe example, 4 relations have to be implemented, namely:
+
+\begin{verbatim}
+moves( Pos, PosList ) % Legal moves in Pos, fails when Pos is terminal
+staticval( Pos, Val ) % value of a Terminal node (utility function)
+min_to_move( Pos )    % the opponents turn
+max_to_move( Pos )    % our turn
+\end{verbatim}
+
+You may program additional functions into your Prolog program, yet the 4 functions above should be working as intended.
+
+Some things to think about before directly starting to code:
+\begin{itemize}
+    \item Perhaps read the relevant pages of \citet{bratko2001prolog}.
+    \item How do you want to represent the state of a board?
+    \item Think of the different win/lose conditions. (Rules vs hardcoding)
+\end{itemize}
+
+\section{Requirements}
+Finally, a (simple) interface should be created to play the game against the computer. This interface has to:
+\begin{itemize}
+    \item Apply both minimax and $\alpha$-$\beta$ correctly for the computer.
+    \item Allow the user to change who starts the game (user/computer).
+    \item Display the board in a comprehensible way or at least provided good instructions.
+    \item Allow a user to select his move, and only allow legal moves (e.g. you can not mark a spot that is already taken)
+    \item Display to the user when it has ended in a win/loss/draw, end also actually end the game.
+\end{itemize}
+
+\section{Hand-in}
+Hand in either a single prolog file on blackboard named as: \textless groupnumber\textgreater\_\textless name1\textgreater\_\textless name2\textgreater\_TTT.pl, or hand in all files in a zip/tar with the name: \textless groupnumber\textgreater\_\textless name1\textgreater\_\textless name2\textgreater\_TTT.zip
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}
