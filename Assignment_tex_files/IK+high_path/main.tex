@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
-
+\usepackage{url}
+\usepackage{fullpage}
 \title{A chess playing robot arm}
 \author{ZSB}
 \date{}
@@ -11,22 +12,61 @@
 
 \section*{Introduction}
 
-In this assignment you will be implementing inverse kinematics in a VPython simulation in order to make a robot arm play chess. There are two parts to this assigment:
+In this assignment you will be implementing inverse kinematics in a VPython simulation in order to make a robot arm play chess. There are three parts to this assigment:
 \begin{itemize}
-    \item High path planning
+    \item Cartesian Coordinate conversion
     \item Inverse kinematics
+    \item High path planning    
 \end{itemize}
-The high path planning is a series of instructions the robot arm will need to follow in order to move a piece. The inverse kinematics part will tell the robot exactly what angles the individual arm joints need to have so it will be at a desired location. You can determine yourself in what order you want to complete these modules as they work independently. However, we suggest starting with high path planning. This is the easier component so it will allow you to familiarise yourself with python again.
+The high path planning is a series of instructions the robot arm will need to follow in order to move a piece. The inverse kinematics part will tell the robot exactly what angles the individual arm joints need to have so it will be at a desired location. And the coordinate conversion means that you translate a board position, e.g. "a1", to a real world coordinate. You can determine yourself in what order you want to complete these modules as they work independently. However, we suggest starting with high path planning and coordinate conversion. These are the easier components, so it will allow you to familiarize yourself with python again.
 
 \section*{VPython simulator}
-\subsection*{Robot arm}
-\subsection*{Chess board}
+The simulator uses ``Classic" VPython 6 in combination with Python 2.7, and the version we use works by default on Windows and not on Linux (yes, we managed to find a Python package that does not work on Linux by default...)
 
-\section*{Altenative scoring}
+\subsection*{Installation}
+\subsubsection*{Windows}
+For more download instructions, you can refer to \url{http://www.vpython.org/contents/download_windows.html}.
+
+Check if you have Python 2 installed on your computer, at the following location:
+
+\begin{verbatim}
+    C:\Python27
+\end{verbatim}
+If this is the case you can download either the 32-bit or the 64-bit VPython depending on what python version you have installed. To check what version you have installed use the command:
+
+\begin{verbatim}
+    C:\Python27\python.exe
+\end{verbatim}
+And you should see a line of text showing you your version details, including the bits. If you have Anaconda installed for Python 2, you can use this command instead:
+
+\begin{verbatim}
+    conda install -c https://conda.binstar.org/mwcraig vpython
+\end{verbatim}
+After you install the correct VPython version, it should work right away.
+\subsubsection*{Linux}
+For more download instructions, you can refer to \url{http://www.vpython.org/contents/download_linux.html}.
+Linux requires slightly more work and requires you to use Wine (basically a bit of windows inside Linux). The installation instructions of Wine, can be found here: \url{https://wiki.winehq.org/Ubuntu}. Depending on the version you installed, pick the correct files from the download\_linux link, and place them in the correct folders (once again check the bit versions that you use) and follow the \emph{Installing VPython 6 under Wine} instructions on the web page.
+
+\subsection*{What is provided?}
+The simulator that will be provided to you consists of the following files:
+\begin{itemize}
+    \item \textbf{umi\_chessboard.py} - Contains the representation of the chessboard and the pieces. Also contains functions that have to do with the translation and rotation of the board.
+    \item \textbf{umi\_common} - Contains some functions that are used across all the files, also included the functions for file interactions.
+    \item \textbf{umi\_parameters} - This file contain all the parameters of the robot arm, but it is your task to retrieve this information, and add it correctly.
+    \item \textbf{umi\_simulation} - Contains the simulator for the robot arm, and all the functions that have to do with the visualizations. This file is also the main function to call, if you want to run the program. The sliders work per default, as long as you have the correct parameters.
+    \item \textbf{umi\_student\_functions} - Empty shells of functions for you to fill, such that all functionality works correctly.
+\end{itemize}
+
+\section*{Alternative scoring}
 2 - Implementation high path/inverse kinematics/chess algorithm\\
 3 - High path\\
 5 - Inverse kinematics
-\section*{High path - 4 points}
+\section{Assignments}
+
+\subsection*{Cartesian Coordinate Conversion - X points}
+Because the UMI robot arm is blind, it is difficult for him to determine what to do if you tell it to move a piece from "a1" to "a3". After all, it can not see the chessboard. Hence, you will write a function to help him out, by writing the function that returns a (x,y,z) tuple, when given a position in the form $<$letter$><$digit$>$ e.g. "a1". For this you will use the rotation and translation of the board, as well as the position of the piece. The rotation point of the chessboard is next to the position "h8". These instructions can be implemented in the \textbf{board\_position\_to\_cartesian(chessboard, position)} function.
+
+\subsection*{High path - 4 points}
 In order to play chess, the robot arm needs to be able to move a chess piece from one location to another. To achieve this the robot arm will need to follow a series of instructions:
 \begin{enumerate}
 \item Open gripper
@@ -41,16 +81,11 @@ In order to play chess, the robot arm needs to be able to move a chess piece fro
 \item Open gripper
 \item Move to safe height
 \end{enumerate}
-Where safe height is an arbitrary height above a board location where it is impossible to for the robot arm to interact with the pieces. Low height is right above the piece and piece height is the height where the robot arm is able to actually grab the piece. These instructions can be implemented in the \textbf{high\_path(piece\_location, new\_location)} function.
+Where safe height is an arbitrary height above a board location where it is impossible to for the robot arm to interact with the pieces. Low height is right above the piece and piece height is the height where the robot arm is able to actually grab the piece. These instructions can be implemented in the \textbf{high\_path(chessboard, from\_location, to\_location)} function
 
-\section*{Inverse kinematics - 6 points}
-Solve the inverse kinematics problem for the robot arm: "Given a point on the board and a height, what are the joint angles needed for the robot arm to reach this point?". Keep in mind that there is no right answer for this. Inverse kinematics generally does not have one solution as there are multiple ways to reach the same position. This means that you can implement movement that you think is best as long as it works within the simulator. Inverse kinematics can be implemented in the \textbf{move\_arm(arm, position)}
+In addition, very similar to the above function, you also have a move\_to\_garbage function. With the difference that it now drops the pieces on a garbage pile outside of the board. You can choose different ways to solve this problem e.g. place the in a nice row next to the board, or just toss them in your imaginary box. These instructions can be implemented in the \textbf{move\_to\_garbage(chessboard, from\_location, to\_location)} function
 
-\section*{Extra credit (for badasses)}
-\begin{itemize}
-    \item Low path
-    \item Rotate/Move board
-    \item Inverse kinematics optimization (minimize movement)
-    \item 
-\end{itemize}
+\subsection*{Inverse kinematics - 6 points}
+Solve the inverse kinematics problem for the robot arm: "Given a point on the board and a height, what are the joint angles needed for the robot arm to reach this point?". Keep in mind that there is no right answer for this. Inverse kinematics generally does not have one solution as there are multiple ways to reach the same position. This means that you can implement movement that you think is best as long as it works within the simulator. Inverse kinematics can be implemented in the \textbf{apply\_inverse\_kinematics(x, y, z, gripper)}
+
 \end{document}
