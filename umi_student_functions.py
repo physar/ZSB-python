@@ -103,7 +103,6 @@ def high_path(chessboard, from_pos, to_pos):
     half_piece_height = 0.06 /2
     if from_pos in chessboard.pieces:
         half_piece_height = chessboard.pieces_height[chessboard.pieces[from_pos][1]]  / 2
-        print("Piece found at from_pos.")
     (from_x, from_y, from_z) = board_position_to_cartesian(chessboard, from_pos)
     (to_x, to_y, to_z) = board_position_to_cartesian(chessboard, to_pos)
     # Check for the piece height:
@@ -151,7 +150,6 @@ def move_to_garbage(chessboard, from_pos):
     half_piece_height = 0.06 /2
     if from_pos in chessboard.pieces:
         half_piece_height = chessboard.pieces_height[chessboard.pieces[from_pos][1]]  / 2
-        print("Piece found at from_pos.")
     (from_x, from_y, from_z) = board_position_to_cartesian(chessboard, from_pos)
     (to_x, to_y, to_z) = board_position_to_cartesian(chessboard, drop_location)
     # Check for the piece height:

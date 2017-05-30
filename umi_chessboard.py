@@ -183,13 +183,14 @@ class UMI_chessboard:
                 else:
                     color_c = self.white_pieces_color
                     color_n = "White"
-                if x == 1 or x == 6:
+                if x in [1,6]:
                     piece_name = "Pawn"
                     piece = cylinder(frame = self.framemp,
                         axis = (0, self.pieces_height[piece_name], 0),
                         radius = self.field_size*0.35,
                         pos = (self.field_size*(x+1) - self.field_size/2.0, 0, (self.field_size*z) + self.field_size/2),
                         color = color_c)
+                    self.pieces[to_notation((7-x, 7-z))] = [piece, piece_name, color_n]
                 elif x in [0,7] and z in [0,7]:
                     piece_name = "Rook"
                     piece = box(frame = self.framemp,
@@ -198,6 +199,7 @@ class UMI_chessboard:
                            width = self.field_size*0.7,
                            pos = (self.field_size*(x+1) - self.field_size/2.0, self.pieces_height[piece_name]/2, (self.field_size*z) + self.field_size/2),
                            color = color_c)
+                    self.pieces[to_notation((7-x, 7-z))] = [piece, piece_name, color_n]
                 elif x in [0,7] and z == 4:
                     piece_name = "King"
                     piece = pyramid(frame = self.framemp,
@@ -207,4 +209,5 @@ class UMI_chessboard:
                            width = self.field_size*0.7,
                            pos = (self.field_size*(x+1) - self.field_size/2.0, 0, (self.field_size*z) + self.field_size/2),
                            color = color_c)
-                self.pieces[to_notation((7-x, 7-z))] = [piece, piece_name, color_n]
+                    self.pieces[to_notation((7-x, 7-z))] = [piece, piece_name, color_n]
+        print(self.pieces)

@@ -11,8 +11,7 @@ from umi_parameters import UMI_parameters
 from umi_chessboard import UMI_chessboard
 from umi_student_functions import *
 import numpy as np
-#scene.title = "UMI RTX"
-#scene.height = scene.width = 600
+import os.path
 
 #**********************************************
 # ROBOT PARAMETERS
@@ -94,6 +93,19 @@ def moveGripper(value):
     UMI_angles[4] = value
     s4.SetValue(value*1000.0)
 
+def read_input_file(evt):
+    joints_file = "joints_simulator.txt"
+    if os.path.isfile(joints_file):
+        (headers, sequence_list) = read_parameters_from_file(joints_file)
+        execute_sequence(sequence_list)
+
+def store_input_text(evt):
+    joints_file = "joints_simulator.txt"
+    input_text = input_field.GetValue()
+    if len(input_text) == 4:
+        parameter_lines = move(CHESSBOARD, input_text[0:2], input_text[2:4])
+        write_parameters_to_file(parameter_lines, joints_file)
+
 L = 600
 # Create a window. Note that w.win is the wxPython "Frame" (the window).
 # window.dwidth and window.dheight are the extra width and height of the window
@@ -139,6 +151,17 @@ s3_label = wx.StaticText(p, pos=(1.0*L,0.35*L), label='Set Wrist rotation: 0 deg
 s4 = wx.Slider(p, pos=(1.0*L,0.5*L), size=(0.9*L,20), minValue=UMI.joint_ranges["Gripper"][0]*1000.0, maxValue=UMI.joint_ranges["Gripper"][1]*1000.0, style=wx.SL_HORIZONTAL)
 s4.Bind(wx.EVT_SCROLL, setGripperWidth)
 s4_label = wx.StaticText(p, pos=(1.0*L,0.45*L), label='Set Gripper opening: 50 mm')
+
+read_input = wx.Button(p, label='Execute joints.txt', pos=(1.0*L,0.75*L))
+read_input.Bind(wx.EVT_BUTTON, read_input_file)
+
+store_input = wx.Button(p, label='Compute High Path', pos=(1.11*L,0.65*L))
+store_input.Bind(wx.EVT_BUTTON, store_input_text)
+
+input_field = wx.TextCtrl(p, pos=(1.0*L,0.65*L), value='a1a3',
+            size=(0.1*L,25))
+input_field.SetInsertionPoint(len(input_field.GetValue())+1) # position cursor at end of text
+input_field.SetFocus() # so that keypresses go to the TextCtrl without clicking it
 
 #***********************************************
 # ROBOT JOINTS
@@ -291,7 +314,7 @@ def execute_sequence(sequence_list):
                         piece_offset = CHESSBOARD.pieces_height[chess_piece[1]]/2
                     else:
                         piece_offset = 0
-                    chess_piece[0].pos=(f_size*(7-temp_x) + f_size/2.0, 0, f_size*(7-temp_z) + f_size/2.0)
+                    chess_piece[0].pos=(f_size*(7-temp_x) + f_size/2.0, piece_offset, f_size*(7-temp_z) + f_size/2.0)
                     CHESSBOARD.pieces[piece_position] = chess_piece
                     chess_piece = None
         else:
@@ -341,15 +364,10 @@ def move(chessboard, from_pos, to_pos):
     return sequence_list
 #**************************************************************************
 # CREATE CONTROLS
-XX = True
-sequence_list = move(CHESSBOARD, 'a4', 'a1')
 
 while(True):
     rate(100)
     disp.center=get_gripper_bottom_position()
-    if XX:
-        execute_sequence(sequence_list)
-        XX = False
     #break
 #End Program
 0
