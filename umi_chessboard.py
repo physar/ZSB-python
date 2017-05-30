@@ -210,4 +210,3 @@ class UMI_chessboard:
                            pos = (self.field_size*(x+1) - self.field_size/2.0, 0, (self.field_size*z) + self.field_size/2),
                            color = color_c)
                     self.pieces[to_notation((7-x, 7-z))] = [piece, piece_name, color_n]
-        print(self.pieces)

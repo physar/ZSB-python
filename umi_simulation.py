@@ -248,16 +248,7 @@ floor.pos = (floor.length/2 - UMI.wpedestal, 0, 0)
 CHESSBOARD = UMI_chessboard(frameworld, 0.3, (0.15, -0.15), 0)
 
 #***************************************************************************
-# INIT CONTROLS
-s0.SetValue(s0.GetMax())
-s1.SetValue(0) # update the slider
-s2.SetValue(0) # update the slider
-s3.SetValue(0) # update the slider
-s4.SetValue(50) # update the slider
 
-# Storage only used to make the movements of the arm appear smoothed.
-UMI_angles = [UMI.joint_ranges["Riser"][1], 0, 0, 0, 0.05]
-#**************************************************************************
 # CONTROLLER Functions
 def get_gripper_bottom_position():
     '''
@@ -363,11 +354,21 @@ def move(chessboard, from_pos, to_pos):
     write_parameters_to_umi_robot(sequence_list)
     return sequence_list
 #**************************************************************************
-# CREATE CONTROLS
+
+# INIT CONTROLS
+s0.SetValue(s0.GetMax())
+s1.SetValue(0) # update the slider
+s2.SetValue(0) # update the slider
+s3.SetValue(0) # update the slider
+s4.SetValue(50) # update the slider
+
+# Storage only used to make the movements of the arm appear smoothed.
+UMI_angles = [UMI.joint_ranges["Riser"][1], 0, 0, 0, 0.05]
+#**************************************************************************
+
 
 while(True):
     rate(100)
     disp.center=get_gripper_bottom_position()
-    #break
 #End Program
 0
