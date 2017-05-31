@@ -48,6 +48,23 @@ For more download instructions, you can refer to \url{http://www.vpython.org/con
 Linux requires slightly more work and requires you to use Wine (basically a bit of windows inside Linux). The installation instructions of Wine, can be found here: \url{https://wiki.winehq.org/Ubuntu}. Depending on the version you installed, pick the correct files from the download\_linux link, and place them in the correct folders (once again check the bit versions that you use) and follow the \emph{Installing VPython 6 under Wine} instructions on the web page.
 
 \subsection*{What is provided?}
+
+In order for you to find the correct parameters for the robot, without having to go measure it yourself, and probably end up making mistakes, we provide you with the Denavit-Hartenberg convention for robot joint parameters of the simplified UMI in Table \ref{tab:denavit}.
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|} \hline
+        Joint$_i$ & $\Theta_i$ & $\alpha_i$ & $a_i$ & $d_i$ & Joint range \\ \hline
+        riser/zed & 90.0 & 0.0 & 67.5 & 1082.0 & 0.0 - 925.0 \\ \hline
+        shoulder & 0.0 & 0.0 & 253.5 & 95.0 & -90.0 - 90.0 \\ \hline
+        elbow & 0.0 & 0.0 & 253.5 & 80.0 & 180.0 - 110.0 \\ \hline
+        wrist & 0.0 & -90.0 & 0.0 & 90.0 & -110.0 - 110.0 \\ \hline
+        gripper & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 - 50.0 \\ \hline
+    \end{tabular}
+    \caption{The Denavit Hartenberg notation of the simplified UMI robot arm. The $d_i$ of the wrist includes the $d_i$ of the gripper. Distances are given in mm (\textbf{the simulator uses meters})}
+    \label{tab:denavite}
+\end{table}
+
 The simulator that will be provided to you consists of the following files:
 \begin{itemize}
     \item \textbf{umi\_chessboard.py} - Contains the representation of the chessboard and the pieces. Also contains functions that have to do with the translation and rotation of the board.
