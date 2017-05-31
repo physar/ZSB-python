@@ -26,6 +26,10 @@ def to_notation(coordinates):
     return letter + str(number)
 
 def write_parameters_to_file(parameter_lines, output_file):
+    """ Given a list of instructions, save it to a file so it can be read later.
+        :param parameter_lines: List containing the intructions to both the arm and the GUI.
+        :param output_file: Name of the file in which the output will be stored.
+    """
     with open(output_file, 'wb') as csv_file:
         csv_writer = csv.writer(csv_file, delimiter=',')
         csv_writer.writerow(['Riser', 'Shoulder', 'Elbow', 'Wrist', 'Gripper'])
@@ -33,6 +37,9 @@ def write_parameters_to_file(parameter_lines, output_file):
             csv_writer.writerow(line)
 
 def write_parameters_to_umi_robot(parameter_lines):
+    """ Given a list of instructions, save it to a file so it can be read later by the actual UMI robot.
+        :param parameter_lines: TList containing the intructions to both the arm and the GUI.
+    """
     with open("joints.txt", 'wb') as csv_file:
         csv_writer = csv.writer(csv_file, delimiter=' ')
         for line in parameter_lines:
@@ -40,6 +47,9 @@ def write_parameters_to_umi_robot(parameter_lines):
                 csv_writer.writerow([line[0]*1000.0, line[1], line[2], line[3], -90.0, 0.0, 0.0, line[4]*1000.0])
 
 def read_parameters_from_file(input_file):
+    """ Read the file as written by write_parameters_to_file
+        :param input_file: Name of the file in which the input is stored.
+    """
     with open(input_file, 'rb') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         headers = next(csv_reader)

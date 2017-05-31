@@ -94,12 +94,19 @@ def moveGripper(value):
     s4.SetValue(value*1000.0)
 
 def read_input_file(evt):
+    """
+        Upon clicking the button, reads the input from the file, and executes the instructions.
+    """
     joints_file = "joints_simulator.txt"
     if os.path.isfile(joints_file):
         (headers, sequence_list) = read_parameters_from_file(joints_file)
         execute_sequence(sequence_list)
 
 def store_input_text(evt):
+    """
+        Upon clicking the button, reads the instruction in the textbox, and translates this to instruction for the
+        robot arm to execute this action.
+    """
     joints_file = "joints_simulator.txt"
     input_text = input_field.GetValue()
     if len(input_text) == 4:
@@ -369,6 +376,8 @@ UMI_angles = [UMI.joint_ranges["Riser"][1], 0, 0, 0, 0.05]
 
 while(True):
     rate(100)
+    # TIP: If you want to know at all time, what the x,y,z of your robot arm is,
+    # print(get_gripper_bottom_position())
     disp.center=get_gripper_bottom_position()
 #End Program
 0
