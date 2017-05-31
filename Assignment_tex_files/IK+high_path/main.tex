@@ -51,7 +51,7 @@ Linux requires slightly more work and requires you to use Wine (basically a bit 
 
 In order for you to find the correct parameters for the robot, without having to go measure it yourself, and probably end up making mistakes, we provide you with the Denavit-Hartenberg convention for robot joint parameters of the simplified UMI in Table \ref{tab:denavit}.
 
-\begin{table}[]
+\begin{table}[h!]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|} \hline
         Joint$_i$ & $\Theta_i$ & $\alpha_i$ & $a_i$ & $d_i$ & Joint range \\ \hline
@@ -62,7 +62,7 @@ In order for you to find the correct parameters for the robot, without having to
         gripper & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 - 50.0 \\ \hline
     \end{tabular}
     \caption{The Denavit Hartenberg notation of the simplified UMI robot arm. The $d_i$ of the wrist includes the $d_i$ of the gripper. Distances are given in mm (\textbf{the simulator uses meters})}
-    \label{tab:denavite}
+    \label{tab:denavit}
 \end{table}
 
 The simulator that will be provided to you consists of the following files:
@@ -74,16 +74,7 @@ The simulator that will be provided to you consists of the following files:
     \item \textbf{umi\_student\_functions} - Empty shells of functions for you to fill, such that all functionality works correctly.
 \end{itemize}
 
-\section*{Alternative scoring}
-2 - Implementation high path/inverse kinematics/chess algorithm\\
-3 - High path\\
-5 - Inverse kinematics
-\section{Assignments}
-
-\subsection*{Cartesian Coordinate Conversion - X points}
-Because the UMI robot arm is blind, it is difficult for him to determine what to do if you tell it to move a piece from "a1" to "a3". After all, it can not see the chessboard. Hence, you will write a function to help him out, by writing the function that returns a (x,y,z) tuple, when given a position in the form $<$letter$><$digit$>$ e.g. "a1". For this you will use the rotation and translation of the board, as well as the position of the piece. The rotation point of the chessboard is next to the position "h8". These instructions can be implemented in the \textbf{board\_position\_to\_cartesian(chessboard, position)} function.
-
-\subsection*{High path - 4 points}
+\subsection*{High path - 2 points}
 In order to play chess, the robot arm needs to be able to move a chess piece from one location to another. To achieve this the robot arm will need to follow a series of instructions:
 \begin{enumerate}
 \item Open gripper
@@ -102,7 +93,10 @@ Where safe height is an arbitrary height above a board location where it is impo
 
 In addition, very similar to the above function, you also have a move\_to\_garbage function. With the difference that it now drops the pieces on a garbage pile outside of the board. You can choose different ways to solve this problem e.g. place the in a nice row next to the board, or just toss them in your imaginary box. These instructions can be implemented in the \textbf{move\_to\_garbage(chessboard, from\_location, to\_location)} function
 
-\subsection*{Inverse kinematics - 6 points}
+\subsection*{Cartesian Coordinate Conversion - 4 points}
+Because the UMI robot arm is blind, it is difficult for him to determine what to do if you tell it to move a piece from "a1" to "a3". After all, it can not see the chessboard. Hence, you will write a function to help him out, by writing the function that returns a (x,y,z) tuple, when given a position in the form $<$letter$><$digit$>$ e.g. "a1". For this you will use the rotation and translation of the board, as well as the position of the piece. The rotation point of the chessboard is next to the position "h8". These instructions can be implemented in the \textbf{board\_position\_to\_cartesian(chessboard, position)} function.
+
+\subsection*{Inverse kinematics - 4 points}
 Solve the inverse kinematics problem for the robot arm: "Given a point on the board and a height, what are the joint angles needed for the robot arm to reach this point?". Keep in mind that there is no right answer for this. Inverse kinematics generally does not have one solution as there are multiple ways to reach the same position. This means that you can implement movement that you think is best as long as it works within the simulator. Inverse kinematics can be implemented in the \textbf{apply\_inverse\_kinematics(x, y, z, gripper)}
 
 \end{document}
