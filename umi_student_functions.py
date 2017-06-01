@@ -20,7 +20,9 @@ def apply_inverse_kinematics(x, y, z, gripper):
         :return: Returns the a tuple containing the position and angles of the robot-arm joints.
     '''
     # Implementation is based on the Robotics readers made by Leo.
-
+    # TIP: If you want to know at all times, what the current x,y,z of your robot-arm is,
+    # Read the other TIP at the bottom of the umi_simulation file.
+    
     # Real arm runs from of 0 to 1.082
     riser_position = y + UMI.total_arm_height # (we want the gripper to be at the y position, but we can only influence the riser.)
 
