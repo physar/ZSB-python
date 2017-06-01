@@ -129,9 +129,6 @@ p = w.panel # Refers to the full region of the window in which to place widgets
 wx.StaticText(p, pos=(d,4), size=(L-2*d,d), label='3D representation.',
               style=wx.ALIGN_CENTRE | wx.ST_NO_AUTORESIZE)
 
-#max_height = 0.5*(UMI.hpedestal)*1000.0
-#min_height = (-0.5*(UMI.hpedestal)+UMI.total_arm_height)*1000.0
-
 s0 = wx.Slider(p, pos=(1.0*L,0.1*L), size=(0.9*L,20), minValue=UMI.joint_ranges["Riser"][0]*1000.0, maxValue=UMI.joint_ranges["Riser"][1]*1000.0)
 s0.Bind(wx.EVT_SCROLL, setRiserHeight)
 s0_label = wx.StaticText(p, pos=(1.0*L,0.05*L), label='Set Riser height: %d mm' % (UMI.joint_ranges["Riser"][1]*1000.0))

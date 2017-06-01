@@ -27,7 +27,7 @@ class UMI_parameters:
 
         # Joint-ranges in meters (where applicable e.g. Riser, Gripper) and in degrees for the rest.
         self.joint_ranges = {
-            "Riser"     : [self.total_arm_height, self.hpedestal],
+            "Riser"     : [0, 0.925],
             "Shoulder"  : [-90, 90],
             "Elbow"     : [-180, 110],
             "Wrist"     : [-110, 110],

@@ -31,9 +31,9 @@ class UMI_parameters:
         # SHOULDER, ELBOW, AND WRIST
         self.joint_ranges = {
             "Riser"     : [self.total_arm_height, self.hpedestal],
-            "Shoulder"  : [mimimum degrees_change_this, maximum degrees],
-            "Elbow"     : [mimimum degrees, maximum degrees],
-            "Wrist"     : [mimimum degrees, maximum degrees],
+            "Shoulder"  : [mimimum_degrees_change_this, maximum_degrees_change_this],
+            "Elbow"     : [mimimum_degrees_change_this, maximum_degrees_change_this],
+            "Wrist"     : [mimimum_degrees_change_this, maximum_degrees_change_this],
             "Gripper"   : [0, 0.05]
         }
 
