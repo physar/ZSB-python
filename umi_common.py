@@ -9,8 +9,8 @@ def to_coordinate(notation):
 
         :return: Tuple internal coordinates of the field.
     """
-    x = ord(notation[0]) - ord('a')
-    z = int(notation[1]) - 1
+    z = ord(notation[0]) - ord('a')
+    x = int(notation[1]) - 1
     return (x, z)
 
 def to_notation(coordinates):
@@ -21,8 +21,8 @@ def to_notation(coordinates):
         :return: String in the form 'a1'
     """
     (x,z) = coordinates
-    letter = chr(ord('a') + x)
-    number = z + 1
+    letter = chr(ord('a') + z)
+    number = x + 1
     return letter + str(number)
 
 def write_parameters_to_file(parameter_lines, output_file):
