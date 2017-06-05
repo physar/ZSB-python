@@ -10,6 +10,7 @@ software4students:
 	cp joints_simulator.txt software4students/
 	cp umi_chessboard.py software4students/
 	cp umi_common.py software4students/
+	cp umi_distance_matrix.py software4students/
 	cp umi_parameters_STUDENTS.py software4students/umi_parameters.py
 	cp umi_simulation.py software4students/
 	cp umi_student_functions.py software4students/
