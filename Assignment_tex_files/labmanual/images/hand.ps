@@ -1,0 +1,1072 @@
+%!PS-Adobe-2.0 EPSF-1.2
+%%Title: hand.ps
+%%Creator: CLARIS EPSF Export Filter V1.0
+%%CreationDate:11/17/95  2:37:12 p.m.
+%%BoundingBox: 107.000 599.000 273.000 738.000                                                         
+%%QDBoundingBox: 107.000 54.000 273.000 193.000                                                          
+%%DocumentProcessColors: Cyan Magenta Yellow Black
+%%ObjectsIncluded: tText=F tLine=F tRect=T tRRect=F tOval=F tArc=F tFree=F tPoly=F tBMap=T tNote=F tBez=F tPMap=F 
+%%AttributesIncluded: kBaWPattType=T kPixPattType=T kGradientType=F 
+%%EndComments
+/MAV 300 dict def
+MAV begin 
+/useClip true def 
+/top    0 def 
+/left   1 def 
+/bottom 2 def 
+/right  3 def 
+/CM     6 array def 
+/CTM    6 array def 
+/CTMR   6 array def 
+/MTC    6 array def 
+/blimit 1500 def 
+/bcnt   0 def 
+/rbox 8 array def 
+/segbox 8 array def 
+/bbox1 4 array def 
+/c1 3 array def 
+/c2 3 array def 
+/d 3 array def    
+/delta 3 array def 
+/mycurrentrgbcolor 3 array def 
+/ulx 0 def 
+/uly 1 def 
+/llx 2 def 
+/lly 3 def 
+/urx 4 def 
+/ury 5 def 
+/lrx 6 def 
+/lry 7 def 
+/sp [0 0] def 
+/ep [0 0] def 
+/bbox 4 array def 
+/pbox 4 array def 
+/scrnProc currentscreen 3 1 roll pop pop def
+/currentcolorscreen where {
+begin
+currentcolorscreen
+end
+3 1 roll pop pop 
+4 2 roll pop pop 
+5 -2 roll pop pop 
+6 -2 roll pop pop 
+/kProc exch def 
+/bProc exch def 
+/gProc exch def 
+/rProc exch def 
+} if 
+/Max {2 copy gt {pop}{exch pop} ifelse} bind def
+/cellPenW 72.0 /currentcolorscreen where
+{begin currentcolorscreen end pop pop
+10 1 roll pop pop 8 1 roll pop pop
+ 6 1 roll pop pop Max Max Max }
+{currentscreen pop pop} ifelse div 2.0 div def
+%%BeginProcSet : rect 
+/rect { 
+ /saveobj save def 
+ R PC PF LC SS 
+ saveobj restore 
+} bind def 
+%%EndProcSet 
+%%BeginProcSet : R 
+/R { 
+ newpath
+ pbox astore pop
+ 0 792 translate 1 -1 scale CTMR currentmatrix pop exch translate
+ /objectCord mstore def
+ pbox right get 2 div
+ dup pbox left get exch sub
+ pbox left 3 -1 roll put 
+ dup pbox right 3 -1 roll put
+ pbox bottom get 2 div 
+ dup pbox top get exch sub
+ pbox top 3 -1 roll put
+ dup pbox bottom 3 -1 roll put
+ translate 
+ CTM currentmatrix pop
+ 57.3 mul rotate
+ RT
+} bind def
+%%EndProcSet
+%%BeginProcSet : SaveScreenBW
+ /SaveScreenBW {
+ currentscreen
+ /scrnProc exch def
+ /scrnAngle exch def
+ /scrnFreq exch def
+  } bind def
+%%EndProcSet
+%%BeginProcSet : RestoreScreenBW
+ /RestoreScreenBW {
+ scrnFreq scrnAngle MAV /scrnProc get setscreen
+ } bind def
+%%EndProcSet
+%%BeginProcSet : SetFreqAngleBW
+ /SetFreqAngleBW {
+ currentscreen
+ 3 1 roll
+ pop pop
+ setscreen
+ } bind def
+%%EndProcSet
+%%BeginProcSet : SaveScreenColor 
+ /SaveScreenColor {
+ currentcolorscreen
+ /grayProc exch def
+ /grayAngle exch def
+ /grayFreq exch def
+ /bProc exch def
+ /bAngle exch def
+ /bFreq exch def
+ /gProc exch def
+ /gAngle exch def
+ /gFreq exch def
+ /rProc exch def
+ /rAngle exch def
+ /rFreq exch def
+  } bind def
+%%EndProcSet
+%%BeginProcSet : RestoreColorScreen
+ /RestoreColorScreen {
+ rFreq rAngle MAV /rProc get gFreq gAngle MAV /gProc get bFreq bAngle MAV /bProc get grayFreq grayAngle MAV /grayProc get setcolorscreen
+ } bind def
+%%EndProcSet
+%%BeginProcSet : SetFreqAngleColor
+ /SetFreqAngleColor { 
+ currentcolorscreen 
+ 3 1 roll pop pop
+ 4 2 roll pop pop
+ 5 -2 roll pop pop
+ 6 -2 roll pop pop
+ 4 1 roll 
+ 6 1 roll 
+ 8 1 roll 
+ 10 1 roll 
+ setcolorscreen 
+ } bind def 
+%%EndProcSet 
+/initmsaverestore { 
+userdict begin 
+/mdict 10 dict def 
+mdict begin 
+/mindex -1 def 
+/mstacksize 25 def 
+/mstack mstacksize array def 
+/incmindex { 
+/mindex mindex 1 add def 
+} bind def 
+/decmindex { 
+/mindex mindex 1 sub def 
+} bind def 
+/checkmindex { 
+mindex 0 lt { 
+(%ERROR: msave/mrestore stack underflow: Offending command 'mrestore'
+) print flush 
+stop 
+} 
+{ 
+mindex mstacksize ge { 
+(%ERROR: msave/mrestore stack overflow: Offending command 'msave'
+) print flush 
+stop 
+} if 
+} ifelse 
+} bind def 
+/mpush { 
+incmindex 
+checkmindex 
+mstack mindex 
+3 -1 roll put 
+} bind def 
+/mpop { 
+checkmindex 
+mstack mindex get 
+decmindex 
+} bind def 
+end 
+end 
+} bind def 
+/msave { 
+mdict begin 
+matrix currentmatrix mpush 
+end 
+} bind def 
+/mrestore { 
+mdict begin 
+mpop setmatrix 
+end 
+} bind def 
+/msavelevel { 
+mdict begin 
+mindex 1 add 
+end 
+} bind def 
+/mstore {
+matrix currentmatrix
+} bind def
+/AutoSizeY {
+0 0 pl
+dup 3 1 roll
+4 -1 roll  
+add
+pl exch pop
+exch sub
+} bind def
+/pl {  
+transform
+0.25 sub round 0.25 add exch
+0.25 sub round 0.25 add exch
+itransform
+} bind def
+/pll {
+transform
+round exch
+round exch
+itransform
+} bind def
+/pr { 
+dtransform
+round exch
+round exch
+idtransform
+} bind def
+/m { 
+pl  moveto
+} bind def
+/l { 
+pl lineto
+} bind def
+/c { 
+pl curveto
+} bind def
+/rm { 
+pr rmoveto
+} bind def
+/rl { 
+pr rlineto
+} bind def
+/ar { 
+5 -2 roll pl
+5 2 roll
+arc
+} bind def
+/an { 
+5 -2 roll pl
+5 2 roll
+arcn
+} bind def
+/MakePatternFont {
+/FontDict 20 dict def
+FontDict begin
+/FontName exch def
+/Encoding exch def
+/FontMatrix [1 0 0 1 0 0 ] def
+/FontType 3 def
+/FontBBox [ 0 0 1 1 ] def
+/PatternDict exch def
+/RenderPattern {
+patternDict exch get
+exec
+} bind def
+/BuildChar {
+exch begin
+1 0 0 0 1 1 setcachedevice
+Encoding exch get RenderPattern
+end
+} bind def
+FontName FontDict definefont pop
+end
+} bind def
+/SnapToPattenGrid
+	{
+	exch
+	dup 0 lt {
+		1 index sub
+	} if
+	1 index
+	div truncate
+	mul
+} bind def
+/FillPatternString {
+dup length
+1 sub
+0 1 3 -1 roll {
+2 index
+2 index
+3 -2 roll
+put
+} for
+pop pop
+} bind def
+/AutoSizeY {
+	0.0 exch dtransform
+	round
+	idtransform exch pop
+} bind def
+ /AutoSizeX {
+	0.0 dtransform
+	exch
+	round
+	exch
+	idtransform pop
+} bind def 
+/AutoCellSize {
+	AutoSizeY
+	exch
+	AutoSizeX
+	exch
+} bind def
+/CheckPath {
+	false
+	{ pop pop pop true exit}
+	{ pop pop pop true exit}
+	{ pop pop pop pop pop pop pop true exit}
+	{ pop true exit}
+	pathforall
+} bind def
+/PatternFill {					%		patternCharacter
+	/patternString 1 string def
+	/cm mstore def
+	patternMatrix setmatrix
+	1 1 AutoCellSize
+	dup 0 eq { pop 1} if
+	exch
+	dup 0 eq { pop 1} if
+	exch
+	/patternSize exch 24.0 mul def
+	/PatternSizeX exch 24.0 mul patternString length mul def
+	/flaterror 0 def
+	patternString FillPatternString
+	gsave
+		flaterror 1 add setflat
+		flattenpath
+		pathbbox
+	grestore
+	psy add flaterror add psy SnapToPattenGrid
+	exch psx add flaterror add psx SnapToPattenGrid
+	3 -1 roll flaterror sub psy SnapToPattenGrid
+	4 -1 roll flaterror sub psx SnapToPattenGrid
+	4 2 roll pll
+	4 2 roll pll
+	/llxsnap exch def
+	/llysnap exch def
+	/urxsnap exch def
+	/urysnap exch def
+	gsave
+		useClip true eq {clip}{eoclip} ifelse newpath
+		/PatternFont findfont [psx 0.0 0.0 psy 0.0 0.0] makefont setfont
+		llysnap patternSize urysnap {
+			llxsnap exch moveto
+			llxsnap PatternSizeX urxsnap {
+				pop
+				patternString show
+				%currentpoint am
+			} for
+		} bind for
+	grestore
+	cm setmatrix
+} bind def				%		End 'PatternFill'
+/DefaultPatternFont {
+	/cm mstore def
+	patternMatrix setmatrix
+	1 1 AutoCellSize
+	dup 0 eq { pop 1} if
+	exch
+	dup 0 eq { pop 1} if
+	exch
+	/psy exch iSizeY mul def
+	/psx exch iSizeX mul def
+	/patternDict 64 dict def
+	patternDict begin
+		/NotDef {} def
+		/LiteDiagLines {
+			iSizeX iSizeY false [iSizeX 0.0 0.0 iSizeY -1.0 mul  0.0 iSizeY]
+			{pat}
+			imagemask
+		} bind def
+	end
+	/CustEncoding 256 array def
+	0 255 1 {
+		CustEncoding exch /NotDef put
+	} bind for
+	CustEncoding 65 /LiteDiagLines put
+	patternDict CustEncoding /PatternFont MakePatternFont
+	/pathSegProc {
+		strokepath
+		CheckPath {
+			65 PatternFill newpath
+		} if
+	} bind def
+	cm setmatrix
+} bind def
+/XRound {
+	dup
+	3 -1 roll
+	exch mul round
+	exch div
+} bind def
+/RoundMatrix {
+	/i 0 def
+	dup {
+		100000.0 XRound
+		1 index
+		exch i exch put
+		/i i 1 add def
+	} forall
+} bind def
+/GetBoxesRatio {
+3 -1 roll sub
+7 1 roll
+exch sub
+6 1 roll
+3 -1 roll sub
+5 1 roll
+exch sub
+4 1 roll
+3 -1 roll div
+3 1 roll
+exch div
+exch
+} bind def
+%%BeginProcSet : SR 
+/SR { 
+ pbox left get pbox top get moveto 
+ pbox right get pbox top get lineto 
+ pbox right get pbox bottom get lineto 
+ pbox left get pbox bottom get lineto 
+ closepath
+} bind def 
+%%EndProcSet 
+%%BeginProcSet : BitMap
+/BitMap {
+ /buffer ^1 string def
+ ^2 ^5 2 div add 792 ^3 sub ^6 2 div add translate
+ ^4 57.3 mul rotate
+  0 ^5 2 div sub 0 ^6 2 div sub translate
+ ^5 ^6 scale
+ ^5 ^6 ^7 [^5 0 0 -^6 0 ^6] {currentfile buffer readhexstring pop} image
+}bind def 
+%%EndProcSet 
+/StripFromFront { 
+dup length
+2 index sub
+3 1 roll
+exch 3 -1 roll
+getinterval
+} bind def
+/MakePathArray { 
+ /k 0 def 
+ {/k k 1 add def pop pop}{/k k 1 add def pop pop}{/k k 1 add def pop pop pop pop pop pop}{/k k 1 add def }pathforall 
+ k array
+ /k 0 def 
+ {{moveto} 3 array astore 1 index k 3 -1 roll put /k k 1 add def} 
+ {{lineto} 3 array astore 1 index k 3 -1 roll put /k k 1 add def} 
+ {{curveto} 7 array astore 1 index k 3 -1 roll put /k k 1 add def} 
+ {{closepath} 1 array astore 1 index k 3 -1 roll put /k k 1 add def} 
+pathforall 
+}bind def 
+/MakeFlatPathArray { 
+/k 0 def 
+{/k k 1 add def pop pop}{/k k 1 add def pop pop}{pop pop pop pop pop pop}{}pathforall 
+k array
+/k 0 def 
+{{moveto} 3 array astore 1 index k 3 -1 roll put /k k 1 add def} 
+{{lineto} 3 array astore 1 index k 3 -1 roll put /k k 1 add def} 
+{ pop pop pop pop pop pop} 
+{} 
+pathforall 
+}bind def 
+/FractionalLine {
+2 index sub
+.00001 mul
+exch
+3 index sub
+.00001 mul
+4 -1 roll add
+3 1 roll
+add
+} bind def
+/calcLineLength {
+ exch
+ 4 -1 roll
+ sub
+ dup mul
+ 3 1 roll exch
+ sub
+ dup mul
+ add sqrt
+} bind def
+/InitTotalLineLength {
+ /oldY exch def
+ /oldX exch def
+ theDash aload pop currentLineLength add setdash
+} bind def
+/AccumeLineLength {
+ 3 copy pop
+ 2 copy
+ oldX oldY
+ 4 2 roll calcLineLength
+ /segmentLength exch def
+ /currentLineLength currentLineLength segmentLength add def
+ /oldY exch def
+ /oldX exch def
+} bind def
+/DecumeLastLineLength {
+ /currentLineLength currentLineLength segmentLength sub def
+} bind def
+/DrawFlattendSegment {
+ /pointCount 2 def
+ dup 0 lt { pop 0 } if
+ fpc
+ 3 1 roll
+ 2 index
+ 1 index
+ gt {
+ 2 copy get
+ dup length
+ dup 3 eq {
+ pop
+ dup 0 get
+ exch 1 get
+ 2 copy InitTotalLineLength  
+ m
+ } {
+ } ifelse
+ } {
+ pop 1 index
+ } ifelse
+ dup 1 add
+ 3 index
+ exch sub
+ dup 10 gt { pop 10} if
+ {
+ 1 add
+ 2 copy
+ get aload pop
+ AccumeLineLength
+ exec
+ } repeat
+ 3 1 roll pop pop
+ DecumeLastLineLength
+} bind def
+/IncFPC {
+ fpc add
+ /fpc exch def
+} bind def
+/DrawFlatPathArray {
+ fpc
+ 0 { 
+ dup 2 index
+ 1 sub
+ lt { 
+ flatPathArray exch
+ newpath
+ 1 sub DrawFlattendSegment
+ gsave
+ pathSegProc
+ grestore
+ newpath
+ }
+ {
+ pop pop
+ exit
+ } ifelse
+ } loop
+} bind def
+/RecordFirstSubSegment {
+ closepathArray 0 pathArray 0 get
+ put
+ closepathArray 1
+ pathArray 0 get aload pop pop
+ pathArray 1 get dup length 3 eq {
+ aload pop pop
+ } {
+ newpath
+ 0 0 moveto
+ aload pop exec
+ /segmentArray flattenpath MakeFlatPathArray def
+ segmentArray 1 get aload pop pop
+ } ifelse
+ FractionalLine {lineto} 3 array astore
+ put
+} bind def
+/AppendClosePath {
+ closepathArray 0 get 2 {lineto} put
+ flatPathArray fpc closepathArray 0 get put
+ 1 IncFPC
+ flatPathArray fpc closepathArray 1 get put
+ 1 IncFPC
+} bind def
+/RecordCurrentDash {
+ /theDash
+ currentdash 2 array astore def
+ /currentLineLength 0 def
+} bind def
+/PatternStroke {
+	0 setlinecap
+ RecordCurrentDash
+ /saveFlat currentflat def
+ .5 setflat
+ /pathArray MakePathArray def
+ /closepathArray 2 array def
+ /pathLength pathArray length def
+ /flatPathArray 513 array def
+ /currentLineLength 0 def
+ /fpc 0 def
+ pathArray pathLength 1 sub get
+ length 1 eq {
+ /usingClosepath true def
+ RecordFirstSubSegment
+ /pathLength pathLength 1 sub def
+ } {
+ /usingClosepath false def
+ } ifelse
+ 0 1 pathLength 1 sub {
+ pathArray exch get
+ dup length 3 eq {
+ fpc 1 add 512 ge {
+ DrawFlatPathArray
+ fpc 2 ge {
+ flatPathArray flatPathArray fpc 2 sub get 0 put
+ flatPathArray flatPathArray fpc 1 sub get 1 put
+ /fpc 2 def
+ }{
+ /fpc 0 def
+ } ifelse
+ } if
+ flatPathArray exch fpc exch put
+ 1 IncFPC
+ } {
+ dup length 7 eq {
+ newpath
+ /nToStrip 0 def
+ fpc 1 gt {
+ flatPathArray fpc 2 sub get aload pop pop m
+ flatPathArray fpc 1 sub get aload pop exec
+ /nToStrip 2 def
+ } {
+ fpc 1 eq {
+ flatPathArray fpc 1 sub get aload pop exec
+ /nToStrip 2 def
+ } if
+ } ifelse
+ aload pop exec
+ /segmentArray flattenpath MakeFlatPathArray def
+ /segmentArray nToStrip segmentArray StripFromFront def
+ segmentArray length fpc add 512 lt {
+ flatPathArray fpc segmentArray putinterval
+ segmentArray length IncFPC
+ } {
+ DrawFlatPathArray
+ fpc 1 gt {
+ flatPathArray flatPathArray fpc 2 sub get 0 exch put
+ flatPathArray flatPathArray fpc 1 sub get 1 exch put
+ /fpc 2 def
+ }{
+ /fpc 0 def
+ } ifelse
+ segmentArray length 512 lt {
+ flatPathArray fpc segmentArray putinterval
+ segmentArray length IncFPC
+ } {
+ segmentArray length
+ /exitLoop false def
+ 0 
+ {
+ 2 copy sub
+ dup 500 gt {
+ pop 500
+ } { 
+ /exitLoop true def
+ } ifelse 
+ segmentArray 2 index 2 index getinterval
+ flatPathArray fpc 3 -1 roll putinterval
+ dup IncFPC
+ add 
+ exitLoop {
+ exit 
+ } {
+ DrawFlatPathArray
+ fpc 1 gt {
+ flatPathArray flatPathArray fpc 2 sub get 0 exch put
+ flatPathArray flatPathArray fpc 1 sub get 1 exch put
+ /fpc 2 def
+ }{
+ /fpc 0 def
+ } ifelse
+ } ifelse
+ } loop
+ } ifelse
+ } ifelse
+ } if
+ } ifelse
+ } for
+ fpc 0 gt {
+ usingClosepath {
+ AppendClosePath
+ } if
+ DrawFlatPathArray
+ } if
+ saveFlat setflat
+} bind def
+
+
+%%EndProlog
+initmsaverestore
+/tctm matrix currentmatrix def
+tctm RoundMatrix setmatrix
+/patternMatrix mstore def
+10 setmiterlimit
+2 setlinecap
+newpath
+%
+%tLayer
+%
+%@BeginRect
+/RT {SR} def
+/LC {} def
+/SS {pop} def
+/PC { /setcmykcolor where
+ {begin 0.000 0.000 0.000 0.000 setcmykcolor end} {1.000 1.000 1.000 setrgbcolor} ifelse 
+} def
+/PF {gsave fill grestore} def
+0.000 0 54.000 107.000 0.000 0.000 1.000 1.000 rect
+%@EndRect
+%@BeginRect
+/RT {SR} def
+/LC {} def
+/SS {pop} def
+/PC { /setcmykcolor where
+ {begin 0.000 0.000 0.000 0.000 setcmykcolor end} {1.000 1.000 1.000 setrgbcolor} ifelse 
+} def
+/PF {gsave fill grestore} def
+0.000 0 54.000 107.000 0.000 0.000 1.000 1.000 rect
+%@EndRect
+%@BeginImage
+gsave
+/buffer 22 string def
+190.500 668.000 translate
+0.000 rotate
+-85.250 -69.000 translate
+176.000 138.000 scale
+0 0 moveto
+0 0 moveto
+0 138 lineto
+165 138 lineto
+165 0 lineto closepath clip
+176 138 1 [176 0 0 -138 0 138] {currentfile buffer readhexstring pop} image
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+EFFFFFFFF7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+EFFFFFFFF7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+E7FFFFFFF7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+F7FFFFFFF7FFFFFFFFFFFF7FFFFFFFFFFFFFFFFFFFFF
+F7FFFFFFE7FFFFFFFFFFFE7FFF7FFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFFFFFFFFFEFFFF7FFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFFFFFFFFFE001E7FFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFFFFFFFFFC007F7FFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFF9FFFFFFC003FFFFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFF0FFFFFFD001FFFFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFF07FFFFF90007FFFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFF03FFFFFB1801FFFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFE01FFFFFBFC00FFFFFFFFFFFFFFFFFF
+F7FFFFFFCFFFFE01FFFFF3FF003FFFFFFFFFFFFFFFFF
+F7FFFFFFDFFFFC03FFFFF7FFC01FFFFFFFFFFFFFFFFF
+F7FFFFFFDFFFFC07DFFFF7FFF007FFFFFFFFFFFFFFFF
+F3FFFFFFDFFFF807BFFFE7FFF803FFFFFFFFFFFFFFFF
+FBFFFFFFDFFFF807FFFFEFFFFE01FFFFFFFFFFFFFFFF
+FBFFFFFF9FFFF007FFFFEFFFFF00FFFFFFFFFFFFFFFF
+FBFFFFFFBFFFF207FFFFCFFFFF807FFFFFFFFFFFFFFF
+FBFFFFFFBFFFFE07FFFFDFFFFFE03FFFFFFFFFFFFFFF
+FBFFFFFFBFFFFE07FFFFDFFFFFF01FFFFFFFFFFFFFFF
+FBFFFFFF3FFFFE07FFFF9FFFFFF80FFFFFFFFFFFFFFF
+FBFFFFFF7FFFFE07FFFFBFFFFFFC07FFFFFFFFFFFFFF
+FBFFFFFF7FFFFE07FFFFBFFFFFFE07FFFFFFFFFFFFFF
+FBFFFFFF7FFFFE07FFFF3FFFFFFF03FFFFFFFFFFFFFF
+FBFFFFFE7FFFFE07FFFF7FFFFFFF81FFFFFFFFFFFFFF
+FBFFFFFF7FFFFE07FFFF7FFFFFFFC0FFFFFFFFFFFFFF
+FBFFFFFF7FFFFE07FFFE7FFFFFFFC07FFFFFFFFFFFFF
+FBFFFFFF7FFFFE07FFFEFFFFFFFFE07FFFFFFFFFFFFF
+FBFFFFFF3FFFFE07FFFEFFFFFFFFF03FFFFFFFFFFFFF
+FBFFFFFFBFFFFE07FFFCFFDCFFFFF83FFFFFFFFFFFFF
+F9FFFFFF9FFFFE07FFFDFFEC1FFFF81FFFFFFFFFFFFF
+FDFFFFFFCFFFFE07FFFDFFFC03FFFC1FFFFFFFFFFFFF
+FDFFFFFFE7FFFE07FFF9FFFC03FFFE0FFFFFFFFFFFFF
+FDFFFFFFF3FFFE07FFFBFFF807FFFE07FFFFFFFFFFFF
+FDFFFFFFF9FFFE07FFFBFFF007FFFF07FFFFFFFFFFFF
+FCFFFFFFFCFFFE07FFF3FFC00FFFFF07FFFFFFFFFFFF
+FEFFFFFFFE7FFE07FFF7FF000FFFFF83FFFFFFFFFFFF
+FEFFF7FFFF3FFE07FFF7FE001FFFFF83FFFFFFFFFFFF
+FE7FC7FFFF8FFE07FFE7F8003FFFFF83FFFFFFFFFFFF
+FF7F87FFFFE7FE07FFEFE0003FFFFFC1FFFFFFFFFFFF
+FF7F07FFBFF3FE07FFEF80047FFFFFC1FFFFFFFFFFFF
+FF3E01FFBFF8FE07FFCF001CFFFFFFE0FFFFFFFFFFFF
+FFBE007FBFFE7E07FFDC003CFFFFFFE0FFFFFFFFFFFF
+FF9E000FBFFF1E07FFD000FDFFFFFFF0FFFFFFFFFFFF
+FFDF0001FFFFCE07FF80007FFFFFFFF0FFFFFFFFFFFF
+FFDF80003FFFE607FF800003FFFFFFF07FFFFFFFFFFF
+FFC780000FFFF007FE0003F81FFFFFF87FFFFFFFFFFF
+FFF3C00001FEFC07FC0003FFC07FFFF87FFFFFFFFFFF
+FFF8E600003E7E07F000D81FFF03FFF87FFFFFFFFFFF
+FFFE27C0000E7E07C001DFC0FFF81FF87FFFFFFFFFFF
+FFFF87F800003E078007DFFE07FFC1F87FFFFFFFFFFF
+FFFFE7FE00001E02001FDFFFF03FF1FC7FFFFFFFFFFF
+FFFFF1FFC0001E00003FDFFFFF81C5FC7DFFFFFFFFFF
+FFFFFC7FF8000E0000FFDFFFFFFC1DFC79FFFFFFFFFF
+FFFFFF3FFE000600000FDFFFFFFFBDFC200FFFFFFFFF
+FFFFFF8FFFC0060005E01FFFFFFFBDF001FFFFFFFFFF
+FFFFFFE3FFF806001BFFCFFFFFFF800620FFFFFFFFFF
+FFFFFFF9FFFE08003BFFEFFFFC003DFE20FFFFFFFFFF
+FFFFFFFC7FFE0000F3FFEFF001FFBDFE3079FFFFFFFF
+FFFFFFFF0FFE4003F7FFC007FFFFBDFE307BFFFFFFFF
+FFFFFFFFE1FE0007F40033FFFFFFBDFE383DFFFFFFFF
+FFFFFFFFFC3C0007E1FFF87FFFFFBDFE383FFFFFFFFF
+FFFFFFFFFF800007E7FFFF07FFFFBDFE3C1FFFFFFFFF
+FFFFFFFFFFE00007E3FFFFF0FFFFBDFF1F1FFFFFFFFF
+FFFFFFFFFF800007EBFFFFFE0FFFBDFF1F1FFFFFFFFF
+FFFFFFFFFE000407EBFFFFFFE1FFBDFF1F9FFFFFFFFF
+FFFFFFFFFC001E07EDFFC7FFFC7FBDFF1F9FFFFFFFFF
+FFFFFFFFF0003E03CDFFF00FF83FBDFF1F8FFFFFFFFF
+FFFFFFFFC000FE01DCFFFE003C1FBDFF1FDFFFFFFFFF
+FFFFFFFF8003FE045EFFFFC3807FBDFF1FDFFFFFFFFF
+FFFFFFFE0007FE071EFFFFF87FFFBDFF1FDFFFFFFFFF
+FFFFFFF8001FFE079E7FFFFF0FFFBDFF1FDFFFFFFFFF
+FFFFFFF0003FFE07CF7FFFFFE1FFBDFF1FDFFFFFFFFF
+FFFFF7C000FFFE07837F83FFFC7FBDFF1F9FFC0FFFFF
+FFFFE70003FFFE07B93FF81FF83FBDFF1F9FE023FFFF
+FFFFE60007FFFE07BCBFFFC0FB9FBDFF1F1FC0F1FFFF
+FFFFC0001FFFFE07BE1FFFFE011FBDFF1F3F81F8FFFF
+FFFFC0003FFFFE07BF1F3FFFF07FBDFF1E3F03FC7FFF
+FFFF8000FFFFFE073F8F81FFF37FBDFF1E3C07FC7FFF
+FFFF0003FFFFFE077FC3FC0FF27FBDFF1C7C0FFC7FFF
+FFFF0007FFFFFE077FE8FFE000FFBDFF3C7C0EBE3FFF
+FFFE001FFFFFFE077FE603FD9FFFBDFF38FC0EBE3FFF
+FFFE003FFFFFFE077FF7E8003FFFBDFE31FE7FFE3FFF
+FFFC00FFFFFFFE077FF7EFF3FFFFBDFE21FFFFFC3FFF
+FFFC03FFFFFFFE067FF3EFFFFFFFBDFE03FFFFFC3FFF
+FFFC07FFFFFFFE06FFFBEFFFFFFFBDFE07FFFFFC3FFF
+FFFF07FFFFFFFE06FFFBEFFFFFFFBDFE07FFFFFC3FFF
+FFFF87FFFFFFFE06FFF9EFFFFFFFBDFE0FFFFFFC3FFF
+FFFFE7FFFFFFFE06FFFDEFFFFFFFBDF83FFFFFFC3FFF
+FFFFFFFFFFFFFE04CFFCEFFFFFFFBDE07FFFFFF83FFF
+FFFFFFFFFFFFFE058FFEEFFFFFFFBD807FFFFFF83FFF
+FFFFFFFFFFFFFE050FFEEFFFFFFFBC007FFFFFF87FFF
+FFFFFFFFFFFFFE0407FE63FFFFFF800C7FFFFFF87FFF
+FFFFFFFFFFFFFE04000F783FFFF0001CFFCFFFF87FFF
+FFFFFFFFFFFFFE0400000F83FE0000F8FE07FFF87FFF
+FFFFFFFFFFFFFE0000000000000001F8FF07FFF0FFFF
+FFFFFFFFFFFFFE0700000000000033F8FF83FFF0FFFF
+FFFFFFFFFFFFFE07800000000001A7F9FF83FFF0FFFF
+FFFFFFFFFFFFFE078FF0000000018FF1FF83FFE1FFFF
+FFFFFFFFFFFFFE07CFFFD0007FFC1FF1FF87FFE1FFFF
+FFFFFFFFFFFFFE07EFFFCFFFFFFFFFF3FF87FFC3FFFF
+FFFFFFFFFFFFFE07FFFFEFFFFFFFFFE3FF8FFFC7FFFF
+FFFFFFFFFFFFFE05FFFFEFFFFFFFFFE3FF8FFF87FFFF
+FFFFFFFFFFFFFE01FFFFE7FFFFFFFFC7FF8FFF0FFFFF
+FFFFFFFFFFFFFE01FFFFF7FFFFFFFFC7FF8FFE1FFFFF
+FFFFFFFFFFFFFE03FFFFF3FFFFFFFF87FF8FFE1FFFFF
+FFFFFFFFFFFFFE03FFFFFBFFFFFFFF8FFFC7FC3FFFFF
+FFFFFFFFFFFFFC07FFFFFBFFFFFFFF8FFFC7F87FFFFF
+FFFFFFFFFFFFF007FFFFF9FFFFFFFF1FFFE3E07FFFFF
+FFFFFFFFFFFFF807FFFFFDFFFFFFFE3FFFF1C1FFFFFF
+FFFFFFFFFFFFF80FFFFFFDFFFFFFFE3FFFF807FFFFFF
+FFFFFFFFFFFFFC0FFFFFFCFFFFFFFC7FFFFE3FFFFFFF
+FFFFFFFFFFFFFE1FFFFFFEFFFFFFF8FFFFFFFFFFFFFF
+FFFFFFFFFFFFFF1FFFFFFE7FFFFFF8FFFFFFFFFFFFFF
+FFFFFFFFFFFFFFBFFFFFFF7FFFFFF1FFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFF7FFFFFE3FFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFF3FFFFFC7FFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFBFFFFF8FFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFBFFFFF1FFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFF9FFFFE3FFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFDFFFF8FFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFCFFFE1FFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFEFF207FFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFEF000FFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFE0001FFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFF0007FFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFF003FFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFF03FFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFF8FFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFF9FFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFDFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFDFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+grestore
+%@EndImage
+%@BeginImage
+gsave
+/buffer 22 string def
+190.500 668.000 translate
+0.000 rotate
+-85.250 -69.000 translate
+176.000 138.000 scale
+0 0 moveto
+0 0 moveto
+0 138 lineto
+165 138 lineto
+165 0 lineto closepath clip
+176 138 1 [176 0 0 -138 0 138] {currentfile buffer readhexstring pop} image
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+EFFFFFFFF7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+EFFFFFFFF7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+E7FFFFFFF7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+F7FFFFFFF7FFFFFFFFFFFF7FFFFFFFFFFFFFFFFFFFFF
+F7FFFFFFE7FFFFFFFFFFFE7FFF7FFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFFFFFFFFFEFFFF7FFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFFFFFFFFFE001E7FFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFFFFFFFFFCDC7F7FFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFF9FFFFFFC763FFFFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFF0FFFFFFD3B9FFFFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFF67FFFFF94347FFFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFF53FFFFFB19D1FFFFFFFFFFFFFFFFFF
+F7FFFFFFEFFFFE69FFFFFBFC6CFFFFFFFFFFFFFFFFFF
+F7FFFFFFCFFFFED9FFFFF3FF1C3FFFFFFFFFFFFFFFFF
+F7FFFFFFDFFFFC73FFFFF7FFC71FFFFFFFFFFFFFFFFF
+F7FFFFFFDFFFFDB7DFFFF7FFF387FFFFFFFFFFFFFFFF
+F3FFFFFFDFFFF977BFFFE7FFF873FFFFFFFFFFFFFFFF
+FBFFFFFFDFFFF9D7FFFFEFFFFE59FFFFFFFFFFFFFFFF
+FBFFFFFF9FFFF0E7FFFFEFFFFF2CFFFFFFFFFFFFFFFF
+FBFFFFFFBFFFF2D7FFFFCFFFFF8C7FFFFFFFFFFFFFFF
+FBFFFFFFBFFFFE77FFFFDFFFFFE73FFFFFFFFFFFFFFF
+FBFFFFFFBFFFFEB7FFFFDFFFFFF39FFFFFFFFFFFFFFF
+FBFFFFFF3FFFFE77FFFF9FFFFFF94FFFFFFFFFFFFFFF
+FBFFFFFF7FFFFED7FFFFBFFFFFFCC7FFFFFFFFFFFFFF
+FBFFFFFF7FFFFEE7FFFFBFFFFFFE67FFFFFFFFFFFFFF
+FBFFFFFF7FFFFED7FFFF3FFFFFFF13FFFFFFFFFFFFFF
+FBFFFFFE7FFFFE77FFFF7FFFFFFF91FFFFFFFFFFFFFF
+FBFFFFFF7FFFFEB7FFFF7FFFFFFFD8FFFFFFFFFFFFFF
+FBFFFFFF7FFFFE77FFFE7FFFFFFFC67FFFFFFFFFFFFF
+FBFFFFFF7FFFFED7FFFEFFFFFFFFE57FFFFFFFFFFFFF
+FBFFFFFF3FFFFEE7FFFEFFFFFFFFF23FFFFFFFFFFFFF
+FBFFFFFFBFFFFED7FFFCFFDCFFFFF9BFFFFFFFFFFFFF
+F9FFFFFF9FFFFE77FFFDFFEC1FFFF91FFFFFFFFFFFFF
+FDFFFFFFCFFFFEB7FFFDFFFD83FFFC9FFFFFFFFFFFFF
+FDFFFFFFE7FFFE77FFF9FFFD73FFFE4FFFFFFFFFFFFF
+FDFFFFFFF3FFFED7FFFBFFF9D7FFFE47FFFFFFFFFFFF
+FDFFFFFFF9FFFEE7FFFBFFF2E7FFFF67FFFFFFFFFFFF
+FCFFFFFFFCFFFED7FFF3FFC5CFFFFF17FFFFFFFFFFFF
+FEFFFFFFFE7FFE77FFF7FF174FFFFFB3FFFFFFFFFFFF
+FEFFF7FFFF3FFEB7FFF7FE3B9FFFFFBBFFFFFFFFFFFF
+FE7FC7FFFF8FFE77FFE7F8753FFFFF93FFFFFFFFFFFF
+FF7F97FFFFE7FED7FFEFE1D13FFFFFD9FFFFFFFFFFFF
+FF7F27FFBFF3FEE7FFEF8EC47FFFFFCDFFFFFFFFFFFF
+FF3E51FFBFF8FED7FFCF1D9CFFFFFFECFFFFFFFFFFFF
+FFBE747FBFFE7E77FFDC763CFFFFFFE6FFFFFFFFFFFF
+FF9E3B0FBFFF1EB7FFD1B8FDFFFFFFF2FFFFFFFFFFFF
+FFDF3761FFFFCE77FF87707FFFFFFFF6FFFFFFFFFFFF
+FFDF9DDC3FFFE6D7FF8DC003FFFFFFF07FFFFFFFFFFF
+FFC782EE8FFFF0E7FE2E83F81FFFFFFA7FFFFFFFFFFF
+FFF3C0DDC1FEFCD7FC1C03FFC07FFFF97FFFFFFFFFFF
+FFF8E617743E7E77F174D81FFF03FFFB7FFFFFFFFFFF
+FFFE27C3BB8E7EB7C331DFC0FFF81FFB7FFFFFFFFFFF
+FFFF87F877603E779647DFFE07FFC1F97FFFFFFFFFFF
+FFFFE7FE1DDC9ED21C9FDFFFF03FF1FD7FFFFFFFFFFF
+FFFFF1FFC2EEDEE0EE3FDFFFFF81C5FC7DFFFFFFFFFF
+FFFFFC7FF8DDCED1DCFFDFFFFFFC1DFD79FFFFFFFFFF
+FFFFFF3FFE176647700FDFFFFFFFBDFC200FFFFFFFFF
+FFFFFF8FFFC3B61B85E01FFFFFFFBDF089FFFFFFFFFF
+FFFFFFE3FFF866771BFFCFFFFFFF800624FFFFFFFFFF
+FFFFFFF9FFFEC8DC3BFFEFFFFC003DFEA4FFFFFFFFFF
+FFFFFFFC7FFE02E8F3FFEFF001FFBDFEB679FFFFFFFF
+FFFFFFFF0FFE4DD3F7FFC007FFFFBDFEB17BFFFFFFFF
+FFFFFFFFE1FE1747F40033FFFFFFBDFE383DFFFFFFFF
+FFFFFFFFFC3C3B97E1FFF87FFFFFBDFEB8BFFFFFFFFF
+FFFFFFFFFF817637E7FFFF07FFFFBDFE3C1FFFFFFFFF
+FFFFFFFFFFE1D8D7E3FFFFF0FFFFBDFF1F5FFFFFFFFF
+FFFFFFFFFF8EE0E7EBFFFFFE0FFFBDFF5F1FFFFFFFFF
+FFFFFFFFFE1DC4D7EBFFFFFFE1FFBDFF5F9FFFFFFFFF
+FFFFFFFFFC771E77EDFFC7FFFC7FBDFF5F9FFFFFFFFF
+FFFFFFFFF1BA3EB3CDFFF00FF83FBDFF1F8FFFFFFFFF
+FFFFFFFFC770FE71DCFFFE003C1FBDFF5FDFFFFFFFFF
+FFFFFFFF9DD3FED45EFFFFC3807FBDFF5FDFFFFFFFFF
+FFFFFFFE2EC7FEE71EFFFFF87FFFBDFF5FDFFFFFFFFF
+FFFFFFF8DD9FFED79E7FFFFF0FFFBDFF5FDFFFFFFFFF
+FFFFFFF3763FFE77CF7FFFFFE1FFBDFF5FDFFFFFFFFF
+FFFFF7C3B8FFFEB7837F83FFFC7FBDFF1F9FFC0FFFFF
+FFFFE71773FFFE77B93FF81FF83FBDFF5F9FE023FFFF
+FFFFE65DC7FFFED7BCBFFFC0FB9FBDFF5F1FCCF1FFFF
+FFFFC0EE9FFFFEE7BE1FFFFE011FBDFF5F3F89F8FFFF
+FFFFD1DC3FFFFED7BF1F3FFFF07FBDFF5E3F13FC7FFF
+FFFF9770FFFFFE773F8F81FFF37FBDFF5E3C67FD7FFF
+FFFF3BB3FFFFFEB77FC3FC0FF27FBDFF1C7D8FFC7FFF
+FFFF7747FFFFFE777FE8FFE000FFBDFF3C7D4EBE3FFF
+FFFE5D9FFFFFFED77FE603FD9FFFBDFF38FC0EBEBFFF
+FFFEEE3FFFFFFEE77FF7E8003FFFBDFE31FE7FFEBFFF
+FFFCD8FFFFFFFED77FF7EFF3FFFFBDFEA1FFFFFCBFFF
+FFFD73FFFFFFFE767FF3EFFFFFFFBDFE03FFFFFD3FFF
+FFFC37FFFFFFFEB6FFFBEFFFFFFFBDFE97FFFFFDBFFF
+FFFF37FFFFFFFE76FFFBEFFFFFFFBDFE27FFFFFD3FFF
+FFFF87FFFFFFFED6FFF9EFFFFFFFBDFE0FFFFFFDBFFF
+FFFFE7FFFFFFFEE6FFFDEFFFFFFFBDF83FFFFFFCBFFF
+FFFFFFFFFFFFFED4CFFCEFFFFFFFBDE07FFFFFF9BFFF
+FFFFFFFFFFFFFE758FFEEFFFFFFFBD807FFFFFFB3FFF
+FFFFFFFFFFFFFEB52FFEEFFFFFFFBC217FFFFFFB7FFF
+FFFFFFFFFFFFFE7467FE63FFFFFF814C7FFFFFFB7FFF
+FFFFFFFFFFFFFED4D00F783FFFF01C1CFFCFFFF97FFF
+FFFFFFFFFFFFFEE4EEE00F83FE06E0F8FE07FFFA7FFF
+FFFFFFFFFFFFFED05DDD000000DD81F8FF17FFF0FFFF
+FFFFFFFFFFFFFE7727773777777433F8FFB3FFF6FFFF
+FFFFFFFFFFFFFEB7A0039BBBBB81A7F9FFB3FFF0FFFF
+FFFFFFFFFFFFFE778FF0077700018FF1FFB3FFE5FFFF
+FFFFFFFFFFFFFED7CFFFD0007FFC1FF1FF97FFE9FFFF
+FFFFFFFFFFFFFEE7EFFFCFFFFFFFFFF3FFA7FFC3FFFF
+FFFFFFFFFFFFFED7FFFFEFFFFFFFFFE3FF8FFFD7FFFF
+FFFFFFFFFFFFFE75FFFFEFFFFFFFFFE3FFAFFF87FFFF
+FFFFFFFFFFFFFEB1FFFFE7FFFFFFFFC7FFAFFF0FFFFF
+FFFFFFFFFFFFFE71FFFFF7FFFFFFFFD7FFAFFE5FFFFF
+FFFFFFFFFFFFFEDBFFFFF3FFFFFFFF87FF8FFE9FFFFF
+FFFFFFFFFFFFFEE3FFFFFBFFFFFFFFAFFFC7FC3FFFFF
+FFFFFFFFFFFFFCD7FFFFFBFFFFFFFF8FFFC7F97FFFFF
+FFFFFFFFFFFFF177FFFFF9FFFFFFFF1FFFE3E07FFFFF
+FFFFFFFFFFFFFBA7FFFFFDFFFFFFFE3FFFF1C1FFFFFF
+FFFFFFFFFFFFF96FFFFFFDFFFFFFFE3FFFF807FFFFFF
+FFFFFFFFFFFFFCCFFFFFFCFFFFFFFC7FFFFE3FFFFFFF
+FFFFFFFFFFFFFE5FFFFFFEFFFFFFF8FFFFFFFFFFFFFF
+FFFFFFFFFFFFFF1FFFFFFE7FFFFFF8FFFFFFFFFFFFFF
+FFFFFFFFFFFFFFBFFFFFFF7FFFFFF1FFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFF7FFFFFE3FFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFF3FFFFFC7FFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFBFFFFF8FFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFBFFFFF1FFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFF9FFFFE3FFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFDFFFF8FFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFCFFFE1FFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFEFF207FFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFEF00CFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFE0661FFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFF1D87FFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFF303FFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFF23FFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFF8FFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFF9FFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFDFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFDFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+grestore
+%@EndImage
+%@BeginRect
+/RT {SR} def
+/LC {} def
+/SS {pop} def
+/PC { /setcmykcolor where
+ {begin 0.000 0.000 0.000 0.000 setcmykcolor end} {1.000 1.000 1.000 setrgbcolor} ifelse 
+} def
+/PF {gsave fill grestore} def
+0.000 0 54.000 107.000 0.000 0.000 1.000 1.000 rect
+%@EndRect
+%@BeginRect
+/RT {SR} def
+/LC {} def
+/SS {pop} def
+/PC { /setcmykcolor where
+ {begin 0.000 0.000 0.000 0.000 setcmykcolor end} {1.000 1.000 1.000 setrgbcolor} ifelse 
+} def
+/PF {gsave fill grestore} def
+0.000 0 54.000 107.000 0.000 0.000 1.000 1.000 rect
+%@EndRect
+%%Trailer
+end

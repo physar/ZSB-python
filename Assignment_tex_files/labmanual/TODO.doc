@@ -1,0 +1,56 @@
+Things that should be looked into
+V- \subsection{Task 1: Endgames}
+  V-" The program provides the white moves, you can try to escape by entering the black moves". Not vise-versa?
+  -> Nope, this is correct.
+  -> HMMM, double-check: seems like it is vice-versa, gnuchess plays black.
+  -> double-checked, task 1 is about prolog.
+
+  -"You can try other starting settings by editing the chess board file.". Does that actually work?
+  -> Yep, now it does. However sec:chess-board-repr should be updated.
+  -> Done
+  -> HMMM, double-check: Does not work for gnuchess
+  -> double-checked: does work.
+ 
+V- \subsection{Task 2: Path planning module
+  -"You will first edit the file {\ttfamily\small Week1.java} which contains some code that will be used by {\ttfamily\small PP.java}.". Is it acually used?? Should be!
+  -> No! Maybe this is not used and will not be during this year (2006).
+  Perhaps a todo for next year...
+  -> or maybe I(obooij) can still fix it...
+  -> Fix it (jeu!)
+
+ 
+V  -\subsubsection{Low path}, is there also a list of steps like for the high path. Should it be given so the students are explicitly told to look out for overshoot problems.
+   -> Added a sentence which tells to look out. Students should figure the
+   steps out themselves.
+
+V-The students probably have to copy all code to the same directory to make it work together, not 3 separate directories as is indicated in the manual.
+
+2006-05-08 10:24:08 +0200
+V-figures are too blurry, and there filesizes are too big making the manual almost 10 MBs large. They should be redrawn or the original vector-drawings should be found. 
+ -> hmmm, that the files were so blurry was pdf2ps problem, fix it. However the manual is still too big... (pdf 5mb)
+ -> Okay, just made pngs out of them using gimp and then back to eps using
+ bmeps, now it's small. Also important: changed the setting in the Makefile for
+ ps2pdf, to compress images.
+
+2007-05-30 14:33:37 +0200
+V- Add some lines on the use of the renewboard.gch file.
+
+2007-05-30 14:37:12 +0200
+V- Add some lines on the use of the forcingTree.pl file, and that it
+  should be removed during a new run (maybe playchess should do this
+  when you hit the "r").
+  -> changed playchess, hitting "r" now removes forcingTree.pl
+
+2007-05-30 14:37:14 +0200
+V- Make the students aware of the board-settings already made and provided by us.
+
+2007-06-05 11:24:50 +0200
+V- In 1.1 it talks about a camera being available. This is not the case.
+
+2007-06-21 11:39:04 +0200
+V- I changed the workings of playchess so gnuchess also plays with white. This should be changed in the manual.
+
+2007-06-21 11:40:02 +0200
+V- Because gnuchess and prolog can now be swapped, fig 1 of the manual can now
+  be changed accordingly. Also the filenames (move.txt etc.) should be added to
+  the figure.

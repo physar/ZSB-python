@@ -1,0 +1,1133 @@
+\documentclass[10pt]{scrartcl}
+\usepackage{a4wide,verbatim, moreverb, epsfig, url}
+\setlength{\parindent}{0pt}
+%\usepackage[T1]{fontenc}
+%\usepackage[latin1]{inputenc}
+\usepackage{epstopdf}
+%\usepackage{auto-pst-pdf}
+
+\begin{document}
+
+\title
+%The following is year-dependent:
+{Search, Actuate, and Navigate Lab course 2014-2015} 
+\author
+{Faculty of Science, \\University of Amsterdam}
+\maketitle
+
+\begin{quote}
+  This manual describes the lab course of the first year AI course
+  ``Zoeken, Sturen en Bewegen'' a.k.a. ``Search, Actuate, and
+  Navigate''.
+
+Before you ask any questions, {\bf read through the WHOLE manual!}
+\end{quote}
+
+\vfill
+\setcounter{tocdepth}{2} % makes subsubsections invisible for the toc
+\tableofcontents
+
+\clearpage
+
+
+\section{Introduction}
+\label{sec:Introduction}
+This is the manual of the 1st year Search, Actuate, and Navigate lab
+course (formerly known as the Robotics course). It gives a general
+overview of the problem to be solved and its subdivision to assignments.
+
+This manual contains a lot of information which might tend to blur your
+vision of the problem at hand. This is why you have to:
+
+\begin{enumerate}
+\item Read the manual very carefully before starting the lab course.
+\item Attend the lab course sessions every time where your lab
+      assistants will try to guide you and provide help.
+\end{enumerate}
+
+\vspace*{.3cm}
+We hope you will enjoy the lab course,
+\vspace*{.3cm}
+ 
+%\centerline{Matthijs Spaan}
+%\centerline{Olaf Booij}
+%\centerline{Julian Kooij}
+%\centerline{Ysbrand, Nick, Casper and Tim}
+\centerline{Nick, Casper, Eva, Thomas and Eelco}
+
+\subsection{AI through robotic chess}
+
+Pioneers of artificial intelligence and robotics were more than
+enthusiastic and had envisioned, through rosy spectacles, a world
+populated with decision-making, moving machinery. With this high
+expectation, research concentrated on high levels: theories, models,
+ethics, and how this impinges on other subjects. This did sometimes
+appear to be esoteric; it eventually came to light that there were
+indeed more down-to-earth problems yet to be solved - mechanical
+structures, movement execution, optimal path-planning with obstacle
+avoidance etc. It is with these latter issues that this exercise is
+concerned, consciously keeping in mind throughout however, that it is
+these high levels that take precedence in any `outlet'.
+
+Chess will be the game at hand and it will stand for the essential
+enigma to be solved. You are to program a {\em robot arm} enabling it to
+physically carry out the solution of an arbitrary game of chess. It is a
+mild but challenging and entertaining problem, and with the fine guide
+of your intense, learned brain (and a workstation to help it along), you
+shall succeed, and furthermore be led, in time to come, towards the
+creation of an intentional system\footnote{Daniel Dennett, Brainstorms,
+MIT Press 1978.}. With the strong foundation in robotics that you will
+acquire, we hope that you, as stars of tomorrow, will build a solid
+aesthetics of method, to serve to the betterment of society. Yes! my
+dear friends, Science shall march boldly forward. 
+\hfill {\em (thus spake Joris)}
+
+\subsection{The lab course}
+
+In this lab course you will, solve chess {\bfseries endgames},
+{\bfseries plan paths} for the chess pieces, and {\bfseries calculate}
+the required {\bfseries poses} of the robot, and so solve the problem of
+a robot playing a game of chess. All other (non-trivial) tasks have
+already been solved and the solutions will be provided by your lab assistants.
+
+%Your first task is tackling a chess endgame, next is solving the path
+%planning problem, third task is solving the inverse kinematics problem
+%and last but not least; task four is to go, where no one has gone
+%before. 
+
+Your lab assistants will provide you with software for
+separately testing your solutions to all problems. We do, however,
+expect that the solutions to the three subtasks will be submitted as a
+single, working, integrated program (using our main module). This means
+that you should test that your solutions to the subtasks can work
+together.
+
+While you are trying to solve the tasks you will for sure stumble upon
+some awkward features (bugs) in the provided software and documentation.
+Do not blame the lab assistants for this, well, just a tiny bit. We know
+the software can be improved in many ways and the interfaces are not
+that great.
+But actually this perfectly mirrors the problems you will be confronted
+with in the ``real world'', when dealing with practical problems that
+require a lot of different parts of software including drivers for old
+hardware. Report them to the assistants (who perhaps already know the
+feature/bug) and try to work around them. Solving these bugs is nice, but
+costs a lot of time which is one thing you will lack the coming weeks.
+
+This manual gives you a precise description of the tasks you have to
+solve and provides you with the background needed to do this. First we
+will explain how the software and hardware works. Read it carefully
+before starting to work on the assignments.  Section~\ref{sec:Tasks}
+gives the assignments you'll be working on. And finally some  general lab
+instructions are given in Section~\ref{sec:Report}, ending with the ``Getting started''
+(Section~\ref{subsec:GettingStarted}).
+
+%The lab course duration is about 4 weeks. In the beginning work is done
+%on the simulator. As time progresses, the groups will work for some time
+%each week with the real arm ({\em which differs from the simulator!!!}).
+%After three weeks, each group will give a thorough and understandable
+%demonstration of the first three parts of the system, its behavior and
+%moreover each group will give an explanation of the contents of its
+%modules. The implementation will be discussed with the assistants.
+
+\subsection{Other resources of information}
+%The following is year-dependent:
+Of course not all info you need is in this manual. Therefore one or two 
+assistants will be present in the lab during the practical hours (look at
+the main course page for the schedule), helping you with the tasks,
+trying to help with programming, and operating the real robot. 
+Your assistants for the lab course are {\bfseries Nick de Wolf}, {\bfseries Casper van Houten}, {\bfseries Eva van Weel}, {\bfseries Eelco van Wel} and {\bfseries Thomas Meijer}.
+For questions, remarks or whatever outside the practical hours, the lab assistants can
+be reached by email at:
+%{\ttfamily obooij@science.uva.nl} Martijn can be reached at:
+%{\ttfamily sbmpost@science.uva.nl}
+% \\\centerline{{\ttfamily O.Booij@uva.nl}}
+%\\\centerline{{\ttfamily J.F.P.Kooij@uva.nl}}
+%\\
+%\\\centerline{{\ttfamily Tim.vanRossum@student.uva.nl}}
+%\\\centerline{{\ttfamily ysgalama@gmail.com}}
+\\\centerline{{\ttfamily nickdewolf@msn.com}}
+\\\centerline{{\ttfamily caspervhouten@gmail.com}}
+\\\centerline{{\ttfamily eva.v.weel@live.nl}}
+\\\centerline{{\ttfamily eelcovdw@gmail.com}}
+\\\centerline{{\ttfamily t.m.meijers@hotmail.com}}
+\\
+
+
+{\bf IMPORTANT:} When you send an email, please {\bfseries start the subject field} with the
+three letter word
+{\ttfamily ZSB}, such that your email can be handled appropriately by the 
+email filters.
+
+The webpage for the practical course can be found at \\
+\centerline{\url{https://staff.fnwi.uva.nl/a.visser/education/ZSB/lab_course.html}}.
+Check this site frequently, as it will be
+updated with valuable info during the course. On the webpage you will also
+find a link to the documentation of the Java software.
+
+%Additional information on, e.g. the use of the software environment,
+%will be given in the directory:
+%
+%\begin{verbatimtab}
+%/opt/stud/robotics/hints
+%\end{verbatimtab}
+
+%You will be notified by e-mail if anything is added to this directory.
+%Please check it at regular intervals.
+
+\section{The programming environment}
+\label{sec:programmingenvironment}
+
+\subsection{Playchess}
+\label{sec:playchess}
+
+We will be using a simple program called {\tt playchess} which does
+the following (also see figure~\ref{fig:chain2}):
+
+\begin{enumerate}
+\addtolength{\itemsep}{-.1cm}
+\item Call an existing chess program (GnuChess) or your endgame solver
+      to play a white move.
+\item Call the Java path planning module with white move.
+\item Execute the Java inverse kinematics module to convert the
+      Cartesian positions into values of the joint angles of the robot arm.
+\item Send the joint angles to a simulator ({\tt umirtxsimulator}) for
+      inspection, and send them to the real robot.
+\item Ask the user for a black move.
+\end{enumerate}
+\begin{figure}%[htbp] 
+  \centerline{\epsfig{figure=images/chain2.eps,width = 0.75\textwidth}}
+  % \vspace*{6cm}
+  \caption{Information flow of the different components controlled by the
+  {\tt playchess} program. The gray-filled components are only partly
+  provided and should be completed during the course. {\tt board.gch}
+  and {\tt *.txt} denote actual files which can be inspected and
+  manipulated.}
+  \label{fig:chain2}
+\end{figure}
+The derived programs {\tt endgamerook} and {\tt endgamequeen} call the
+Prolog endgame solver for white moves while the user (you, or gnuchess if you
+choose to) provides the black moves. This way you can test the endgame solver.
+Basic path planning and inverse kinematics modules are already
+provided for testing. However, during the practical course you will
+develop your own modules which are hopefully as good as or better than
+the ones provided. In the {\tt playchess}, {\tt endgamerook} and {\tt
+endgamequeen} programs you can decide which modules to use, the ones
+provided or the ones you developed, by changing the settings.
+
+During this lab exercise, {\tt endgamequeen} will be the way to test the
+king and queen versus king endgame solver. When configured to use your Prolog
+code, it will execute the following command, which you can also test in a
+terminal yourself:
+\begin{verbatimtab}
+pl -s chess.pl -g true -t startQueen
+\end{verbatimtab}
+The program {\tt endgamerook} works similarly for the king and rook versus king 
+endgame and is given as an example implementation.
+
+\subsection{The robot simulator}
+
+In order to check that the robot will not demolish its surroundings,
+your commands will be sent to a simulator. Thus to determine
+whether a particular solution to the problem is correct it is first
+visualized. The simulator can be started using the program {\tt
+umirtxsimulator}. By running the program in the same directory as the
+{\tt playchess} program, the simulator will perform the black move.
+
+When your lab assistants have confidence in your approach, they can put
+the real robot arm into work using your software, via the `move
+robot'-button of the simulator.
+This button is the interface to a server that controls the robot. One
+of the activities of the server is to calculate the `encoder counts'
+based on the specified joint-angles. These encoder counts are the number
+of steps the motors of the robot arm have to make to arrive at the given
+joint angles. In general controllers are interesting things, but for now
+of no importance to you. However, it is important that the controller is
+there. It forms the interface between the joint angles and the flow of
+currents to the actuators; in this case electrically powered rotary
+motors.
+
+\subsection{The chess program `GNUChess'}
+
+This is a chess playing program which decides what move the robot should
+play given the current board setting. In tasks 2 and 3 your modules have
+to make sure that the move suggested by GnuChess is the one actually
+played by the robot.
+
+\subsection{Component interfaces}
+
+For the most part communication between the components and {\tt
+playchess} takes place by writing and reading files, which will be
+briefly described below. The interface is not the best possible, but it
+works and it allows us to use older software for ``stub'' procedures.
+While you are testing your software it is sometimes useful to look at
+the contents of these files and maybe even change them.
+
+\subsubsection{Chess board representation}
+\label{sec:chess-board-repr}
+
+The chess board is represented as an ASCII file called \verb|board.gch|.
+This file is constantly updated while a game is being played and is read
+by the Prolog endgames implementation as well as the Java pathplan code
+% TODO, is this the case? What about gnuchessr?
+to get the most recent boardsetting.  The 8 by 8 matrix describing the
+position of the pieces is the only information used by our software
+components. The other values in the file such as the time control and
+the score are neglected. Lower caps are the white pieces. 
+
+%\scriptsize
+\begin{minipage}{\textwidth} % enforce no page break
+\begin{verbatim}
+Black computer White Human 1
+Castled White false Black false
+TimeControl 0 Operator Time 0
+White Clock 0 Moves 0
+Black Clock 0 Moves 0
+
+8 R.BQKBNR 0 0 0 0 0 0 0 0 
+7 PPPPPPPP 0 0 0 0 0 0 0 0
+6 ..N..... 0 0 0 0 0 0 0 0
+5 ........ 0 0 0 0 0 0 0 0
+4 .....p.. 0 0 0 0 0 0 0 0
+3 ........ 0 0 0 0 0 0 0 0
+2 ppppp.pp 0 0 0 0 0 0 0 0
+1 rnbqkbnr 0 0 0 0 0 0 0 0
+  abcdefgh
+
+move  score depth  nodes  time flags capture color
+\end{verbatim}
+\end{minipage}
+%\normalsize
+
+\paragraph{}
+You may edit this file by hand to change the position of the pieces or
+replace it by another file with a different chess setup while a game is
+being played. To start with a different game setting than the default,
+you can add a file with the name \verb|renewboard.gch|. This file will
+be loaded by playchess when a reset board command is send by hitting
+``r''.
+In \verb|/opt/prac/robotics/software4students/pl/boards| a few board settings are given on
+which your implementation can be tested. These allow you to quickly and easily test your program
+on a couple of different situations, but they are not cover every possible situation that your program
+should be able to solve. So come up with some configurations yourself and try to find one where your
+implementation performs poorly (e.g. it gets stuck in a loop or takes a lot more moves to reach
+check mate than necessary).
+
+\subsubsection{Chess move}
+The file \verb|move.txt| is written by the Prolog endgame solver to
+communicate the chosen chess move to {\tt playchess}.
+%, e.g.:
+%\begin{verbatim}
+%a8a7
+%\end{verbatim}
+\subsubsection{Forcing tree}
+The file \verb|forcingTree.pl| is also written by the Prolog endgame
+solver (see section \ref{sec:Endgames} of this manual). It is used to store the forcing tree, for the next move (the
+endgame solver is called for each chess move separately). You could also
+change it while playing a game for debugging purposes.
+
+\subsubsection{Cartesian path representation}
+The Java path plan algorithm produces a list of Cartesian positions of
+the robot gripper and puts these in the file \verb|positions.txt|. For
+example: 
+\begin{verbatim}
+124.279671 313.029663 37.500000 4.188790 30.000000
+124.279671 313.029663 37.500000 4.188790 0.000000
+124.279671 313.029663 218.000000 4.188790 0.000000
+13.937696 427.147583 218.000000 4.188790 0.000000
+13.937696 427.147583 58.000000 4.188790 0.000000
+\end{verbatim}
+On each line a different gripper position is described using the
+$x$-, $y$-, $z$-coordinate of the tip of the gripper, the roll of the
+gripper and the angle between the two gripper elements respectively.
+
+\subsubsection{Joint path representation}
+The \verb|joints.txt| file is quite similar to the \verb|positions.txt|
+file. The Java inverse kinematics algorithm writes in \verb|joints.txt|
+a path as a list of configurations of the joints of the robot. For
+example:
+\begin{verbatim}
+244.5 -29.710975377910298 100.87246341721223 -20.72525633069582 -90.0 0.0 30.0
+244.5 -29.710975377910298 100.87246341721223 -20.72525633069582 -90.0 0.0 0.0
+425.0 -29.710975377910298 100.87246341721223 -20.72525633069582 -90.0 0.0 0.0
+425.0 -34.28883336382281 69.66192932102668 -0.5421312966905262 -90.0 0.0 0.0
+\end{verbatim}
+On each line a certain robot arm configuration is written. See the Java
+documentation for a precise description of these values.
+
+\section{Hardware setup}
+\label{sec:Hardware}
+
+For the path planning task it is necessary to know the position of the
+chess board related to the position of the robot, and for the inverse
+kinematics task you have to be aware of the possible configurations of
+the robot arm.
+
+\subsection{The chess board}
+\label{setup}
+
+\begin{figure}[htp]
+  \centerline{\epsfig{figure=images/board.ps,width = \textwidth}}
+  % \vspace*{6cm}
+  \caption{The chess board.}
+  \label{FIG_chess_board}
+\end{figure}
+
+The drawing of the board placement, see figure~\ref{FIG_chess_board}, gives the
+representations of its position and some arbitrary position of the garbage
+places. The $x, y, z$ position of the board is determined by the outer corner
+of field h8, with the edge included. %The board is placed such that the Human
+%player plays black, the Computer plays white.
+% Hmmmm, after making the computer play white, the images of the board
+% should be changed...
+
+{\bfseries IMPORTANT:} Note that the coordinate system is a {\em
+left}-handed system. This means, that the path planning module must
+express Cartesian coordinates in this very same left handed module! 
+
+\subsection{Robot arm configurations}
+
+This section is related to the subtask of inverse-kinematics. We discuss
+here some details of the motion of the UMI-RTX robot. This robot is
+designed to work in a cylindrical workspace. Vertical movements and
+rotations around the base are easily performed by controlling a single
+joint. Radial movements of the wrist from and to the base involve
+movements of several joints, but this is also made simple by a trick,
+which is discussed in the next section.
+
+To illustrate the difference between the performance level of the human
+arm and this robot arm the following can be said: a `natural' arm of a
+human has about 42 degrees of freedom. The most subtle artificial arm, for
+general human use, has less than 10 degrees of freedom. The drawing,
+figure~\ref{fig:hand}, specifies only 6 degrees of freedom which are the minimal
+demands for an artificial fore-arm and wrist.
+                    
+\begin{figure}[htbp] 
+  \centerline{\epsfig{figure=images/hand.ps,width = 0.3\textwidth}}
+  % \vspace*{6cm}
+  \caption{Degrees of freedom of a human arm.} 
+  \label{fig:hand}
+\end{figure}      
+
+The UMI-RTX robot has precisely those minimal 6 degrees of freedom,
+enough for finding a solution for this robot arm in the domain of chess
+playing.
+
+\subsection{Radial motion of the UMI-RTX robot}
+
+The upper arm and lower arm have the same length: AB equals BC: % (fig. \ref{fig:arm1}).
+                                   
+\begin{figure}[htp]
+  \centerline{\epsfig{figure=images/arm1.ps,width = 0.6\textwidth}}
+  % \vspace*{3cm}
+  \label{fig:arm1}
+\end{figure}
+
+This means that you can move the wrist in a straight line outwards from
+the column - a radial line between the shoulder and wrist spindles - by
+rotating the two parts of the arm, making sure that angle $P$ is always
+half angle $Q$: % (fig. \ref{fig:arm2}).
+
+\begin{figure}[htbp]
+  \centerline{\epsfig{figure=images/arm2.ps,width = 0.4\textwidth}}
+  % \vspace*{3cm}
+  \label{fig:arm2}
+\end{figure}
+                            
+The gear ratio from the shoulder motor to the upper arm is twice that of
+the elbow motor to the lower arm. To move the wrist in a radial line,
+both motors are driven at the same speed but in opposite directions. The
+benefit of this arrangement is that the robot controller can keep track
+of the position of the wrist in cylindrical coordinates very easily, by
+simple calculations based on the motor encoder counts. (Encoder counts
+are the units in which the movement of an rtx motor is measured).
+
+In addition, the gripper is automatically pointing along the radial
+line: % (fig.  \ref{fig:arm2}).
+
+\begin{figure}[htbp]
+  \centerline{\epsfig{figure=images/arm3.ps,width = 0.6\textwidth}}
+  % \vspace*{3cm}
+  \label{fig:arm3}
+\end{figure}
+                                   
+This is achieved without needing to drive the yaw motor (angle R): the
+yaw is not only \underline{coupled} to its own motor, but also
+\underline{coupled} to the elbow motor! When the lower arm moves through
+an angle Q, the wrist automatically moves through R, which is Q/2,
+because of the 2:1 gear ratio from the combined pulley which rotates on
+the elbow spindle and the wrist pulley. This behavior is by the way not
+correctly produced by the simulator.
+
+Because of this automatic compensation, it is possible with certain yaw
+orientations for the wrist to hit its end-stops when driving the arm
+radially in and out.
+
+\section{Tasks}
+\label{sec:Tasks}
+\subsection{Task 1: Endgames}
+\label{sec:Endgames}
+
+%% QUEEN EXPLANATION
+% In the first week you are going to solve a chess endgame of ``king and
+% queen versus king'', in similar fashion as the rook (in Dutch: toren)
+% endgame discussed in the Bratko book (chapter 24). 
+
+%% PAWN EXPLANATION
+In the first week you are going to solve a chess endgame of ``king and
+queen versus king'', in similar fashion as the rook (in Dutch: toren)
+endgame discussed in the Bratko book (chapter 24). 
+%The main task is that the white pawn reaches the other side of the board,
+%without being attacked by the black king. 
+%Use the white king to defend the pawn if necessary.
+%In chess, this reaching the other side would allow the pawn to promote to a different type of piece
+%(such as a queen), thereby deciding the game in a win for white.
+%Your program should be able to promote the pawn for any board setup where it is possible.
+The main task is to use the queen to capture the black king. This is done by closing in on the king without losing your queen.
+Remember that it is necessary to leave room for the black king to move if you are not capable of capturing it on the next move (Checkmate).
+This endgame is very much like the ``king and rook versus king'' endgame, so be sure to check how that endgame works.
+The provided \verb|renewboard.gch| is one possible setup for you to test,
+but try other board setups yourself too.
+ 
+If you feel really creative, and have time left, you are free to try and
+implement other endgames for a higher grade.
+Of course, be sure to write a clear section in your report about this extra work too,
+as your lab assistant should be able to understand exactly what you did from your
+report alone.
+
+First read the instructions on how to setup your environment properly,
+see section \ref{subsec:GettingStarted}. Then copy the files required for this
+part of the lab course in your newly created directory by typing:
+
+\begin{verbatimtab}
+cd ~/zsb
+cp -r /opt/prac/robotics/software4students/pl/* . # don't forget the dot
+\end{verbatimtab}
+
+In your {\tt zsb} directory you should now find a number of Prolog files,
+that are an implementation of Bratko's Advice Language 0 and the
+predicate library plus advice rules for the ``king and rook versus
+king'' endgame.  Before one starts to program, it is strongly
+recommended to read chapter 22 of Bratko thoroughly.
+
+The Prolog code consists of various files. The file {\tt AL0.pl} contains
+the general Advice Language~0 implementation as is provided by Bratko
+(some minor adjustments were made to make it compatible with SWI-Prolog).
+The file {\tt KRPL.pl} contains some general help functions for the chess
+domain. %Niet nuttig/nodig de pawn files mee te geven, niet?
+%The files {\tt KRPLqueen.pl} and {\tt KRPLrook.pl} contain functions
+%that deal with queens and rooks respectively. And lastly, the files
+%{\tt KRAPqueen.pl} and {\tt KRAProok.pl} contain the advice rules. Note that
+%the advice rules use functions defined in the {\tt KRPL*} files.
+The file {\tt KRPLrook.pl} contains functions that deal with rooks
+and the file {\tt KRAProok.pl} contains the advice rules. Note that
+the advice rules use functions defined in the {\tt KRPLrook.pl}
+file.
+
+To try the rook endgame, run {\tt endgamerook} in your {\tt zsb} directory.
+%To try it, run {\tt endgamerook} from the current directory, 
+This will start the {\tt playchess} program which connects all parts of the lab course
+(see section \ref{sec:playchess}).
+As this is the first time you start the program you have to
+initialize the chessboard setting it starts from by hitting ``r''.
+By pressing ``p'' you can now check the performance of our rook endgame
+implementation.
+The program provides the white moves, you can try to escape by entering the black moves.
+You can try other starting settings
+by editing the chess board file or copying one of the prebuild settings
+to \verb|renewboard.gch|, see section~\ref{sec:chess-board-repr}.
+%Note that the current implementation does not check if your own move is
+%legal, nor does the program halt if the position is checkmate or
+%stalemate.
+
+Now that you know how the rook endgame works, it is time to setup
+the queen endgame that you are going to implement. The code for
+this endgame should be put in the files {\tt KRPLqueen.pl} and {\tt
+KRAPqueen.pl}.  You might also want to make some changes to the {\tt
+KRPL.pl} file. To try the queen endgame, run {\tt endgamequeen} in your
+{\tt zsb} directory, and press ``r'' to reset the board with a queen.
+The following steps may guide you through the implementation process:
+\begin{itemize}
+\item Implement how a queen moves. For inspiration refer to KRPLrook.pl.
+\item Test if your queen moves correctly.
+      To do this, create an if~-rule that is always true and use
+      it to select a `dummy' advice. Think carefully about the better
+      goal and holding goal of this dummy advice!
+      %(What exactly are the
+      %requirements for making your dummy advice applicable?). Also note
+      %that unlike bratko's book, both the better and holding goals take
+      %\emph{two} arguments. For example: rooklost( Pos, RootPos )
+\item Bring along with you a real chess board and try to think of a strategy 
+      to checkmate the black king, no matter what the black king does.
+\item Transform your strategy into better goals and holding goals. Using
+      these goals, create rules that select advices in turn.
+\end{itemize}
+
+Eventually, your program should be able to win the game from any (reasonable) board setup.
+The default board is one possible setup for you to test,
+but try other board setups yourself too.
+\\
+
+%% FOR QUEEN
+ {\bf IMPORTANT:} While a queen has much more freedom of movement than a rook, it is
+ important that your program avoids creating a draw (in Dutch: remise). If the black king is not
+ checked, but cannot move to any adjacent square, the game ends in a draw. This
+ is the worst possible outcome for white which should just win the game.
+
+%Right now the file {\tt KRPLqueen.pl} has been implemented sufficiently, but
+%feel free to extend the file.  With help of the code for the rook endgame,
+%this should be do-able within one or two days.
+
+%After that, \emph{make a backup of all your prolog code}. Now implement
+%a ''king, queen and bishop versus king'' endgame. To do this, the
+%representation of the chessboard needs to be adjusted properly to
+%handle four pieces. Modify the files {\tt KRPL.pl} and {\tt
+%KRPLqueen.pl} such that they can handle four pieces. Then create good
+%advice rules in {\tt KRAPqueen.pl}. Note that although the endgame is
+%actually simpler for a human, creating an efficient advice language
+%becomes more complex because one needs to deal with more possible moves.
+
+%Your assignment this week is to program a ``king and queen versus
+%king'' endgame solver, in the same fashion as the rook solver. To run
+%your program you should fire up {\tt endgamequeen}. As you will see
+%the queen moves without a particular plan, it's your job to improve on
+%this, by adding rules and advice to {\tt KRAPqueen.pl}. Look at {\tt
+%  KRPLqueen.pl} for the predicates that have been provided and some if
+%you think you need them. Inspiration can be found in the rook solver,
+%page 601 of Bratko.
+
+\subsection{Task 2: Path planning module}
+\label{sec:Pathplanning}
+
+This section contains a detailed description of the second task you have
+to perform, which is to find a path in Cartesian coordinates. The main
+input of this module is the chess move generated by GnuChess (e.g.
+a2a3). The output of this module is a list of $x,y,z$ positions that the
+robot arm has to follow in order to perform the chess move generated by
+GnuChess. This $x,y,z$ list is subsequently provided as input to the
+inverse kinematics module. More specifically, the involved piece has to
+be transported on a height of `two fingers' above the board, if that is
+possible.
+
+This task takes you through several steps which will lead you to a
+modular solution to the task. See these steps as functional steps, not
+as strict temporal orders. Decisions taken at the beginning can have
+strong influence on the final performance, so start pondering
+the whole task before getting into the details.  You are then advised to
+write some routines to print the input and output of your module, as a
+good insight in the data-flow is essential during the execution phase.
+
+The necessary Java files should be copied in your lab course
+directory by typing:
+
+\begin{verbatimtab}
+cd ~/zsb
+cp -r /opt/prac/robotics/software4students/pp/* . # don't forget the dot
+\end{verbatimtab}
+
+\subsubsection{Elementary transformation}
+
+As an introduction you'll write some functions essential for planning a
+path for the robot arm. The assignment consists of three parts: access
+some data of the board, write a class to convert positions (``e3'') to
+locations (column 4, row 2) and write a function, that  converts locations to
+Cartesian coordinates ($x,y,z$).
+
+What board parameters would you use to determine a transformation from
+board coordinates (e.g. ``a2'') to Cartesian ($x,y,z$) coordinates? Are
+they all given by the ChessBoard class interfaces? (see the Java
+documentation and see the board figure in section~\ref{setup}). Create
+such a transformation. Would you use homogeneous transformation
+matrices or smart vector manipulation?  Discuss your findings with
+your assistant and implement your ideas.
+
+
+You will first edit the file {\ttfamily\small BoardTrans.java} which
+contains some code that will be used by {\ttfamily\small PP.java}.
+Before doing anything more try reading the comments contained in
+{\ttfamily\small BoardTrans.java} while also having a look at the
+documentation of the data structures. The file contains various gaps
+indicated by question marks (?????). You have to first carefully fill
+in the gaps and then compile your code by typing:
+
+\begin{verbatimtab}
+javac -1.6 BoardTrans.java
+\end{verbatimtab}
+
+If this part has been done successfully the compiler should not have
+printed any errors and your directory should contain a file called
+{\ttfamily\small BoardTrans.class}. To test your code type:
+
+\begin{verbatimtab}
+java BoardTrans
+\end{verbatimtab}
+
+or to test out different board positions, such as ``f2'':
+
+\begin{verbatimtab}
+java BoardTrans f2
+\end{verbatimtab}
+
+
+\subsubsection{High path}
+  
+From now on you will complete the unfinished code in the {\ttfamily\small PP.java} file.
+You will begin by implementing a procedure\\
+\centerline{\ttfamily\small highPath(String from, String to,
+ChessBoard b, Vector p),}\\
+that transports the involved piece on a `safe height' directly to its
+destination. You will have to steer the gripper of the robotarm along
+ten positions:
+\begin{enumerate}
+\addtolength{\itemsep}{-.2cm}
+  \item safe height over the piece and its gripper is open.
+  \item low height over the piece and its gripper is open.
+  \item half pieceheight and its gripper is open.
+  \item half pieceheight and its gripper is closed.
+  \item safe height with gripper closed.
+  \item safe height over the new position and the gripper is closed.
+  \item low height plus half pieceheight and the gripper is closed.
+  \item half low height plus half pieceheight and the gripper is closed.
+  \item half pieceheight and the gripper is open.
+  \item safe height and the gripper is open.
+\end{enumerate}
+As you can see position 1 to 5 are over the old position and position
+6 to 10 are over the new position of the piece. Safe height and low
+height are defined in your java program. The second and seventh
+position are necessary to compensate for the overshoot of the robot
+arm.
+
+This procedure will be valuable if later it is found that a height of
+`two fingers' is an impossible constraint. Test your program by
+running {\tt playchess} and change the settings to use your path
+planning modules. You can see the results of your functions in the
+{\tt umirtxsimulator} (make sure to start it in the same directory as
+you program).
+
+\subsubsection{Removing pieces from the board}
+Improve your {\ttfamily\small highPath()} function by writing a
+\\\centerline{\ttfamily\small moveToGarbage(String to, ChessBoard b, Vector g)}
+\\function that removes checked pieces. This function should grab a
+piece of the board and drop it somewhere outside the board. You are
+free to implement this as involved as you want. You could for example
+choose to just drop the pieces at a fixed spot outside the board. You
+could also plan a nice garbage setup (e.g. as depicted in figure
+\ref{FIG_chess_board}). Think about what will happen if the board is put
+in a different location.
+
+\subsubsection{Low path}
+This is the real path planning part. Instead of moving on a `safe
+height', try to move on a height of `two fingers', in between the
+pieces on the board. Create a path planning algorithm that searches a
+path between any two places on the board, while some board positions
+are occupied by obstacles (other pieces). Is such a path always
+possible? Do you plan such a path in board or Cartesian coordinates?
+Discuss your algorithm with your assistants before you start to add
+the function \centerline{\ttfamily\small lowPath(String from, String to,
+ChessBoard b, Vector p)} to PP.java. This function should plan a path
+for moving pieces on a low height (add a ``private static double
+LOWPATH\_HEIGHT=20;'') while avoiding all other pieces on the board.
+Diagonal moves are not allowed. Beware that the robot has an overshoot
+which could cause the robot to press pieces ``through'' the board. Look at
+the given high path positions for a way to circumvent this.
+
+\subsection{Task 3: Inverse kinematics module}
+\label{sec:Inversekinematics}
+
+The main task here is to generate an arm configuration according to the
+coordinates generated by the path planner module. A list of Cartesian
+coordinates is to be transformed to a list of joint values.
+Copy the inverse kinematics files to your local directory:
+\begin{verbatimtab}
+cd ~/zsb
+cp -r /opt/prac/robotics/software4students/ik/* . # don't forget the dot
+\end{verbatimtab}
+
+\subsubsection{The simulator}
+
+  We will first work with the {\tt umirtxsimulator}, which contains a model of
+  the actual robot. To get a feeling for the joints play around with the
+  controls. The simulator will change from a right- to a
+  left-configuration and back. Try using the joint-control-buttons of
+  the simulator to see if it is possible to continue on the path without
+  changing configuration.
+
+  The inverse kinematics problem can be decomposed in several
+  sub-problems. Can the position be achieved by controlling only a small
+  number of joints? Which joints? 
+
+\subsubsection{Do the math}
+  Solve the inverse kinematics problem for the robot arm. Would you use
+  a homogeneous transform or smart vector manipulation? How many
+  solutions are possible for a certain Cartesian coordinate? Discuss
+  your results with the lab assistants.
+  
+\subsubsection{Implementation phase}
+  Design an algorithm that chooses between alternative solutions in a
+  proper manner. This can be quite involved, taking into consideration
+  that the chessboard can be moved around and the robot arm has to be
+  manoeuvred according to the planned low path. Discuss your ideas
+  with your assistants. 
+  
+  Implement your algorithm in {\ttfamily\small IK.java}, which already
+  contains some code you can use.
+
+  Finally, verify your program on the simulator. How accurate is the
+  robot? Are there systematic errors?
+
+\subsection{Task 4: Go, where no one has gone before}
+\label{sec:Task4}
+
+{\it Section intentionally left blank, content to be provided by you. Look
+at the main webpage for more info.}
+
+\section{General lab course instructions}
+\label{sec:Report}
+\subsection{General instructions}
+During the whole lab course you will be working in {\em pairs}.
+By making you work in groups of two we aim to give you an idea of how it
+is to work in a team. If there are any unsolvable organizational
+difficulties, troubles, hitches, impasses etcetera, do not act too late
+and inform your lab assistants at an early stage before everything gets
+out of hand. We would like to prevent students from getting lost. So
+definitely do not hesitate to inform us that there is some problem.
+
+For each task you will hand in your software and a small report per
+pair. And at the end of third week you will demonstrate all your code on the robot
+to one of the lab assistants. 
+
+
+\subsection{Writing reports}
+The reports you hand in should be about 2 to 3 pages, written in English or Dutch 
+and contain (at least) the following topics: 
+\begin{itemize}
+%\addtolength{\itemsep}{-.05cm}
+  \item explain the problem at hand
+  \item discuss possible solutions you considered
+  \item why did you choose the solution you implemented?
+  \item how did you test your program?
+  \item conclude with any suggestions for improving your algorithm or code
+\end{itemize}
+
+Although the lab report in not quite like a small research paper, it is still supposed to
+be an academic report of your work, rather than an informal description of how you spend your week.\\
+
+\noindent So do:
+\begin{itemize}
+\item Clearly structure your report
+\item Explain your method formally
+\item Report your experiments and results precisely
+\item Write in correct academic English or Dutch
+\end{itemize}
+Don't:
+\begin{itemize}
+\item Give a day to day overview of your activities
+\item Talk about debugging or how much time you spend implementing a particular feature
+\item Mention if a TA or fellow student suggested something to you. Just explain what you did and why (which should be a better reason than just someone telling you to)
+\end{itemize}
+
+Email your reports in a printable format, that is: PDF or Postscript (so
+no tex-code, plain text-files or Word-files).
+Instructions on writing reports can also be found on the lab course website.
+
+\subsection{Writing software}
+Implementation of your ideas into code is only half of the job to be
+done for this lab course. Inside your source-files we want the
+following information:
+
+\begin{description}
+\addtolength{\itemsep}{-.05cm}
+\item a header:   
+\addtolength{\itemsep}{-.05cm}
+  \begin{itemize}
+    \addtolength{\itemsep}{-.05cm}
+    \item the filename
+    \item a short description what's in the file
+    \item the names, registration-numbers and login-names of both partners
+    \item the id of your group.
+    \item the current date
+  \end{itemize}
+\item comments:   
+  \begin{itemize}
+    \addtolength{\itemsep}{-.05cm}
+    \item on a tactical level: to indicate where dirty tricks are performed
+    \item on a strategic level: to explain what was your intention
+      for a piece of code
+  \end{itemize}
+\item self-explaining function- and variable-names:   
+  \begin{itemize}
+    \addtolength{\itemsep}{-.05cm}
+    \item the most important issue is to be consistent
+    \item don't mix Nederlands and English
+  \end{itemize}
+\item structure:   
+  \begin{itemize}
+    \addtolength{\itemsep}{-.05cm}
+    \item make use of empty space to make your program readable
+    \item order your functions in a logical way
+  \end{itemize}
+\item error reports:   
+  \begin{itemize}
+    \addtolength{\itemsep}{-.05cm}
+    \item describe how the software was tested
+    \item make sure that both programmer and user can understand
+      what went wrong
+  \end{itemize}
+\end{description}
+
+Instructions on writing software, and commenting examples, can also be found on the lab course website.
+
+%\subsection{Writing software}
+%
+%Throughout the manual, you were pressed to strive for modularity in the
+%set up of your program. This is not because the lab assistants get a
+%kick out of modularity; it will facilitate to great extent the
+%development and understandability of your program. With a modular set-up
+%of your program, each scientist can implement a separate module
+%concurrently. You will undoubtedly notice we are pressed with time.
+%Don't jump to programming and stick to the 40-20-40 design-build-test
+%rule. Cutting down on the first forty will result in an uneven growth of
+%the last forty and an uneven fall in your final grade.
+%
+%
+%Of course, you all have some brilliant ideas on how the program could be
+%improved if we'd just have another interface. Most of you are probably
+%right and some of you may even be brilliant. However, we don't have
+%time. There are only a few weeks available to finish your program. The
+%interface is not the best possible, but it works and it allows us to use
+%older software for ``stub'' procedures. Just stick to the interface and
+%show your brilliance in the way you handle your assigned task.
+%
+%Rather we would prefer that you'd extend your program (if time permits!)
+%to a less structured working environment, i.e. develop a more robust
+%system. What if the board data is inaccurate? What if the garbage place
+%seems full? What if there is no inverse kinematics solution: does the
+%program crash or call for another move?
+
+\subsection{Testing your software on the robot}
+If you tested your code on the simulator and you are (very) confident
+that it works correctly and does not, for example, press a chess piece
+through the chess-board, then you may want to test it on the real robot.
+However students do not have the right to control the robot. Only when a
+lab assistant runs the simulator the "move-robot" button is available.
+So in order to test your implementation you should ask one of the
+present lab assistants if he has time to control the robot. If so, send
+all your code to the lab assistant in the following manner.
+
+Compose an email with the subject reading {\ttfamily\small ZSB Your
+Name} and attach your code, see Section~\ref{subsec:Howtosendcode} how to append
+your code. Specify your names and student-ids in the mail.
+
+%You can test your modules stand alone using the main program and stub
+%modules made available by your assistants. Let it be noted that we
+%expect that fully integrated routines are submitted at the end of the
+%course.
+
+\subsection{How to send your code}
+\label{subsec:Howtosendcode}
+The code should be send as one {\em tar} file attached to an email to the assistant. To create a tar file do the following.
+\begin{itemize}
+  \item Open a terminal.
+  \item Go to the directory with your code ({\ttfamily\small cd \~{}/zsb/}).
+  \item make a tarball of it by executing {\ttfamily\small tar -cvf YourName\_Code.tar .} \# don't forget the dot
+  \item Attach the tarball to your mail.
+\end{itemize}
+If you do not understand how to work with a terminal or you do not want
+to learn it (sigh...), you can also make a zip file of your code with
+your favorite gui zip-program and attach the zip file.
+
+\subsection{Grading}
+Each task as well as the final demonstration will be graded. 
+For grading the tasks we will not only look at the approach that was
+chosen to solve the problems but also the reasoning behind these
+choices. Explain in your report why you implemented algorithm
+$B$ and not algorithm $A$, and show that you understand the pros and
+cons of the different methods. 
+Also the readability of the report and the code will be taken into
+account.
+Your lab course assistants will try their best to finish evaluating your
+reports the week after they were handed in. So the feedback can be used
+to improve the next report.
+
+The demonstration will really be a crash-test for your system. In a few
+minutes you will have to show that your software works on a couple of
+tasks. Be sure to have a stable final version, because there will be no
+time for in-between hacking.
+
+\subsection{Getting started}
+\label{subsec:GettingStarted}
+
+If you are working on your own laptop, you should first reach the Linux-server dedicated for students. 
+
+This can be done in two steps:
+
+\begin{itemize}
+\item Start a secure connection with VPN\footnote{See for instructions \url{https://informatica-byod.innovatievooronderwijs.nl/index.php/Hoofdpagina}}.
+\item Make a terminal connection with the command \texttt{ssh username@acheron.fnwi.uva.nl}.
+\end{itemize}
+
+If you are one of the Linux-machines at the UvA-campus, you only have to open a terminal window.
+
+The first time you start working you should setup your environment.
+This section assumes that you are using the {\tt bash} shell,
+     which is the default on student accounts nowadays.
+
+%To setup the environment, you need to enable certain software packages such that
+%you can run the required programs. Software packages are managed by the {\tt
+%softpkg} program (e.g. you can use {\tt softpkg -l} to list available packages).
+%Setting up the software packages for this course is done in two steps.
+%First, you need to define where some additional packages for this lab course are
+%located in the system.
+%This will be done by extending the {\tt PACKAGEPATH} environment variable on your account.
+%Second, you need to tell {\tt softpkg} {\it which} packages you want enabled on your
+%account.
+In order to use the provided software you will need to make sure your environment variables include the location of the required files and packages.
+You can do this by following the steps listed below.
+\\
+
+Assuming you are using the bash shell, you will need to update your {\ttfamily\small
+\~{}/.bashrc} (i.e. ``bash resource file'').
+If you do not know which bash configuration files are set on your account,
+   list them with:
+\begin{verbatimtab}
+ls -la ~/.bash*
+\end{verbatimtab}
+The list will probably include {\tt .bash\_history}, and may or may not
+include {\tt .bashrc} and other configuration files.
+
+\paragraph{Step 1a}
+Step 1a
+If you already have a ~/.bashrc file, edit it and add
+directly after any existing ``{\tt export PATH=...}'' line
+the following:
+\begin{verbatimtab}
+PATH=$PATH:/opt/prac/robotics/bin
+export PATH
+\end{verbatimtab}
+and directly after any existing ``{\tt export CLASSPATH=...}'' line
+the following: 
+\begin{verbatimtab}
+CLASSPATH=$CLASSPATH:/opt/prac/robotics/class
+export CLASSPATH
+\end{verbatimtab}
+%If you already have a {\tt \~{}/.bashrc} file, edit it and add
+%directly after any existing ``{\tt export PACKAGEPATH=...}'' line
+%the following:
+%\begin{verbatimtab}
+%export PACKAGEPATH=/opt/prac/robotics/pkg:$PACKAGEPATH
+%\end{verbatimtab}
+%Now softpkg can find the additional packages for the robotics course.
+
+\paragraph{Step 1b}
+If you do not have a {\tt \~{}/.bashrc} file yet, we will provide you with an already
+correctly configured version. Copy it using the following command:
+\begin{verbatimtab}
+cp /opt/prac/robotics/software4students/bashrc ~/.bashrc
+\end{verbatimtab}
+Note that the target file should be called {\tt .bashrc}, so starting with a `.'!
+Additionally you need to copy the following file too if it does not exist in
+your home directory yet:
+\begin{verbatimtab}
+cp /opt/prac/robotics/software4students/bash_profile ~/.bash_profile
+\end{verbatimtab}
+
+
+%\paragraph{Step 2}
+%Next, tell softpkg which software packages should be enabled on your account.
+%Edit your {\ttfamily\small \~{}/.pkgrc} (i.e. ``package resource file'') file
+%and add these two lines at the end:
+%\begin{verbatimtab}
+%robotics
+%jdk
+%swiprolog-5.4.7
+%\end{verbatimtab}
+%and remove or comment out any lines with just {\ttfamily\small swiprolog}.
+
+% Log yourself out and back in again.
+Close any open terminal window, and open a new one.
+This will start a new bash session, with the correct packages enabled.
+Now you're ready to start the
+simulator of the robot arm and your java {\ttfamily\small CLASSPATH} should be set.
+
+%\paragraph{Step 3}
+\paragraph{Step 2}
+Test if your account is configured correctly by running
+\begin{verbatimtab}
+umirtxsimulator
+\end{verbatimtab}
+Typing just {\tt umi} and pressing the TAB key should automagically complete the
+command.
+
+You should now create a directory for all your work in the lab course.
+Type in the shell for example:
+\begin{verbatimtab}
+cd
+mkdir zsb
+cd zsb
+\end{verbatimtab}
+
+\subsubsection*{Downloading the software4students}
+
+If you like to repeat those steps on your own laptop, the software4students can also be downloaded from \url{https://staff.fnwi.uva.nl/a.visser/education/ZSB/software4students.tgz}. The binaries are also available, but only will work in a 64-bits Linux environment ( \url{https://staff.fnwi.uva.nl/a.visser/education/ZSB/binary4students.tgz}).  The distribution of those binaries to your own laptop is not tested, so if you encounter problems try to make a clear error-report, which will allow us to make this distribution byod-proof.
+ 
+\subsubsection*{Tip for KDE}
+
+In this lab course, you will mostly be working in the terminal (running bash).
+However, most people login into a graphical desktop environment to run and manage
+terminal, editor and browser windows.
+For new student accounts this environment is KDE, which has as default behavior
+that the window focus follows the mouse, i.e. you always type in the window
+currently under the mouse pointer.
+If you prefer that the window focus is set by clicking on a
+window, you can change this behavior by following these instructions:
+
+From the `start' button at the button left of the screen, open `Control
+Center'. In the control center, select `Desktop', then `Window Behavior'.
+You now see an option for the focus policy, which states {\it Focus Follows Mouse}.
+Change this to {\it Click to Focus} and click `Apply'.
+
+
+%\subsubsection{The grading}
+%The grading of the prolog assignment will be based on:
+%
+%\begin{description}
+%  \item[Efficiency in terms of the endgame.] The smarter your advice
+%        language, the less moves it needs in certain situations to give
+%        checkmate to the opponent.
+%
+%  \item[Readability code.] The code you create should be readable. That
+%        means a lot of \emph{comments}, and \emph{intuitive} variable
+%        names.  One cannot stress this enough, but do this \emph{during}
+%        the creation of your code and \emph{not} afterwards. This being
+%        said, we do not have the illusion that you will actually do this
+%        (most people don't, but it will eventually backfire: good
+%        commented code is far easier to debug).
+%
+%  \item[Efficiency in terms of computation time.] This is the least
+%        important of the things mentioned. Only do this when you are
+%        certain of your programming skills. Note that usually there is a
+%        trade-off between readability and efficiency, so document such
+%        code well.
+%\end{description}
+
+
+\section*{Acknowledgments}
+
+Toto van Inge and George den Boer undertook the painstakingly effort of
+setting up the entire practical course and also wrote the first version
+of this manual.  Their successors were Arnoud Visser and Joris van Dam.
+In turn they were succeeded by Gerben Venekamp. And after that Daan van
+Schaijk and Nikos Massios adjusted some exercises to make them suitable
+for 1st year students. And finally Paul Ruinard made some adjustments
+for the course 2000-2001.
+
+The manual was originally written by Arnoud Visser and Joris van Dam and
+subsequently modified by Nikos Massios, Paul Ruinard, Matthijs Spaan,
+Olaf Booij, Julian Kooij, Tim van Rossum, Elise Koster, Michael Cabot, Robrecht Jurriaans and Toto van Inge.
+
+\end{document}
+
+% localwords:  arnoud visser joris ruinard massios nikos mathijs kattenberg uva
+% localwords:  mtjspaan nl vkattenb webpage practicum www epsfig scil readme
+% localwords:  moreverb highpath lowpath robotica mkdir javac java chessboard
+% localwords:  movetogarbage spaan bratko prolog bratko's

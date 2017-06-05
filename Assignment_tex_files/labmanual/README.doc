@@ -1,0 +1,44 @@
+This directory contains a working copy of the manual for the practical course.
+
+The sources of the manual have been put under cvs in
+"/opt/stud/robotics/assistance/cvsroot/handleiding".
+
+Do a "cvs status" to see if this working copy is up to date.
+
+See
+/opt/stud/robotics/assistance/README.CVS for more information on using cvs.
+
+The manual is written in LaTeX2e.
+
+The figures of the manual are in the images subdirectory.
+
+File description:
+zsbmanual.tex             The manual in LaTeX2e 
+images/                   The figures of the manual
+TODO                      Like always, there are still a few things to do
+                          regarding the manual
+Makefile                  Makes compiling the Latex-code (somewhat) easier
+
+I have put versions of the manual as used in previous years in
+"/opt/stud/robotics/assistance/handleiding/formerCourses/".
+These older manuals are not put under CVS! (too much space)
+
+-----------------------------------
+
+The Makefile is added for convenience.
+You can now make a ps or pdf by running:
+
+  $ make ps
+  $ make pdf
+
+Or (if latex was only run once or you want to force a rebuild):
+
+  $ make new ps
+  $ make new pdf
+
+Happy Making
+Olaf Booij
+
+$Id$
+
+
