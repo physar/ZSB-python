@@ -30,7 +30,7 @@ class UMI_parameters:
         ## TODO for students: REPLACE MINIMUM_DEGREES AND MAXIMUM_DEGREES FOR EACH INDIVIDUAL JOINT, THEY ARE NOT THE SAME FOR
         # SHOULDER, ELBOW, AND WRIST
         self.joint_ranges = {
-            "Riser"     : [self.total_arm_height, self.hpedestal],
+            "Riser"     : [0.0, maximum_height_change_this],
             "Shoulder"  : [mimimum_degrees_change_this, maximum_degrees_change_this],
             "Elbow"     : [mimimum_degrees_change_this, maximum_degrees_change_this],
             "Wrist"     : [mimimum_degrees_change_this, maximum_degrees_change_this],
