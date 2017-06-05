@@ -14,6 +14,7 @@ The figures of the manual are in the images subdirectory.
 
 File description:
 zsbmanual.tex             The manual in LaTeX2e 
+task1.tex			   Link to ../chess_engine/content.tex
 images/                   The figures of the manual
 TODO                      Like always, there are still a few things to do
                           regarding the manual
@@ -24,6 +25,10 @@ I have put versions of the manual as used in previous years in
 These older manuals are not put under CVS! (too much space)
 
 -----------------------------------
+
+Before you could make zsbmanual.pdf, you should first make a connection to the content of ../chess_engine by performing the command:
+
+  $ ln ../chess_engine/content.tex task1.tex
 
 The Makefile is added for convenience.
 You can now make a ps or pdf by running:
