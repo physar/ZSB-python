@@ -13,12 +13,15 @@
 \maketitle
 
 \section*{Introduction}
-In this assignment, you will implement a chess engine for a simplified version of chess. You will be using the minimax algorithm to implement the chess engine. Minimax is an algorithm that maximizes the win in situations where an ideal opponent plays against you.  
+In this assignment, you will program a chess engine for a simplified version of chess. You will be using the minimax algorithm to implement the chess engine. Minimax allows the computer to evaluate all possible moves up to a certain depth and then choose the one that maximizes the win, given that an ideal opponent plays against you.
+
+The framework of with the assignment contains the basic functionality to play chess. It is now your task to implement the minimax function (plus alpha-beta optimization) and all helper functions necessary to make the chess engine work correctly. 
+
 
 \section*{SimpleChess}
-Chess itself contains many different and special rules, which can take some time to implement. In order to make this assignment more containable and less tedious to implement, we will be looking at a simplified kind of chess game called SimpleChess. In SimpleChess, the only chess pieces used are the king, rook and pawn. While the king can still reach any adjacent square (even diagonal) and the rook can still reach all horizontal and vertical squares, the pawn can always only move one place forward.
+Chess itself contains many different and special rules, which can take some time to implement. In order to make this assignment more containable and less tedious to implement, we will be looking at a simplified kind of chess game called SimpleChess. In SimpleChess, the only chess pieces used are the king, rook and pawn. While the king can still reach any adjacent square (horizontal, vertical and diagonal) and the rook can still reach all horizontal and vertical squares, the pawn always only moves one place forward.
 
-You may assume the following simplifications:
+You may use the following simplifications:
 \begin{itemize}
     \item The only pieces on the board are the king, pawn and rook.
     \item A pawn cannot promote when it reaches the other side.
@@ -33,28 +36,35 @@ The static classes \texttt{Material} and \texttt{Side} are just used to provide 
 
 The helper functions \texttt{to\_coordinate} and \texttt{to\_notation} when converting a position in x,y-notation (e.g. (2,5)) to a board coordinate in chess notoation (e.g. "c3") and vice versa. Note: (0,0) corresponds to "a8".
 
-\subsection*{Classes}
+\subsection*{The ChessBoard class}
 A single board state is specified by the \texttt{ChessBoard} class. The \texttt{ChessBoard} class contains two variables. The \texttt{turn} variable specifies whether the white or black player is on turn. The \texttt{board\_matrix} variable contains an 8 by 8 2d-array array with at each cell either \texttt{None} if no chess piece is present at that position or the \texttt{Piece} object specifying the chess piece that is present at that position. You can use getter function \texttt{get\_boardpiece} and setter function \texttt{set\_boardpiece} to retrieve and set a chess piece at a specified position.
 
-Apart from representing a board state, the \texttt{ChessBoard} class is also responsible for reading a board configuration from input (\texttt{load\_from\_input})and printing itself (\texttt{\_\_str\_\_}). Lastly, it also contains the \texttt{legal\_moves} function, which should return all the possible moves for the current board state. You will need to implement this function yourself.
+Apart from representing a board state, the \texttt{ChessBoard} class is also responsible for reading a board configuration from input (\texttt{load\_from\_input})and printing itself (\texttt{\_\_str\_\_}). It also contains the \texttt{make\_move} function, which, given a certain move, returns a new board configuration with that move executed. 
 
+Lastly, it contains the \texttt{legal\_moves} function, which should return all the possible moves for the current board state. You will need to implement this function yourself.
+
+\subsection*{Other classes}
 The \texttt{ChessComputer} class provides functions to calculate the best computer move using minimax or alphabeta. You will need to implement both functions. The function \texttt{evaluate\_board} should give a score to each board configuation as to how favourable this configuration is for the white or black player.
 
-Lastly, the \texttt{ChessGame} class contains functionality for playing the game in the command line and reads input from the user. This class will automatically load the configuration in \texttt{chess.chb} in the same directory. If you would like to open another board configuration, you can specify this as a command line argument (i.e. \texttt{python chessgame.py board\_configurations/capture\_king1.chb}). You will not need to make changes to this class.
+Lastly, the \texttt{ChessGame} class contains functionality for playing the game in the command line and reads input from the user. This class will automatically load the configuration in \texttt{board.chb} in the same directory. If you would like to open another board configuration, you can specify this as a command line argument (e.g. \texttt{python chessgame.py board\_configurations/capture\_king1.chb}). You will not need to make changes to this class.
 
 
 \section*{The assignment}
+In order to implement the minimax algorithm, we first need a few helper functions. More specifically, we need a function that gives us the moves between states and a scoring function for states.
+
+\subsection{Implementing \texttt{legal\_moves}}
 The first function we need to implement when writing the chess engine is a function that returns all the legal moves of the rooks, pawns and king that are possible given a certain board configuation. To this end, you will need to implement \texttt{legal\_moves} in the \texttt{ChessBoard} class. Make sure you test this functionality before continuing with the next part, since this function will be used in later parts of the assignment.
 
-
-Secondly, we need to assign a score to every board position. We will do this in the \texttt{evaluate\_board} function in the \texttt{ChessEngine} class. A simple way to give a score to a board configuration is to give a score for each pawn, rook and king white has on the board and subtract the material that black has on the board. This way, a board configuration in which a rook of the opponent is captured will have a higher score. Make sure you form the score in such a way that a rook has a higher score when captured than multiple pawns and capturing the king even higher (since then the game is won).
-Besides counting material, you would also like to prefer strategies for capturing material that take fewer turns than long strategies (e.g. if you can capture a king in 2 turns, you should not take 4 turns to do so). You can use the \texttt{depth\_left} variable for this.
+\subsection{Implementing \texttt{evaluate\_board}}
+Secondly, we need to assign a score to every board position. We will do this in the \texttt{evaluate\_board} function in the \texttt{ChessEngine} class. A simple way to give a score to a board configuration is to give a score for each pawn, rook and king white has on the board and perform the same negatively for the material that black has on the board. This way, a board configuration in which a rook of the black opponent is captured will have a higher score. Make sure you form the score in such a way that a rook has a higher score when captured than multiple pawns and capturing the king the highest (since then the game is won).
+Besides counting material, you would also like to prefer strategies for capturing material that take fewer turns than long strategies (e.g. if you can capture a king in 2 turns, you should not take 4 turns to do so). You can use the \texttt{depth\_left} variable to take this into account when designing your scoring function.
 
 You are free to implement this scoring function any way you like, but for full credits you do need to make sure that the minimax algorithm will perform optimally on all the board configurations that are included with the assignment.
 
-If you finished the scoring function and the legal moves function, you have essentially all the basics you need to implement the minimax algorithm. We are going to implement a depth-bounded minimax algorithm.  Use \texttt{legal\_moves} to enumerate all the moves possible, \texttt{make\_move} to execute this move and \texttt{evaluate\_board} to give a score to a board position after we have reached the maximum depth.
+\subsection{Implementing \texttt{minimax}}
+If you finished the scoring function and the legal moves function, you have essentially all the basics you need to implement the minimax algorithm. We are going to implement a depth-bounded minimax algorithm. This means that we will only look forward a pre-defined amount of moves. After this depth is reached, the current board position is evaluated using the scoring function, even though it might not yet be an endposition of the game. Use \texttt{legal\_moves} to enumerate all the moves possible, \texttt{make\_move} to execute this move and \texttt{evaluate\_board} to give a score to a board position after we have reached the maximum depth.
 
-Once you have the minimax algorithm, you can implement the alpha-beta optimization in \texttt{alpha\_beta}.
+Once you have the minimax algorithm working, you can implement the alpha-beta optimization in function \texttt{alpha\_beta}.
 
 The different parts of the assignment are weighed as follows:
 \begin{itemize}

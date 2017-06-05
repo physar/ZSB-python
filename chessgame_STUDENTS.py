@@ -229,7 +229,9 @@ class ChessComputer:
 class ChessGame:
     def __init__(self, turn):
      
-        self.depth = 6
+        # NOTE: you can make this depth higher once you have implemented
+        # alpha-beta, which is more efficient
+        self.depth = 4
         self.chessboard = ChessBoard(turn)
 
         # If a file was specified as commandline argument, use that filename
