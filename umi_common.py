@@ -44,7 +44,7 @@ def write_parameters_to_umi_robot(parameter_lines):
         csv_writer = csv.writer(csv_file, delimiter=' ')
         for line in parameter_lines:
             if len(line) == 5:
-                csv_writer.writerow([line[0]*1000.0, line[1], line[2], line[3], -90.0, 0.0, 0.0, line[4]*1000.0])
+                csv_writer.writerow([line[0]*1000.0, line[1], line[2], line[3], -90.0, 0.0, line[4]*1000.0])
 
 def read_parameters_from_file(input_file):
     """ Read the file as written by write_parameters_to_file
